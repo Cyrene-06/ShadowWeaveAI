@@ -85,7 +85,7 @@ npm --prefix apps/web run test:e2e
 
 默认使用 Edge。无 Edge 时可在 `apps/web` 安装 Playwright Chromium 并设置 `PLAYWRIGHT_CHANNEL=chromium`。浏览器测试真实注册、创建项目、规则回放、视频上传，并在 Flutter Web 登录同一账号和读取同一项目。Flutter 使用无障碍语义定位，并通过真实键盘输入触发文本控制器。
 
-CI 定义在 `.github/workflows/phase-one.yml`，覆盖核心检查、PostgreSQL 与 Flutter；本次本机结果不能写成远端 CI 已通过。
+CI 定义在 `.github/workflows/phase-one.yml`，覆盖核心检查、PostgreSQL 与 Flutter；实际通过记录见阶段报告。本机检查与远端 CI 以各自的执行记录和提交号为准。
 
 ## 6. 数据与变更约定
 

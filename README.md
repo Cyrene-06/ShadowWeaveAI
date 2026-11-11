@@ -82,7 +82,7 @@ flowchart LR
 | 媒体处理 | FFmpeg、OpenCV、PySceneDetect、Librosa | 解析、分析、代理、音频与渲染 |
 | 存储与部署 | S3 兼容对象存储、Docker Compose | 媒体对象存储与开发部署 |
 
-具体依赖版本、模型服务和硬件要求将在各子项目初始化时验证并锁定。当前没有安装清单、锁文件或可执行部署配置。
+第一阶段 Python、Web、Flutter 依赖已提供锁文件，PostgreSQL 已提供可执行 Compose 配置；安装、启动与验证命令见[开发指南](docs/development.md)。完整模型服务、生产部署和真机硬件条件继续按路线图验证。
 
 ## 仓库结构
 
