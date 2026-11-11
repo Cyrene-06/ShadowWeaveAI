@@ -75,7 +75,7 @@ def main():
     source_hashes = {
         f: sha(ROOT / f) for f in sorted(set(candidates))
         if (ROOT / f).is_file() and (
-            f.startswith(("services/", "packages/", "apps/", "scripts/", "tests/", "examples/phase-1/"))
+            f.startswith(("services/", "packages/", "apps/", "scripts/", "tests/", "examples/phase-1/", "examples/evaluation/"))
             or f in ("pyproject.toml", "requirements.lock.txt", "alembic.ini", "infra/compose.yaml")
         ) and not f.endswith((".md", ".gitkeep"))
     }

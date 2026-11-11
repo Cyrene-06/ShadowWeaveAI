@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "record_stage": "template",
+  "record_type": "annotation",
+  "dataset_version": null,
+  "task_id": null,
+  "annotator_id": null,
+  "annotation_revision": 1,
+  "annotation_stage": "independent",
+  "independent_source_refs": [],
+  "adjudicator_id": null,
+  "disagreements": [],
+  "nodes": [],
+  "edits": []
+}

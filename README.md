@@ -102,6 +102,7 @@ ShadowWeaveAI/
 │   ├── README.md             # 文档导航、阅读顺序与事实边界
 │   ├── innovation-analysis.md # 执行方案对照、创新价值与资源风险
 │   ├── evaluation.md         # 对照、消融、指标分母与证据协议
+│   ├── evaluation-data.md    # 数据清单、标注、运行记录与独立复现交接
 │   ├── requirements.md       # 完整需求基线
 │   ├── architecture.md       # 架构、职责与数据约束
 │   ├── design/               # 系统详细设计、数据库设计、Agent 设计
@@ -150,6 +151,7 @@ cd ShadowWeaveAI
 - [x] 初始化 Web、Flutter、API、共享规则包与 Worker 六态骨架
 - [x] 验证共享契约、授权、覆盖/补拍门、依赖/锁定/范围和真实媒体工具
 - [x] 完成本机 Web / Flutter Web 连接同一 API 的浏览器联调
+- [x] 准备数据清单、独立标注与运行记录模板及离线一致性校验
 - [ ] 完成另一成员独立复现、Android 真机和模型接入探针
 - [ ] 跑通创建项目 → 上传 → 样例分析 → 预览导出的首个闭环
 - [ ] 完成七大模块及七角色协作

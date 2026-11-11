@@ -1392,8 +1392,8 @@
     "base_revision": 0
   },
   "code": {
-    "commit": "909a857f1997ca24048a8885827d2ed8f0353865",
-    "dirty": false,
+    "commit": "16593b5834932d43e27c1cf3bbac2a1847718723",
+    "dirty": true,
     "source_hashes": {
       "packages/contracts/src/sw_contracts/models.py": "62eb0cf70b32345d277bd50572e2c7eb3ba54d3be09a92654ac7b6a7eaae345b",
       "packages/contracts/src/sw_contracts/validation.py": "3da00840c5a34a2494adaf84ebc439caff89a426ae6ff0a8ac09f6ba8e078d65",
@@ -1411,7 +1411,7 @@
     "python": "3.12.7",
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "recorded_at": "2026-11-11T06:27:29.378633+00:00",
+  "recorded_at": "2026-11-11T06:40:56.523587+00:00",
   "passed": true,
   "checks": {
     "coverage/opening": true,

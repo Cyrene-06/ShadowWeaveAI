@@ -92,3 +92,7 @@ CI 定义在 `.github/workflows/phase-one.yml`，覆盖核心检查、PostgreSQL
 修改契约后运行 `scripts/export_contracts.py` 并提交生成文件；CI 用 `--check` 防止过期。数据库首迁移带冻结元数据快照，后续变更新增迁移，不通过导入当前 metadata 偷改旧迁移。
 
 `artifacts/`、设备 SDK、媒体、凭据、数据库和浏览器 trace 均不提交。可审阅的小型证据摘要进入 `docs/reports/evidence/`，保留实际来源和局限。固定输入不能代替真实模型/素材评测。需求原件 `docs/requirements.md` 保持不变；设计范围仍保留七模块、七角色、双端和五场景。
+
+## 评测数据准备与独立交接
+
+按[数据准备与标注指南](evaluation-data.md)复制并填写[离线模板](../examples/evaluation/README.md)。`python scripts/prepare_evaluation.py --check` 已进入统一检查；实际数据、独立标注与运行记录使用 `scripts/validate_evaluation.py` 的 `--ready` 和 `--manifest` 校验。模板通过不表示完成采集或实验。复现者使用指南中的空白交接表记录真实结果；另一成员尚未独立签署时保持待复核。

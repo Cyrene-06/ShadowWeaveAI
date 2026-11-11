@@ -1,0 +1,9 @@
+{
+  "schema_version": "1.0",
+  "record_stage": "template",
+  "record_type": "dataset_manifest",
+  "dataset_version": null,
+  "assets": [],
+  "tasks": [],
+  "notes": []
+}

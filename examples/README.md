@@ -5,3 +5,5 @@
 字段中 `human_annotation`、质量和语义支持均是固定人工事实。生成入口为 `scripts/build_fixtures.py`；实际计算入口为 `python -m sw_api.replay`。回放输出包含输入、摘要、失败反例、规则版本和代码来源。
 
 真实媒体探针单独生成原创 FFmpeg 色块/正弦测试片，媒体工件留在 `artifacts/`。下一阶段接入真实素材时另建授权清单，记录来源、授权范围、原片摘要、事件分组和开发/冻结划分；不能把本样例直接当作真实评测成绩。
+
+第一阶段评测准备包位于 [evaluation/](evaluation/README.md)，包含可校验的数据清单、独立标注及运行记录空白模板；具体操作见[数据准备与标注指南](../docs/evaluation-data.md)。真实评测集尚待采集和人工复核。

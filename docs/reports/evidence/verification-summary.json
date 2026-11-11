@@ -1,10 +1,10 @@
 {
-  "recorded_at": "2026-11-11T06:22:21.142184+00:00",
+  "recorded_at": "2026-11-11T06:41:42.078713+00:00",
   "passed": true,
   "postgres_configured": true,
   "flutter_included": true,
   "python_junit_counts": {
-    "tests": 109,
+    "tests": 132,
     "failures": 0,
     "errors": 0,
     "skipped": 0
@@ -20,7 +20,7 @@
         "."
       ],
       "exit_code": 0,
-      "duration_seconds": 0.125
+      "duration_seconds": 0.157
     },
     {
       "name": "contracts",
@@ -30,7 +30,17 @@
         "--check"
       ],
       "exit_code": 0,
-      "duration_seconds": 0.937
+      "duration_seconds": 1.312
+    },
+    {
+      "name": "evaluation_templates",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "scripts/prepare_evaluation.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.203
     },
     {
       "name": "python",
@@ -42,7 +52,7 @@
         "--junitxml=artifacts/phase-one/python-tests.xml"
       ],
       "exit_code": 0,
-      "duration_seconds": 6.328
+      "duration_seconds": 6.719
     },
     {
       "name": "replay",
@@ -52,7 +62,7 @@
         "sw_api.replay"
       ],
       "exit_code": 0,
-      "duration_seconds": 0.516
+      "duration_seconds": 0.547
     },
     {
       "name": "media",
@@ -70,7 +80,7 @@
         "test"
       ],
       "exit_code": 0,
-      "duration_seconds": 1.204
+      "duration_seconds": 1.203
     },
     {
       "name": "web_build",
@@ -80,7 +90,7 @@
         "build"
       ],
       "exit_code": 0,
-      "duration_seconds": 2.796
+      "duration_seconds": 2.75
     },
     {
       "name": "flutter_analyze",
@@ -89,7 +99,7 @@
         "analyze"
       ],
       "exit_code": 0,
-      "duration_seconds": 10.829
+      "duration_seconds": 11.344
     },
     {
       "name": "flutter_tests",
@@ -100,7 +110,7 @@
         "expanded"
       ],
       "exit_code": 0,
-      "duration_seconds": 5.015
+      "duration_seconds": 5.031
     },
     {
       "name": "flutter_build",
@@ -112,7 +122,7 @@
         "--dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1"
       ],
       "exit_code": 0,
-      "duration_seconds": 24.453
+      "duration_seconds": 24.485
     }
   ],
   "browser": {

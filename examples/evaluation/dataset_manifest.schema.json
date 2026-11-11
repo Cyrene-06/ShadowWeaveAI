@@ -1,0 +1,252 @@
+{
+  "$defs": {
+    "DatasetAsset": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "minLength": 1,
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "source_uri": {
+          "minLength": 1,
+          "title": "Source Uri",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "video",
+            "audio",
+            "image",
+            "metadata"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "source_kind": {
+          "enum": [
+            "real_capture",
+            "generated_probe",
+            "synthetic_metadata"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        },
+        "duplicate_group": {
+          "minLength": 1,
+          "title": "Duplicate Group",
+          "type": "string"
+        },
+        "parent_asset_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Parent Asset Id"
+        },
+        "rights": {
+          "$ref": "#/$defs/Rights"
+        }
+      },
+      "required": [
+        "asset_id",
+        "source_uri",
+        "sha256",
+        "media_type",
+        "source_kind",
+        "event_id",
+        "duplicate_group",
+        "rights"
+      ],
+      "title": "DatasetAsset",
+      "type": "object"
+    },
+    "DatasetTask": {
+      "additionalProperties": false,
+      "properties": {
+        "task_id": {
+          "minLength": 1,
+          "title": "Task Id",
+          "type": "string"
+        },
+        "scenario": {
+          "enum": [
+            "campus",
+            "travel",
+            "family_friends",
+            "vlog",
+            "organization"
+          ],
+          "title": "Scenario",
+          "type": "string"
+        },
+        "split": {
+          "enum": [
+            "development",
+            "frozen_test"
+          ],
+          "title": "Split",
+          "type": "string"
+        },
+        "event_id": {
+          "minLength": 1,
+          "title": "Event Id",
+          "type": "string"
+        },
+        "asset_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Asset Ids",
+          "type": "array"
+        },
+        "intent_ref": {
+          "minLength": 1,
+          "title": "Intent Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "task_id",
+        "scenario",
+        "split",
+        "event_id",
+        "asset_ids",
+        "intent_ref"
+      ],
+      "title": "DatasetTask",
+      "type": "object"
+    },
+    "Rights": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "pending",
+            "approved"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "permission_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Permission Ref"
+        },
+        "allowed_uses": {
+          "items": {
+            "enum": [
+              "development",
+              "evaluation",
+              "publication"
+            ],
+            "type": "string"
+          },
+          "title": "Allowed Uses",
+          "type": "array"
+        }
+      },
+      "required": [
+        "status",
+        "permission_ref",
+        "allowed_uses"
+      ],
+      "title": "Rights",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "record_stage": {
+      "default": "template",
+      "enum": [
+        "template",
+        "ready"
+      ],
+      "title": "Record Stage",
+      "type": "string"
+    },
+    "record_type": {
+      "const": "dataset_manifest",
+      "default": "dataset_manifest",
+      "title": "Record Type",
+      "type": "string"
+    },
+    "dataset_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dataset Version"
+    },
+    "assets": {
+      "items": {
+        "$ref": "#/$defs/DatasetAsset"
+      },
+      "title": "Assets",
+      "type": "array"
+    },
+    "tasks": {
+      "items": {
+        "$ref": "#/$defs/DatasetTask"
+      },
+      "title": "Tasks",
+      "type": "array"
+    },
+    "notes": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Notes",
+      "type": "array"
+    }
+  },
+  "title": "DatasetManifest",
+  "type": "object"
+}

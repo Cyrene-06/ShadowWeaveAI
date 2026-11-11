@@ -7,6 +7,7 @@
 | 确定产品范围 | [需求分析](requirements.md) | 七模块、七角色、双端、五场景与原始验收编号；保持原文 |
 | 判断创新和重要性 | [执行方案创新性分析](innovation-analysis.md) | 原方案/R01 差距、公开能力边界、核心假设、工期资源冲突与证据限制 |
 | 判断怎么证明 | [评测与证据协议](evaluation.md) | 数据拆分、双轴对照、消融、分母、失败记录与门槛 |
+| 准备评测数据与交接 | [数据准备与标注指南](evaluation-data.md)、[离线模板](../examples/evaluation/README.md) | 来源授权、分组防泄漏、人工标注、运行记录及独立复现签署表 |
 | 了解部署与组件 | [架构概览](architecture.md) | 双端、API、Worker、AI、媒体与存储边界 |
 | 实施业务机制 | [系统详细设计](design/detailed-design.md) | 第 7 节证据覆盖/补拍；第 8.3 节局部影响/锁定；接口及版本事务 |
 | 实施数据层 | [数据库设计](design/database-design.md) | 36 张业务表、机制字段、关系/索引、事务和生命周期 |

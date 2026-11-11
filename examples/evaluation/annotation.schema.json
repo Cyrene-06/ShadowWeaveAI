@@ -1,0 +1,301 @@
+{
+  "$defs": {
+    "EditLabel": {
+      "additionalProperties": false,
+      "properties": {
+        "request_id": {
+          "minLength": 1,
+          "title": "Request Id",
+          "type": "string"
+        },
+        "target_clip_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Target Clip Keys",
+          "type": "array"
+        },
+        "acceptable_impact_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Acceptable Impact Keys",
+          "type": "array"
+        },
+        "locked_clip_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Locked Clip Keys",
+          "type": "array"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "request_id",
+        "target_clip_keys",
+        "acceptable_impact_keys",
+        "locked_clip_keys",
+        "rationale"
+      ],
+      "title": "EditLabel",
+      "type": "object"
+    },
+    "EvidenceLabel": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "in_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "In Ms"
+        },
+        "out_ms": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Out Ms"
+        },
+        "requirement_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requirement Keys",
+          "type": "array"
+        },
+        "semantic_support": {
+          "enum": [
+            "supported",
+            "unsupported",
+            "unknown"
+          ],
+          "title": "Semantic Support",
+          "type": "string"
+        },
+        "quality_usable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quality Usable"
+        }
+      },
+      "required": [
+        "asset_id",
+        "requirement_keys",
+        "semantic_support",
+        "quality_usable"
+      ],
+      "title": "EvidenceLabel",
+      "type": "object"
+    },
+    "NodeLabel": {
+      "additionalProperties": false,
+      "properties": {
+        "node_key": {
+          "minLength": 1,
+          "title": "Node Key",
+          "type": "string"
+        },
+        "requirement_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requirement Keys",
+          "type": "array"
+        },
+        "coverage": {
+          "enum": [
+            "covered",
+            "insufficient",
+            "uncertain",
+            "missing"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "search_complete": {
+          "title": "Search Complete",
+          "type": "boolean"
+        },
+        "gap_types": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Gap Types",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/EvidenceLabel"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "rationale": {
+          "minLength": 1,
+          "title": "Rationale",
+          "type": "string"
+        }
+      },
+      "required": [
+        "node_key",
+        "requirement_keys",
+        "coverage",
+        "search_complete",
+        "gap_types",
+        "evidence",
+        "rationale"
+      ],
+      "title": "NodeLabel",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "record_stage": {
+      "default": "template",
+      "enum": [
+        "template",
+        "ready"
+      ],
+      "title": "Record Stage",
+      "type": "string"
+    },
+    "record_type": {
+      "const": "annotation",
+      "default": "annotation",
+      "title": "Record Type",
+      "type": "string"
+    },
+    "dataset_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Dataset Version"
+    },
+    "task_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Id"
+    },
+    "annotator_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Annotator Id"
+    },
+    "annotation_revision": {
+      "default": 1,
+      "minimum": 1,
+      "title": "Annotation Revision",
+      "type": "integer"
+    },
+    "annotation_stage": {
+      "default": "independent",
+      "enum": [
+        "independent",
+        "adjudicated"
+      ],
+      "title": "Annotation Stage",
+      "type": "string"
+    },
+    "independent_source_refs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Independent Source Refs",
+      "type": "array"
+    },
+    "adjudicator_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Adjudicator Id"
+    },
+    "disagreements": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Disagreements",
+      "type": "array"
+    },
+    "nodes": {
+      "items": {
+        "$ref": "#/$defs/NodeLabel"
+      },
+      "title": "Nodes",
+      "type": "array"
+    },
+    "edits": {
+      "items": {
+        "$ref": "#/$defs/EditLabel"
+      },
+      "title": "Edits",
+      "type": "array"
+    }
+  },
+  "title": "AnnotationRecord",
+  "type": "object"
+}
