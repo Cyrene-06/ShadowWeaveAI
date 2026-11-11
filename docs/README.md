@@ -11,6 +11,7 @@
 | 实施业务机制 | [系统详细设计](design/detailed-design.md) | 第 7 节证据覆盖/补拍；第 8.3 节局部影响/锁定；接口及版本事务 |
 | 实施数据层 | [数据库设计](design/database-design.md) | 36 张业务表、机制字段、关系/索引、事务和生命周期 |
 | 实施角色协作 | [Agent 设计](design/agent-design.md) | 七职责如何产出证据、执行门控、恢复和受限建议 |
+| 执行第一阶段 | [第一阶段实施大纲](phase-1-outline.md) | 7 日工作包、三人分工、两个创新样例、验收与交付边界 |
 | 初始化与分工 | [开发指南](development.md)、[执行路线](roadmap.md) | 风险优先的实施建议、日期窗口和资源假设 |
 | 实施 API 与契约 | [接口入口](api/README.md)、[共享契约](../packages/contracts/README.md) | 将文档设计落实为 Schema/OpenAPI；尚无生成文件 |
 | 规划验收样例 | [测试规划](../tests/README.md)、[示例约定](../examples/README.md) | 真实来源、预期结果、失败路径；尚无运行器或测试集 |

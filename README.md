@@ -107,6 +107,7 @@ ShadowWeaveAI/
 │   ├── design/               # 系统详细设计、数据库设计、Agent 设计
 │   ├── development.md        # 开发约定与初始化顺序
 │   ├── roadmap.md            # 八阶段计划与验收产物
+│   ├── phase-1-outline.md    # 第一阶段工作包、创新样例与验收
 │   └── api/README.md         # 接口设计边界
 ├── infra/                    # 部署配置规划
 ├── scripts/                  # 自动化脚本规划
@@ -133,7 +134,7 @@ cd ShadowWeaveAI
 2. 从 [文档导航](docs/README.md) 阅读 [创新性分析](docs/innovation-analysis.md) 和 [评测协议](docs/evaluation.md)，明确先验证什么，再阅读 [架构说明](docs/architecture.md)。
 3. 阅读 [系统详细设计](docs/design/detailed-design.md)、[数据库设计](docs/design/database-design.md) 和 [Agent 设计](docs/design/agent-design.md)，按统一契约拆分实现。
 4. 按 [开发指南](docs/development.md) 初始化对应子项目，并补齐依赖、启动方式和测试说明。
-5. 参考 [开发路线](docs/roadmap.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
+5. 参考 [开发路线](docs/roadmap.md)、[第一阶段实施大纲](docs/phase-1-outline.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
 
 当前可进行文档阅读和仓库协作；尚无 `npm run dev`、API 启动或 Docker 启动入口。`.env.example` 供后续配置设计参考，不需要在此阶段填写模型密钥。
 
