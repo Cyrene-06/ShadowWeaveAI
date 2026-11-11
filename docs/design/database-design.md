@@ -509,6 +509,7 @@ ready 后候选内容冻结，确认终态只更新状态；含 updated_at。
 | workflow_id / job_id | uuid，可空 | AI 草案来源；手工可空 |
 | intent_id / storyboard_id | uuid / uuid | 同项目确认快照 |
 | requested_operations | jsonb | 手工操作或自然语言意图 |
+| requested_unlock_clip_ids | jsonb / [] | 明确要求解锁的稳定 clip_key 集合，纳入 payload_hash |
 | candidate_edl | jsonb，可空 | 达到 ready 必须非空 |
 | diff / validation_report | jsonb / jsonb | 差异、影响集合、硬错误和建议 |
 | payload_hash | char(64)，可空 | 包含 EDL、基准、差异、校验、解锁请求 |
