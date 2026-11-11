@@ -8,7 +8,7 @@
 | [replay.json](replay.json) | 原始固定输入、实际规则输出、18 项检查、代码/规则/数据版本 |
 | [verification-summary.json](verification-summary.json) | 真实命令、退出码、耗时、JUnit 数量和浏览器结果摘要 |
 | [media.json](media.json) | 原创真实媒体探测、解码/渲染结果、工具版本和二进制摘要 |
-| [ci.json](ci.json) | GitHub Actions 只读 API 获取的实现提交、最终状态及两个 job 的结果 |
+| [ci.json](ci.json) | GitHub Actions 只读 API 获取的实现提交、最终状态、core/flutter/android 三个 job 的结果及工件元数据（归档 digest 不是 APK 摘要） |
 | [model-probe.json](model-probe.json) | 模型协议探针的实际配置/执行记录；not_configured 不代表已调用 |
 | [environment.json](environment.json) | 工具版本、设备发现、真机阻塞与模型未配置记录 |
 

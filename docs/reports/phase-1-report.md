@@ -18,16 +18,16 @@
 
 | T 任务 | 实际交付 | 本次状态 |
 | --- | --- | --- |
-| T01 工程与环境基线 | Python 可编辑包、依赖锁定、双端工程、环境样例、Compose 和 CI 定义 | 本机通过；实现提交 db521e1 的远端 CI 通过 |
+| T01 工程与环境基线 | Python 可编辑包、依赖锁定、双端工程、环境样例、Compose 和 CI 定义 | 本机通过；实现提交 30cfe4d 的远端 CI 通过 |
 | T02 共享契约与映射 | Pydantic 单一来源、21 个公开对象、Schema/OpenAPI 导出、42 个共享正反例 | Python/Web/Flutter 均运行同一组用例 |
 | T03 身份、项目与迁移 | 持久化账号/会话、刷新轮换、项目权限、幂等创建、首迁移冻结快照 | SQLite 和 PostgreSQL 检查通过 |
 | T04 证据与覆盖 | 项目/素材/分析引用、半开区间、四态规则、重叠区间去重 | 固定输入规则通过 |
 | T05 补拍验证门 | 上传推进 submitted；新证据、任务/故事板修订和覆盖验证决定 fulfilled；处置独立 | 正反例通过；真实自动分析回写待阶段 3 |
 | T06 编辑保护 | 小型 DAG、环拒绝、预先批准范围、完整 diff、锁定键保护 | 固定候选正反例通过 |
 | T07 确认契约 | 完整草案摘要、基准修订、显式解锁键核对 | 契约通过；不发布生产版本 |
-| T08 双端联调 | 身份/项目、证据、覆盖、补拍卡、修改差异和拒绝原因、媒体上传 | 真实浏览器流程通过；Android 真机待验证 |
+| T08 双端联调 | 身份/项目、证据、覆盖、补拍卡、修改差异和拒绝原因、媒体上传 | 真实浏览器流程与 Android 原生编译通过；Android 真机待验证 |
 | T09 复现与报告 | A/B 固定样例、测试入口、运行记录、开发指南、评测数据/标注模板和证据摘要 | 本机复跑通过；另一成员独立复现待执行 |
-| T10 技术探针 | 原创媒体上传、真实解码/渲染、设备检查、可显式执行的模型协议探针 | 媒体通过；真机 blocked，模型 not_configured |
+| T10 技术探针 | 原创媒体上传、真实解码/渲染、原生 APK 构建、设备检查、可显式执行的模型协议探针 | 媒体与原生构建通过；真机 blocked，模型 not_configured |
 
 ## 2. 创新机制与本阶段证据
 
@@ -122,14 +122,15 @@
 | Flutter analyze | No issues found |
 | Flutter 测试 | 44 passed：42 个共享契约例 + 2 个界面测试 |
 | Flutter Web release 构建 | 通过 |
+| Android debug APK 构建 | CI 原生编译及 APK/SHA-256 工件上传通过；本机缺 SDK |
 | Playwright 双端同 API 流程 | 1 passed |
-| GitHub Actions：实现提交 db521e1 | core / flutter 两个 job 均 success |
+| GitHub Actions：实现提交 30cfe4d | core / flutter / android 三个 job 均 success |
 
 浏览器流程实际完成 Web 注册、建项目、运行样例和上传真实媒体，再用 Flutter Web 登录同一账号、读取同一项目、运行同一规则并检查 submitted/fulfilled。该流程没有替身 API，也不等于 Android 真机测试。两端截图仅作辅助；原始 trace 可能包含会话数据，未提交。
 
 工具版本：Python 3.12.7、Node 24.14.0、Flutter 3.47.9 / Dart 3.13.7；PostgreSQL 使用 17-alpine 固定镜像摘要。Windows 中文路径触发 Flutter 工具故障后，实际使用 `W:` subst 映射，方法已写入开发指南。Flutter Web 的外部渲染/字体资源及完全离线运行尚未验证。
 
-本机检查与远端 CI 分别记录。实现提交 `db521e171bedb83cc4b05f8bbe723ce526412893` 的 GitHub Actions 运行 `42976324624` 于 2026-11-11 完成，core / flutter 均为 success；只读 API 结果见[CI 记录](evidence/ci.json)。远端覆盖核心检查、真实 PostgreSQL、离线评测模板生成一致性及记录测试、模型配置就绪记录和本地 HTTP 协议夹具测试、Flutter 分析/测试/Web 构建；浏览器双端流程仍为本机结果。后续仅文档提交不冒充该次已验证提交。
+本机检查与远端 CI 分别记录。实现提交 `30cfe4d1cc817a23151538f9f1cfb88abfd5c8ee` 的 GitHub Actions 运行 `42978210010` 于 2026-11-11 完成，core / flutter / android 均为 success；只读 API 结果见[CI 记录](evidence/ci.json)。远端覆盖核心检查、真实 PostgreSQL、离线评测模板生成一致性及记录测试、模型配置就绪记录和本地 HTTP 协议夹具测试、Flutter 分析/测试/Web 构建及独立 Android debug APK 编译与工件上传；浏览器双端流程仍为本机结果。后续仅文档提交不冒充该次已验证提交。
 
 完整本机测试日志在 `artifacts/phase-one/`；受版本控制的摘要记录原始工件 SHA-256，未将测试次数外推成生产质量保证。
 
@@ -141,7 +142,8 @@
 | --- | --- | --- |
 | 原创真实媒体 | 1000 ms、1280×720、H.264/AAC 输入；实际解码渲染为 520 ms 输出 | 当前工具链和这一格式可用 |
 | 媒体工具版本 | FFmpeg 9.0.2；ffprobe 2023-02-13 构建；详见媒体报告 | 两工具版本不同，其他设备/格式兼容性待验证 |
-| Android 真机采集 | blocked：本机未发现 Android/iOS 真机，adb 不可用 | 未构建 APK，未完成真机相机验证 |
+| Android 原生构建 | CI debug APK 编译、SHA-256 记录和工件上传通过 | 可供安装的调试包；不证明设备行为 |
+| Android 真机采集 | blocked：本机未发现 Android/iOS 真机，未找到 SDK、adb 不可用 | 本机 APK 构建退出码 1；未完成真机相机验证 |
 | 模型探针 | not_configured；model_called=false，usage/cost=null | 四项配置不齐，未调用模型，未测效果或成本 |
 
 媒体来源为本项目 FFmpeg 生成的色块/正弦信号，独立于固定样例中的人工事实。媒体摘要保留输入/输出探测结果与二进制 hash；不提交媒体、SDK 或数据库。设备与模型结果见[环境记录](evidence/environment.json)，媒体结果见[工具报告](evidence/media.json)。
@@ -162,6 +164,14 @@ T10 现有可执行入口 `scripts/model_probe.py`，说明见[模型探针文�
 
 2026-11-11 重新执行环境检测与探针：未发现 Android/iOS 真机；MODEL_PROVIDER、MODEL_BASE_URL、MODEL_NAME、MODEL_API_KEY 未齐。默认和显式执行均实际记录 not_configured，request_attempted=false、model_called=false；显式执行退出码 1。证据见[探针记录](evidence/model-probe.json)。当前新增的是可执行工具，不把它记成真实调用完成。
 
+### 6.6 Android 原生构建与设备交接
+
+首次加入原生编译检查后，实现提交 `30cfe4d` 的独立 android job 实际完成 `flutter build apk --debug`、校验文件生成和工件上传。工件名 `phase-one-android-debug`，压缩工件大小 70,840,206 字节，API 记录的失效日期为 2026-11-25；CI 元数据与三个 job 的步骤结果见[CI 记录](evidence/ci.json)。归档 digest 是压缩工件摘要，不是 APK 文件 SHA-256；APK 校验文件保存在工件内部，本次审计未下载二进制。
+
+调试包配置为通过 USB 反向端口连接本机 API，使用调试签名；安装和相机/取消/拒绝/系统回收检查见[Android 探针指南](../android-probe.md)。本机 `flutter doctor -v` 明确未发现 Android SDK，在正确的移动端工程目录执行 APK 构建，以退出码 1 返回 `No Android SDK found`，实际失败记录保留在 `artifacts/phase-one/android-build.json`。CI 成功与本机工具链阻塞分别保留。
+
+Android 工程已具备编译成功的证据，真机安装、相机返回和上传仍待真实设备验证。上传 API 仅探测媒体并删除临时文件，不创建持久化 Asset，也不自动生成新的故事覆盖验证；不能把原生编译或媒体工具结果外推为完整补拍闭环通过。
+
 ## 7. 创新结论与证据限制
 
 本次能确认：固定证据引用接受可追溯检查；覆盖状态保留检索和质量差异；上传与验证被分开；局部修改受到依赖、锁定、批准范围和完整摘要约束；固定角色输出经过与未来模型输出相同的规则门。
@@ -180,7 +190,7 @@ A/B/C 仍为大纲中的职责占位，并非虚构已指派的实际成员。11
 | Android SDK/设备与真机采集 | A | 2026-11-19 | 设备授权、实际采集上传、设备/系统版本与结果 |
 | 模型可达性、结构化结果与用量 | C | 2026-11-19 | 配齐提供商配置，获授权后实际调用并记录 usage/cost/失败 |
 | 完整媒体格式与性能基线 | B | 2026-11-21 | 授权实拍素材、多格式与设备条件、真实耗时及失败记录 |
-| 远端 CI 复核 | B | 2026-11-11 已通过 | 最新源码提交 db521e1、运行 42976324624；后续源码变更继续执行 |
+| 远端 CI 复核 | B | 2026-11-11 已通过 | 最新工程提交 30cfe4d、运行 42978210010；后续源码变更继续执行 |
 | 后续真实分析与检索 | B/C | 阶段 2 启动 | 真实解析、关键帧/转写接入，保留 evidence provenance 和分析版本 |
 | 生产补拍/版本/异步事务 | B/C | 对应阶段启动 | 完整事务、版本头并发、Outbox/租约恢复及七角色编排依路线图实施 |
 

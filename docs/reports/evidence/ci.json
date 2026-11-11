@@ -1,18 +1,18 @@
 {
-  "observed_at": "2026-11-11T07:04:12.1271539Z",
+  "observed_at": "2026-11-11T07:20:41.9852349Z",
   "source": "GitHub Actions public REST API",
   "run": {
-    "id": 42976324624,
-    "head_sha": "db521e171bedb83cc4b05f8bbe723ce526412893",
+    "id": 42978210010,
+    "head_sha": "30cfe4d1cc817a23151538f9f1cfb88abfd5c8ee",
     "status": "completed",
     "conclusion": "success",
-    "created_at": "2026-11-11T07:00:14Z",
-    "updated_at": "2026-11-11T07:01:26Z",
-    "html_url": "https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/42976324624"
+    "created_at": "2026-11-11T07:15:49Z",
+    "updated_at": "2026-11-11T07:20:16Z",
+    "html_url": "https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/42978210010"
   },
   "jobs": [
     {
-      "id": 130376166893,
+      "id": 130382166316,
       "name": "flutter",
       "status": "completed",
       "conclusion": "success",
@@ -70,7 +70,75 @@
       ]
     },
     {
-      "id": 130376167297,
+      "id": 130382166651,
+      "name": "android",
+      "status": "completed",
+      "conclusion": "success",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run subosito/flutter-action@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Resolve Flutter dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build Android debug APK",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Record APK checksum",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Save Android installation artifact",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run subosito/flutter-action@v2",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 130382166704,
       "name": "core",
       "status": "completed",
       "conclusion": "success",
@@ -157,5 +225,26 @@
         }
       ]
     }
-  ]
+  ],
+  "artifacts": [
+    {
+      "id": 13835788967,
+      "name": "phase-one-core-evidence",
+      "size_in_bytes": 30826,
+      "expired": false,
+      "created_at": "2026-11-11T07:16:59Z",
+      "expires_at": "2027-02-09T07:15:49Z",
+      "archive_digest": "sha256:05019444d34441592c9902a8853db151603d29817b6dab315c754bc66436420f"
+    },
+    {
+      "id": 13835449913,
+      "name": "phase-one-android-debug",
+      "size_in_bytes": 70840206,
+      "expired": false,
+      "created_at": "2026-11-11T07:20:12Z",
+      "expires_at": "2026-11-25T07:20:06Z",
+      "archive_digest": "sha256:5db3867841afbfd923492c83ec3bab0e1d91e90f1d12d2a0ab3e58d434a86378"
+    }
+  ],
+  "artifact_note": "Artifact archive metadata is from the API; archive_digest is not the APK SHA-256. The APK checksum file is inside the Android artifact. No artifact bytes were downloaded in this audit."
 }

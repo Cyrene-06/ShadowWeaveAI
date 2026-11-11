@@ -6,7 +6,7 @@
 
 2026-11-11 本机 `flutter doctor -v` 未找到 Android SDK；在移动端工程目录执行 `flutter build apk --debug --no-pub`，以退出码 1 返回 `No Android SDK found`。设备探测未发现 Android/iOS 真机。原始构建记录保存在忽略目录 `artifacts/phase-one/`。
 
-工作流 `.github/workflows/phase-one.yml` 新增独立 `android` 任务：使用 Flutter 3.47.9、Temurin JDK 17 和运行器的 Android SDK，执行依赖解析、debug APK 编译、SHA-256 记录及工件上传。新增任务的实际运行结果以阶段报告和 CI 记录为准。构建成功时工件名为 `phase-one-android-debug`，保存 14 天，内含 APK 与校验文件；二进制不进入 Git。
+工作流 `.github/workflows/phase-one.yml` 新增独立 `android` 任务：使用 Flutter 3.47.9、Temurin JDK 17 和运行器的 Android SDK，执行依赖解析、debug APK 编译、SHA-256 记录及工件上传。实现提交 `30cfe4d` 的该任务已通过，实际步骤及工件元数据见[CI 记录](reports/evidence/ci.json)。构建成功时工件名为 `phase-one-android-debug`，保存 14 天，内含 APK 与校验文件；二进制不进入 Git。
 
 该调试包的 API 地址为 `http://127.0.0.1:8000/api/v1`，用于下述 USB 反向端口连接。包使用调试签名，仅供本阶段验证；正式发布另行配置签名和 HTTPS。
 
