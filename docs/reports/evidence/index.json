@@ -1,8 +1,8 @@
 {
-  "packaged_at": "2026-11-11T06:59:51.235848+00:00",
+  "packaged_at": "2026-11-11T07:03:36.536964+00:00",
   "kind": "local_advance_engineering_verification",
   "assembly_code": {
-    "commit": "3126e436eaac9a97e987014cdbd2a4ff07333900",
+    "commit": "db521e171bedb83cc4b05f8bbe723ce526412893",
     "dirty": true
   },
   "assembly_source_hashes": {
@@ -120,7 +120,7 @@
     },
     {
       "path": "artifacts/phase-one/replay.json",
-      "sha256": "17ea3e01455c50d9ec3f65829249283d305905cdbad308fc55d3526c01cf9cf9"
+      "sha256": "9f123e650aaf7e49bc0c36f74d60d64ba5bd75d52f46f6fce828c35b9484d0d7"
     },
     {
       "path": "artifacts/phase-one/environment.json",
@@ -136,13 +136,13 @@
     },
     {
       "path": "artifacts/phase-one/model-probe.json",
-      "sha256": "9874ec2575638f3cca4f63b38999917708e703988578e4cf81ad840819095e74"
+      "sha256": "421e56b9e839edbb9bc95b49c7aa0ea05a4898eafdc8368ee9ca466c698da910"
     }
   ],
   "packaged_files": [
     {
       "path": "replay.json",
-      "sha256": "17ea3e01455c50d9ec3f65829249283d305905cdbad308fc55d3526c01cf9cf9"
+      "sha256": "9f123e650aaf7e49bc0c36f74d60d64ba5bd75d52f46f6fce828c35b9484d0d7"
     },
     {
       "path": "media.json",
@@ -158,7 +158,7 @@
     },
     {
       "path": "model-probe.json",
-      "sha256": "9874ec2575638f3cca4f63b38999917708e703988578e4cf81ad840819095e74"
+      "sha256": "421e56b9e839edbb9bc95b49c7aa0ea05a4898eafdc8368ee9ca466c698da910"
     }
   ],
   "requirements_sha256": "9e6712ad7473a2d99c2945403fa56b2226d8294635855e956082640e17b7507b",
