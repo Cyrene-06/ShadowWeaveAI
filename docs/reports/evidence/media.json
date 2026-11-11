@@ -1,0 +1,59 @@
+{
+  "mode": "real_media_tools",
+  "model_called": false,
+  "provenance": {
+    "source": "Project-generated FFmpeg color and sine sources",
+    "third_party_footage": false,
+    "scope": "technical decode/render probe; no model or creative quality evaluation"
+  },
+  "source": {
+    "duration_ms": 1000,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "duration": "1.000000"
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "44100",
+        "duration": "1.000000"
+      }
+    ],
+    "tool": "ffprobe",
+    "model_called": false
+  },
+  "render": {
+    "duration_ms": 520,
+    "format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "streams": [
+      {
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1280,
+        "height": 720,
+        "duration": "0.520000"
+      },
+      {
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "44100",
+        "duration": "0.500000"
+      }
+    ],
+    "tool": "ffprobe",
+    "model_called": false
+  },
+  "tools": {
+    "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers"
+  },
+  "sha256": {
+    "generated-source.mp4": "24b89f99b8aa8764a3109c498351d06141942b663a5f9ce33db1b130c69eec16",
+    "rendered-preview.mp4": "9a64ec1a4db035a5b875e8bf91bf103f063ddc47046cca95dd19b0461bf54cb2"
+  }
+}

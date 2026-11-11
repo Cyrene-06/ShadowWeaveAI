@@ -1,0 +1,19 @@
+name: shadowweave_mobile
+description: ShadowWeaveAI phase-one project and capture-verification client
+publish_to: none
+version: 0.1.0+1
+environment:
+  sdk: ^3.13.0
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.6.0
+  image_picker: ^1.2.4
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/contracts.json

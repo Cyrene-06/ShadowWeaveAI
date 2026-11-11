@@ -1,0 +1,131 @@
+{
+  "recorded_at": "2026-11-11T06:22:21.142184+00:00",
+  "passed": true,
+  "postgres_configured": true,
+  "flutter_included": true,
+  "python_junit_counts": {
+    "tests": 109,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "steps": [
+    {
+      "name": "ruff",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "-m",
+        "ruff",
+        "check",
+        "."
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.125
+    },
+    {
+      "name": "contracts",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "scripts/export_contracts.py",
+        "--check"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.937
+    },
+    {
+      "name": "python",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-q",
+        "--junitxml=artifacts/phase-one/python-tests.xml"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 6.328
+    },
+    {
+      "name": "replay",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "-m",
+        "sw_api.replay"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.516
+    },
+    {
+      "name": "media",
+      "command": [
+        "E:\\软创\\ShadowWeaveAI\\.venv\\Scripts\\python.exe",
+        "scripts/media_probe.py"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 0.687
+    },
+    {
+      "name": "web_tests",
+      "command": [
+        "D:\\node.js\\node-v24.14.0-win-x64\\npm.CMD",
+        "test"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 1.204
+    },
+    {
+      "name": "web_build",
+      "command": [
+        "D:\\node.js\\node-v24.14.0-win-x64\\npm.CMD",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 2.796
+    },
+    {
+      "name": "flutter_analyze",
+      "command": [
+        "W:\\.cache\\flutter\\bin\\flutter.bat",
+        "analyze"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 10.829
+    },
+    {
+      "name": "flutter_tests",
+      "command": [
+        "W:\\.cache\\flutter\\bin\\flutter.bat",
+        "test",
+        "--reporter",
+        "expanded"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 5.015
+    },
+    {
+      "name": "flutter_build",
+      "command": [
+        "W:\\.cache\\flutter\\bin\\flutter.bat",
+        "build",
+        "web",
+        "--release",
+        "--dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1"
+      ],
+      "exit_code": 0,
+      "duration_seconds": 24.453
+    }
+  ],
+  "browser": {
+    "startTime": "2026-11-11T06:22:32.879Z",
+    "duration": 6932.053,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "limitations": [
+    "This is a summary of actual local command results, not a remote CI run.",
+    "Full stdout/stderr, JUnit and browser results remain in ignored artifacts/phase-one.",
+    "No independent human reproduction, physical capture or model evaluation has passed."
+  ]
+}

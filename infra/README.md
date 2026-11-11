@@ -1,9 +1,13 @@
-# 基础设施与部署
+# 本地数据环境
 
-状态：部署规划目录，尚无 Dockerfile、Compose 文件或可执行部署命令。
+第一阶段提供单个 PostgreSQL 17 开发容器；API、Web、Flutter 在宿主机运行。SQLite 可直接用于快速启动。Compose 不包含 Redis、S3 或可靠异步 Worker。
 
-后续计划提供开发环境的 PostgreSQL / pgvector、Redis、S3 兼容对象存储，以及 API 和 Worker 的容器配置。具体存储实现、镜像标签、端口、持久化卷与硬件要求经验证后确定。
+```powershell
+docker compose -f infra/compose.yaml up -d --wait
+$env:DATABASE_URL='postgresql+psycopg://shadowweave:phase_one_local_only@127.0.0.1:55432/shadowweave'
+.venv/Scripts/python.exe -m alembic upgrade head
+```
 
-引入配置时补齐环境变量、健康检查、数据库迁移、启动关闭、备份恢复与日志说明。开发用固定凭据不得用于公共部署；真实配置放在 Git 之外。
+端口由 `SW_POSTGRES_PORT` 覆盖，口令由 `SW_POSTGRES_PASSWORD` 覆盖；均需同步连接 URL。默认口令是公开的本地测试值。停止服务用 `docker compose -f infra/compose.yaml stop`，该命令保留数据卷。
 
-先验证一台开发机上的首个完整流程，再依据实际资源扩展部署方式。不要在没有容器文件的情况下将 Docker Compose 列为当前可用启动方式。
+首次迁移建立 10 张基础表和 1 张开发样例表；不等同于完整 36 表设计落地。真实 PostgreSQL 的迁移、外键、并发与事务结果见[阶段报告](../docs/reports/phase-1-report.md)。

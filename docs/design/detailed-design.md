@@ -6,7 +6,7 @@
 | 编制日期 | 2026-11-11 |
 | 对应需求 | YINGZHI-AI-V1.1.0-20261110-FULL-R01 / SRS-R01 |
 | 设计范围 | Flutter、Web、API、Worker、AI、媒体、存储与部署 |
-| 文档状态 | 第二版实施设计草案；核心机制细化，尚待编码验证 |
+| 文档状态 | 第二版完整设计；第一阶段子集已实现，本机验证与未验证项见阶段报告 |
 | 配套文档 | [数据库设计](database-design.md)、[Agent 设计](agent-design.md) |
 
 ## 1. 目标、范围与设计原则
@@ -41,7 +41,7 @@ R02 细化尚未发布的 Schema 1.0；没有已部署接口迁移。本次将�
 | `packages/media` | probe、analysis、timeline、render | 媒体解析、代理、确定性规则与渲染执行 |
 | `packages/contracts` | schemas、examples、generated | 跨端输入输出、EDL、错误、事件和代码生成契约 |
 
-上述为拟实现模块名。仓库当前只有目录职责文档；Python 命名空间与依赖锁文件在工程初始化时确定，不能直接将路径当作已可导入的包。
+上述为完整设计中的职责名。第一阶段可导入包为 `sw_api / sw_worker / sw_contracts / sw_ai / sw_media`，由根目录 pyproject.toml 安装；完整模块、生产接口和异步执行器继续分期实现。
 
 部署中拟将队列分为 `analysis`、`planning`、`render`、`maintenance`。模型编排和 CPU/GPU 媒体执行分别控制并发，防止长渲染占满普通接口资源。队列名是部署配置，不进入客户端契约。
 

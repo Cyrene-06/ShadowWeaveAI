@@ -1,11 +1,19 @@
-# Web 创作平台
+# Web 项目工作台
 
-状态：目录骨架，尚无应用源码或启动命令。
+Vue 3 + TypeScript + Pinia + Vite。具备真实账号/项目 API、五场景项目选择、固定输入规则回放、证据/补拍状态、编辑差异/拒绝依据和真实媒体上传探针。界面标明人工输入及未调用模型。
 
-计划使用 Vue 3、TypeScript、Element Plus 和 Pinia，负责项目、素材中心、创意工作台、导演状态、故事板、多轨时间轴、审片和版本页面。
+```powershell
+cd apps/web
+npm ci
+npm run dev
+```
 
-初始化后的建议布局：`src/views/` 放页面，`src/components/` 放通用界面，`src/api/` 放接口适配，`src/stores/` 放状态，`src/router/` 放路由。以上目录尚未创建，随实际功能引入。
+默认端口 5173，Vite 将 `/api` 代理到 `127.0.0.1:8000`。生产静态部署需要反向代理配置；当前并未提供生产部署。
 
-通过业务 API 读写项目；通过任务查询和后续 WebSocket 通知同步状态。模型密钥和存储凭据不进入前端。先实现项目、上传与进度，再逐步集成故事板和编辑功能。
+```powershell
+npm test
+npm run build
+npm run test:e2e
+```
 
-初始化时补齐项目清单、包管理器锁文件、环境变量、启动与检查命令。共享结构参见 [数据契约](../../packages/contracts/README.md)。
+前两项分别运行 42 个共享契约用例、类型检查和构建。E2E 需要 API、Web、Flutter Web（8080）已经运行，并先执行根目录 `scripts/media_probe.py`。默认使用已安装的 Edge；可用 `PLAYWRIGHT_CHANNEL=chromium` 配合 `npx playwright install chromium` 切换。结果、截图和失败 trace 进入根目录 `artifacts/phase-one/browser/`。Trace 可能包含测试账号的令牌，留在忽略目录。

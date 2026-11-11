@@ -1,13 +1,18 @@
-# 集成与验收测试
+# 第一阶段验证
 
-状态：测试规划目录，当前没有测试用例、测试运行器或功能测试结果。
+```powershell
+.venv/Scripts/python.exe -m pytest -q
+```
 
-后续跨服务测试可按 `integration/`、`e2e/`、`fixtures/` 组织，局部单元测试跟随各子项目。首批重点覆盖：
+默认运行契约、覆盖、补拍门、依赖/锁定/范围/摘要、API 授权和幂等、回放、任务状态以及真实媒体测试。FFmpeg 和 ffprobe 必须可发现；缺失工具时真实媒体用例会失败，不能据此标为通过。
 
-- 项目权限、上传校验、重试与重复任务。
-- 素材来源与区间、时间轴规则、字幕声音依赖。
-- 锁定保持、修改确认、版本并发与历史恢复。
-- 任务中断、取消、失败恢复与导出产物一致性。
-- 五类场景的检索、故事缺口与补拍闭环。
+真实 PostgreSQL 测试需显式配置：
 
-固件需小型、可追溯并具有使用授权。效果与性能报告记录数据集版本、代码提交、模型配置、硬件和计时边界。引入运行器时补齐测试依赖及命令，避免将文档检查表述为业务功能已通过。
+```powershell
+$env:TEST_DATABASE_URL='postgresql+psycopg://shadowweave:phase_one_local_only@127.0.0.1:55432/shadowweave'
+.venv/Scripts/python.exe -m pytest -q --junitxml=artifacts/phase-one/python-tests.xml
+```
+
+测试在随机命名 `sw_test_<uuid>` schema 内运行并清理该 schema，不删除 public 下的业务数据。验证升级/回退/元数据一致性、同项目外键、4 路并发幂等/导入以及失败事务回滚。未配置 TEST_DATABASE_URL 时这 4 项会明确跳过。
+
+Web/Flutter 共用同一组 42 个有效和无效契约用例。浏览器测试真实连接双端和 API，复现方法见 [Web 说明](../apps/web/README.md)。实际结果和适用边界见[阶段报告](../docs/reports/phase-1-report.md)。

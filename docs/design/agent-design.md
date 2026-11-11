@@ -6,7 +6,7 @@
 | 编制日期 | 2026-11-11 |
 | 对应需求 | FR-AGT-001—008 及摄影、素材、故事、剪辑、审片相关需求 |
 | 技术方向 | LangGraph + 可替换模型适配器 + 类型化工具 + PostgreSQL 检查点 |
-| 文档状态 | 第二版实施设计草案；以核心闭环组织协作，尚无运行验证 |
+| 文档状态 | 第二版完整协作设计；规则入口已有固定输出验证，七角色模型工作流未接入 |
 | 配套文档 | [详细设计](detailed-design.md)、[数据库设计](database-design.md) |
 
 ## 1. 目标与职责边界
@@ -459,4 +459,4 @@ agent_runs 与 Job/Workflow/Version 关联，关键用户选择写 audit_logs。
 - LangGraph interrupts、恢复时节点重执行与幂等副作用：<https://docs.langchain.com/oss/python/langgraph/interrupts>
 - Celery 幂等任务、acks_late 与进程异常下的确认行为：<https://docs.celeryq.dev/en/stable/userguide/tasks.html>
 
-本设计不依赖简单设置 acks_late 即可可靠恢复，仍需要业务租约、幂等、Outbox 与故障验证。七角色 Schema、预算、审批、来源约束和局部修改规则是本项目设计，尚未实现。
+本设计不依赖简单设置 acks_late 即可可靠恢复，仍需要业务租约、幂等、Outbox 与故障验证。第一阶段已实现角色信封、证据引用和副作用拒绝入口，以及覆盖/编辑规则子集；七角色模型工作流、预算、审批恢复与生产写入尚未实现。

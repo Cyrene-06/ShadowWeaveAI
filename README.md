@@ -4,7 +4,7 @@
 
 影织 AI 面向校园生活、旅行、家庭与朋友记录、个人 Vlog、小型组织宣传五类场景，计划通过移动端拍摄指导和 Web 创作工作台，串联素材理解、故事规划、补拍、剪辑、审片与版本管理。
 
-> **项目状态：仓库初始化 / 需求设计阶段。** 当前仓库包含需求基线、架构与开发文档、目录骨架和基础协作配置；尚未实现客户端、后端、模型接入和视频处理服务。下文功能与技术栈均为建设计划，当前没有可运行的产品演示或性能实测结果。
+> **项目状态：第一阶段可运行内核，待阶段复核。** 已实现 Web / Flutter Web、FastAPI、基础迁移、共享契约和两组可执行规则样例，并通过本机测试与双端联调。真实素材理解、生产版本提交和七角色工作流仍待后续实施；Android 真机采集与模型调用尚无通过证据。详见 [第一阶段报告](docs/reports/phase-1-report.md)。
 
 ## 项目希望解决什么问题
 
@@ -89,15 +89,15 @@ flowchart LR
 ```text
 ShadowWeaveAI/
 ├── apps/
-│   ├── web/                  # Vue Web 创作平台（预留）
-│   └── mobile/               # Flutter 摄影与补拍端（预留）
+│   ├── web/                  # Vue Web 创作平台（第一阶段子集，见目录说明）
+│   └── mobile/               # Flutter 摄影与补拍端（第一阶段子集，见目录说明）
 ├── services/
-│   ├── api/                  # FastAPI 业务服务（预留）
-│   └── worker/               # Celery 后台任务入口（预留）
+│   ├── api/                  # FastAPI 业务服务（第一阶段子集，见目录说明）
+│   └── worker/               # 任务六态骨架（可靠异步执行待后续实现）
 ├── packages/
-│   ├── ai/                   # Agent、工作流与模型适配器（预留）
-│   ├── media/                # 媒体分析、时间轴校验与渲染（预留）
-│   └── contracts/            # 跨端数据契约与 Schema（预留）
+│   ├── ai/                   # Agent、工作流与模型适配器（第一阶段子集，见目录说明）
+│   ├── media/                # 媒体分析、时间轴校验与渲染（第一阶段子集，见目录说明）
+│   └── contracts/            # 跨端数据契约与 Schema（第一阶段子集，见目录说明）
 ├── docs/
 │   ├── README.md             # 文档导航、阅读顺序与事实边界
 │   ├── innovation-analysis.md # 执行方案对照、创新价值与资源风险
@@ -108,20 +108,21 @@ ShadowWeaveAI/
 │   ├── development.md        # 开发约定与初始化顺序
 │   ├── roadmap.md            # 八阶段计划与验收产物
 │   ├── phase-1-outline.md    # 第一阶段工作包、创新样例与验收
+│   ├── reports/              # 实际验证、证据摘要和未验证项
 │   └── api/README.md         # 接口设计边界
-├── infra/                    # 部署配置规划
-├── scripts/                  # 自动化脚本规划
-├── tests/                    # 跨服务集成与端到端测试规划
+├── infra/                    # PostgreSQL 本地开发容器
+├── scripts/                  # 契约生成、回放、媒体/环境与统一检查
+├── tests/                    # 契约、规则、API、媒体及 PostgreSQL 测试
 ├── examples/                 # 授权样例与演示数据约定
 ├── .github/                  # Issue 与 Pull Request 模板
-├── .env.example              # 计划环境变量；尚无程序读取
+├── .env.example              # 环境变量参考；通过进程环境设置
 ├── .editorconfig             # 编辑器格式约定
 ├── .gitattributes            # 文本换行约定
 ├── .gitignore                # 本地配置、构建与媒体产物排除
 └── CONTRIBUTING.md           # 协作与提交约定
 ```
 
-各业务目录目前以 README 说明职责与后续布局，尚无业务源码。`packages/` 是代码职责划分，目前没有配置为 npm、Python 或 Dart 工作区。
+Python 通过根目录 `pyproject.toml` 将 API、Worker 状态机、契约、AI 规则和媒体包安装为一个可编辑发行包。Web 和 Flutter 分别管理自身依赖与锁文件；当前没有 npm/Dart 跨包工作区。
 
 ## 从这里开始
 
@@ -133,10 +134,10 @@ cd ShadowWeaveAI
 1. 阅读 [需求分析](docs/requirements.md)，确认场景、需求编号与验收条件。
 2. 从 [文档导航](docs/README.md) 阅读 [创新性分析](docs/innovation-analysis.md) 和 [评测协议](docs/evaluation.md)，明确先验证什么，再阅读 [架构说明](docs/architecture.md)。
 3. 阅读 [系统详细设计](docs/design/detailed-design.md)、[数据库设计](docs/design/database-design.md) 和 [Agent 设计](docs/design/agent-design.md)，按统一契约拆分实现。
-4. 按 [开发指南](docs/development.md) 初始化对应子项目，并补齐依赖、启动方式和测试说明。
+4. 按 [开发指南](docs/development.md) 安装锁定依赖、执行迁移并启动 API/Web/Flutter Web。
 5. 参考 [开发路线](docs/roadmap.md)、[第一阶段实施大纲](docs/phase-1-outline.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
 
-当前可进行文档阅读和仓库协作；尚无 `npm run dev`、API 启动或 Docker 启动入口。`.env.example` 供后续配置设计参考，不需要在此阶段填写模型密钥。
+完整可执行命令见 [开发指南](docs/development.md)：安装 Python/Web 依赖 → Alembic 迁移 → 启动 API → 启动 Web → 构建并运行 Flutter Web。固定样例与规则测试不需要模型密钥。PostgreSQL 本地容器入口为 `infra/compose.yaml`。
 
 ## 开发计划与当前进度
 
@@ -146,7 +147,10 @@ cd ShadowWeaveAI
 - [x] 建立仓库目录骨架和协作配置
 - [x] 编制系统详细设计、数据库设计与 Agent 设计 R02 草案
 - [x] 对照执行方案分析创新、资源冲突，制定机制评测协议
-- [ ] 初始化 Web、Flutter、API 与后台任务工程
+- [x] 初始化 Web、Flutter、API、共享规则包与 Worker 六态骨架
+- [x] 验证共享契约、授权、覆盖/补拍门、依赖/锁定/范围和真实媒体工具
+- [x] 完成本机 Web / Flutter Web 连接同一 API 的浏览器联调
+- [ ] 完成另一成员独立复现、Android 真机和模型接入探针
 - [ ] 跑通创建项目 → 上传 → 样例分析 → 预览导出的首个闭环
 - [ ] 完成七大模块及七角色协作
 - [ ] 完成五类场景验证、故障恢复和交付材料

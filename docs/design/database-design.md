@@ -6,7 +6,7 @@
 | 编制日期 | 2026-11-11 |
 | 需求基线 | YINGZHI-AI-V1.1.0-20261110-FULL-R01 / SRS-R01 |
 | 数据库方向 | PostgreSQL + pgvector；Redis 为队列/短缓存；媒体进对象存储 |
-| 文档状态 | 第二版逻辑与物理设计草案；尚无迁移脚本、已建表或运行验证 |
+| 文档状态 | 第二版完整设计；首迁移实现基础子集，已完成本机 PostgreSQL 验证 |
 | 配套文档 | [详细设计](detailed-design.md)、[Agent 设计](agent-design.md) |
 
 ## 1. 范围和存储边界
@@ -29,6 +29,14 @@ PostgreSQL 保存身份与项目权限、上传记录、媒体元数据、分析
 | 结果可复现 | workflow_runs、agent_runs + 离线评测 manifest | 数据、模型、预算、提交和原始指标可关联；不增加仅用于展示创新的表 |
 
 评测数据集和报告属于离线工件，格式见 [评测协议](../evaluation.md)；若将来产品化为在线评测服务，再单独设计评测表与迁移。
+
+### 1.2 第一阶段实际迁移边界
+
+`0001_foundation` 实现 users、auth_sessions、projects、project_members、stored_objects、assets、jobs、analysis_runs、segments、api_idempotency 共 10 张基础表，另有仅开发启用的 phase_one_datasets 样例 JSON 表。迁移使用版本内冻结元数据；后续字段新增迁移，不修改首迁移。
+
+当前使用 SQLAlchemy Core，UUID 以规范字符串存入 String(36)，JSON 为跨 SQLite/PostgreSQL 的通用 JSON；尚未采用全文要求的原生 UUID、JSONB、pgvector 与全部审计/生命周期字段。项目复合外键及最小检查约束已执行真实 PostgreSQL 验证；剩余 26 张业务表及本版完整字段继续追踪。phase_one_datasets 不计入 36 张业务表，不是正式故事/版本事实源。
+
+对应关系、迁移回退/并发/回滚证据和已知限制见[阶段报告](../reports/phase-1-report.md)。基础表的存在不意味着正式上传、覆盖回写或版本提交事务已启用。
 
 ## 2. 命名、类型与共同字段
 
@@ -735,7 +743,7 @@ ready 后候选内容冻结，确认终态只更新状态；含 updated_at。
 
 查询显式连接 `segments.analysis_run_id = assets.active_analysis_id`、`assets.deleted_at IS NULL`、`assets.state='ready'` 和项目域。有效纠错后的 input_hash 与 annotation_head_id 也必须匹配，后台嵌入未更新时回退关键词而非返回陈旧纠错文本。
 
-示意 SQL，`:...` 为绑定参数，尚无实际 schema 可运行：
+完整版本确认的示意 SQL，`:...` 为绑定参数；该事务涉及的完整 schema 尚未落地，不能在第一阶段基础子集直接执行：
 
 ```sql
 WITH candidates AS MATERIALIZED (

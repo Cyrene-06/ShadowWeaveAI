@@ -1,0 +1,2448 @@
+{
+  "models": {
+    "Asset": {
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "media_type": {
+          "enum": [
+            "video",
+            "image",
+            "audio"
+          ],
+          "title": "Media Type",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        },
+        "state": {
+          "default": "ready",
+          "enum": [
+            "ready",
+            "unavailable",
+            "deleted"
+          ],
+          "title": "State",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "media_type",
+        "sha256"
+      ],
+      "title": "Asset",
+      "type": "object"
+    },
+    "CaptureTask": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "instruction": {
+          "minLength": 1,
+          "title": "Instruction",
+          "type": "string"
+        },
+        "kind": {
+          "default": "reshoot",
+          "enum": [
+            "capture",
+            "reshoot"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "node_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Node Key"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "purpose": {
+          "minLength": 1,
+          "title": "Purpose",
+          "type": "string"
+        },
+        "revision": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "source_storyboard_id": {
+          "format": "uuid",
+          "title": "Source Storyboard Id",
+          "type": "string"
+        },
+        "source_storyboard_revision": {
+          "minimum": 1,
+          "title": "Source Storyboard Revision",
+          "type": "integer"
+        },
+        "state": {
+          "default": "open",
+          "enum": [
+            "open",
+            "in_progress",
+            "submitted",
+            "fulfilled",
+            "unable",
+            "cancelled"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "user_choice": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "User Choice",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "node_key",
+        "source_storyboard_id",
+        "source_storyboard_revision",
+        "instruction",
+        "purpose"
+      ],
+      "title": "CaptureTask",
+      "type": "object"
+    },
+    "CaptureVerification": {
+      "$defs": {
+        "CoverageReport": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Candidate Refs",
+              "type": "array"
+            },
+            "checked_requirements": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Checked Requirements",
+              "type": "array"
+            },
+            "coverage": {
+              "enum": [
+                "covered",
+                "insufficient",
+                "uncertain",
+                "missing"
+              ],
+              "title": "Coverage",
+              "type": "string"
+            },
+            "evaluated_manifest_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Evaluated Manifest Hash",
+              "type": "string"
+            },
+            "node_key": {
+              "title": "Node Key",
+              "type": "string"
+            },
+            "policy_version": {
+              "const": "coverage-1",
+              "default": "coverage-1",
+              "title": "Policy Version",
+              "type": "string"
+            },
+            "project_id": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            },
+            "reason_codes": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Reason Codes",
+              "type": "array"
+            },
+            "search_complete": {
+              "title": "Search Complete",
+              "type": "boolean"
+            },
+            "usable_duration_ms": {
+              "minimum": 0,
+              "title": "Usable Duration Ms",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "project_id",
+            "node_key",
+            "coverage",
+            "evaluated_manifest_hash",
+            "checked_requirements",
+            "candidate_refs",
+            "reason_codes",
+            "search_complete",
+            "usable_duration_ms"
+          ],
+          "title": "CoverageReport",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_ids": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Analysis Run Ids",
+          "type": "array"
+        },
+        "job_id": {
+          "format": "uuid",
+          "title": "Job Id",
+          "type": "string"
+        },
+        "report": {
+          "$ref": "#/$defs/CoverageReport"
+        },
+        "report_ref": {
+          "format": "uuid",
+          "title": "Report Ref",
+          "type": "string"
+        },
+        "result_storyboard_id": {
+          "format": "uuid",
+          "title": "Result Storyboard Id",
+          "type": "string"
+        },
+        "result_storyboard_revision": {
+          "minimum": 1,
+          "title": "Result Storyboard Revision",
+          "type": "integer"
+        },
+        "source_storyboard_id": {
+          "format": "uuid",
+          "title": "Source Storyboard Id",
+          "type": "string"
+        },
+        "source_storyboard_revision": {
+          "minimum": 1,
+          "title": "Source Storyboard Revision",
+          "type": "integer"
+        },
+        "task_id": {
+          "format": "uuid",
+          "title": "Task Id",
+          "type": "string"
+        },
+        "task_revision": {
+          "minimum": 1,
+          "title": "Task Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "task_id",
+        "task_revision",
+        "source_storyboard_id",
+        "source_storyboard_revision",
+        "result_storyboard_id",
+        "result_storyboard_revision",
+        "report_ref",
+        "job_id",
+        "analysis_run_ids",
+        "report"
+      ],
+      "title": "CaptureVerification",
+      "type": "object"
+    },
+    "Clip": {
+      "additionalProperties": false,
+      "properties": {
+        "asset_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Asset Id"
+        },
+        "clip_key": {
+          "minLength": 1,
+          "title": "Clip Key",
+          "type": "string"
+        },
+        "config": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Config",
+          "type": "object"
+        },
+        "dependencies": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "dst_in_ms": {
+          "minimum": 0,
+          "title": "Dst In Ms",
+          "type": "integer"
+        },
+        "dst_out_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Dst Out Ms",
+          "type": "integer"
+        },
+        "kind": {
+          "enum": [
+            "video",
+            "image",
+            "audio",
+            "subtitle"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "locked": {
+          "default": false,
+          "title": "Locked",
+          "type": "boolean"
+        },
+        "segment_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Segment Id"
+        },
+        "speed_den": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Speed Den",
+          "type": "integer"
+        },
+        "speed_num": {
+          "default": 1,
+          "exclusiveMinimum": 0,
+          "title": "Speed Num",
+          "type": "integer"
+        },
+        "src_in_ms": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Src In Ms"
+        },
+        "src_out_ms": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Src Out Ms"
+        }
+      },
+      "required": [
+        "clip_key",
+        "kind",
+        "dst_in_ms",
+        "dst_out_ms"
+      ],
+      "title": "Clip",
+      "type": "object"
+    },
+    "CoverageReport": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_refs": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Candidate Refs",
+          "type": "array"
+        },
+        "checked_requirements": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Checked Requirements",
+          "type": "array"
+        },
+        "coverage": {
+          "enum": [
+            "covered",
+            "insufficient",
+            "uncertain",
+            "missing"
+          ],
+          "title": "Coverage",
+          "type": "string"
+        },
+        "evaluated_manifest_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Evaluated Manifest Hash",
+          "type": "string"
+        },
+        "node_key": {
+          "title": "Node Key",
+          "type": "string"
+        },
+        "policy_version": {
+          "const": "coverage-1",
+          "default": "coverage-1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "reason_codes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Reason Codes",
+          "type": "array"
+        },
+        "search_complete": {
+          "title": "Search Complete",
+          "type": "boolean"
+        },
+        "usable_duration_ms": {
+          "minimum": 0,
+          "title": "Usable Duration Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "project_id",
+        "node_key",
+        "coverage",
+        "evaluated_manifest_hash",
+        "checked_requirements",
+        "candidate_refs",
+        "reason_codes",
+        "search_complete",
+        "usable_duration_ms"
+      ],
+      "title": "CoverageReport",
+      "type": "object"
+    },
+    "EDL": {
+      "$defs": {
+        "Clip": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Asset Id"
+            },
+            "clip_key": {
+              "minLength": 1,
+              "title": "Clip Key",
+              "type": "string"
+            },
+            "config": {
+              "additionalProperties": true,
+              "default": {},
+              "title": "Config",
+              "type": "object"
+            },
+            "dependencies": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Dependencies",
+              "type": "array"
+            },
+            "dst_in_ms": {
+              "minimum": 0,
+              "title": "Dst In Ms",
+              "type": "integer"
+            },
+            "dst_out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Dst Out Ms",
+              "type": "integer"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "image",
+                "audio",
+                "subtitle"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "locked": {
+              "default": false,
+              "title": "Locked",
+              "type": "boolean"
+            },
+            "segment_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Segment Id"
+            },
+            "speed_den": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Den",
+              "type": "integer"
+            },
+            "speed_num": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Num",
+              "type": "integer"
+            },
+            "src_in_ms": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src In Ms"
+            },
+            "src_out_ms": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src Out Ms"
+            }
+          },
+          "required": [
+            "clip_key",
+            "kind",
+            "dst_in_ms",
+            "dst_out_ms"
+          ],
+          "title": "Clip",
+          "type": "object"
+        },
+        "Output": {
+          "additionalProperties": false,
+          "properties": {
+            "fps_den": {
+              "const": 1,
+              "default": 1,
+              "title": "Fps Den",
+              "type": "integer"
+            },
+            "fps_num": {
+              "default": 25,
+              "enum": [
+                25,
+                30
+              ],
+              "title": "Fps Num",
+              "type": "integer"
+            },
+            "height": {
+              "default": 1080,
+              "enum": [
+                720,
+                1080
+              ],
+              "title": "Height",
+              "type": "integer"
+            },
+            "width": {
+              "default": 1920,
+              "enum": [
+                1280,
+                1920
+              ],
+              "title": "Width",
+              "type": "integer"
+            }
+          },
+          "title": "Output",
+          "type": "object"
+        },
+        "Track": {
+          "additionalProperties": false,
+          "properties": {
+            "clips": {
+              "items": {
+                "$ref": "#/$defs/Clip"
+              },
+              "title": "Clips",
+              "type": "array"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "subtitle",
+                "voiceover",
+                "music",
+                "ambience"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "position": {
+              "minimum": 0,
+              "title": "Position",
+              "type": "integer"
+            },
+            "track_key": {
+              "minLength": 1,
+              "title": "Track Key",
+              "type": "string"
+            }
+          },
+          "required": [
+            "track_key",
+            "kind",
+            "position",
+            "clips"
+          ],
+          "title": "Track",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Duration Ms",
+          "type": "integer"
+        },
+        "output": {
+          "$ref": "#/$defs/Output"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "tracks": {
+          "items": {
+            "$ref": "#/$defs/Track"
+          },
+          "minItems": 1,
+          "title": "Tracks",
+          "type": "array"
+        }
+      },
+      "required": [
+        "duration_ms",
+        "tracks"
+      ],
+      "title": "EDL",
+      "type": "object"
+    },
+    "EditDraft": {
+      "$defs": {
+        "Clip": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Asset Id"
+            },
+            "clip_key": {
+              "minLength": 1,
+              "title": "Clip Key",
+              "type": "string"
+            },
+            "config": {
+              "additionalProperties": true,
+              "default": {},
+              "title": "Config",
+              "type": "object"
+            },
+            "dependencies": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Dependencies",
+              "type": "array"
+            },
+            "dst_in_ms": {
+              "minimum": 0,
+              "title": "Dst In Ms",
+              "type": "integer"
+            },
+            "dst_out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Dst Out Ms",
+              "type": "integer"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "image",
+                "audio",
+                "subtitle"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "locked": {
+              "default": false,
+              "title": "Locked",
+              "type": "boolean"
+            },
+            "segment_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Segment Id"
+            },
+            "speed_den": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Den",
+              "type": "integer"
+            },
+            "speed_num": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Num",
+              "type": "integer"
+            },
+            "src_in_ms": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src In Ms"
+            },
+            "src_out_ms": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src Out Ms"
+            }
+          },
+          "required": [
+            "clip_key",
+            "kind",
+            "dst_in_ms",
+            "dst_out_ms"
+          ],
+          "title": "Clip",
+          "type": "object"
+        },
+        "EDL": {
+          "additionalProperties": false,
+          "properties": {
+            "duration_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Duration Ms",
+              "type": "integer"
+            },
+            "output": {
+              "$ref": "#/$defs/Output"
+            },
+            "schema_version": {
+              "const": "1.0",
+              "default": "1.0",
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "tracks": {
+              "items": {
+                "$ref": "#/$defs/Track"
+              },
+              "minItems": 1,
+              "title": "Tracks",
+              "type": "array"
+            }
+          },
+          "required": [
+            "duration_ms",
+            "tracks"
+          ],
+          "title": "EDL",
+          "type": "object"
+        },
+        "ImpactReport": {
+          "additionalProperties": false,
+          "properties": {
+            "approved_affected_keys": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Approved Affected Keys",
+              "type": "array"
+            },
+            "base_content_hash": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Base Content Hash",
+              "type": "string"
+            },
+            "causes": {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "title": "Causes",
+              "type": "object"
+            },
+            "lock_conflicts": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Lock Conflicts",
+              "type": "array"
+            },
+            "policy_version": {
+              "const": "impact-1",
+              "default": "impact-1",
+              "title": "Policy Version",
+              "type": "string"
+            },
+            "predicted_affected_keys": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Predicted Affected Keys",
+              "type": "array"
+            },
+            "requested_target_keys": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "title": "Requested Target Keys",
+              "type": "array"
+            },
+            "scope_approval_ref": {
+              "format": "uuid",
+              "title": "Scope Approval Ref",
+              "type": "string"
+            }
+          },
+          "required": [
+            "base_content_hash",
+            "requested_target_keys",
+            "predicted_affected_keys",
+            "approved_affected_keys",
+            "causes",
+            "scope_approval_ref"
+          ],
+          "title": "ImpactReport",
+          "type": "object"
+        },
+        "Output": {
+          "additionalProperties": false,
+          "properties": {
+            "fps_den": {
+              "const": 1,
+              "default": 1,
+              "title": "Fps Den",
+              "type": "integer"
+            },
+            "fps_num": {
+              "default": 25,
+              "enum": [
+                25,
+                30
+              ],
+              "title": "Fps Num",
+              "type": "integer"
+            },
+            "height": {
+              "default": 1080,
+              "enum": [
+                720,
+                1080
+              ],
+              "title": "Height",
+              "type": "integer"
+            },
+            "width": {
+              "default": 1920,
+              "enum": [
+                1280,
+                1920
+              ],
+              "title": "Width",
+              "type": "integer"
+            }
+          },
+          "title": "Output",
+          "type": "object"
+        },
+        "Track": {
+          "additionalProperties": false,
+          "properties": {
+            "clips": {
+              "items": {
+                "$ref": "#/$defs/Clip"
+              },
+              "title": "Clips",
+              "type": "array"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "subtitle",
+                "voiceover",
+                "music",
+                "ambience"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "position": {
+              "minimum": 0,
+              "title": "Position",
+              "type": "integer"
+            },
+            "track_key": {
+              "minLength": 1,
+              "title": "Track Key",
+              "type": "string"
+            }
+          },
+          "required": [
+            "track_key",
+            "kind",
+            "position",
+            "clips"
+          ],
+          "title": "Track",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "base_content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Base Content Hash",
+          "type": "string"
+        },
+        "base_revision": {
+          "minimum": 0,
+          "title": "Base Revision",
+          "type": "integer"
+        },
+        "base_version_id": {
+          "format": "uuid",
+          "title": "Base Version Id",
+          "type": "string"
+        },
+        "candidate_edl": {
+          "$ref": "#/$defs/EDL"
+        },
+        "diff": {
+          "additionalProperties": true,
+          "title": "Diff",
+          "type": "object"
+        },
+        "impact_report": {
+          "$ref": "#/$defs/ImpactReport"
+        },
+        "payload_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Payload Hash",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "requested_unlock_clip_keys": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Requested Unlock Clip Keys",
+          "type": "array"
+        },
+        "state": {
+          "const": "ready",
+          "default": "ready",
+          "title": "State",
+          "type": "string"
+        },
+        "validation_report": {
+          "additionalProperties": true,
+          "title": "Validation Report",
+          "type": "object"
+        }
+      },
+      "required": [
+        "project_id",
+        "base_version_id",
+        "base_revision",
+        "base_content_hash",
+        "candidate_edl",
+        "impact_report",
+        "diff",
+        "validation_report",
+        "payload_hash"
+      ],
+      "title": "EditDraft",
+      "type": "object"
+    },
+    "ErrorBody": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "title": "Code",
+          "type": "string"
+        },
+        "details": {
+          "default": [],
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Details",
+          "type": "array"
+        },
+        "message": {
+          "title": "Message",
+          "type": "string"
+        },
+        "retryable": {
+          "title": "Retryable",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "title": "ErrorBody",
+      "type": "object"
+    },
+    "ErrorEnvelope": {
+      "$defs": {
+        "ErrorBody": {
+          "additionalProperties": false,
+          "properties": {
+            "code": {
+              "title": "Code",
+              "type": "string"
+            },
+            "details": {
+              "default": [],
+              "items": {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              "title": "Details",
+              "type": "array"
+            },
+            "message": {
+              "title": "Message",
+              "type": "string"
+            },
+            "retryable": {
+              "title": "Retryable",
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "code",
+            "message",
+            "retryable"
+          ],
+          "title": "ErrorBody",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "error": {
+          "$ref": "#/$defs/ErrorBody"
+        },
+        "request_id": {
+          "format": "uuid",
+          "title": "Request Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "error",
+        "request_id"
+      ],
+      "title": "ErrorEnvelope",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "format": "uuid",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "in_ms": {
+          "minimum": 0,
+          "title": "In Ms",
+          "type": "integer"
+        },
+        "method": {
+          "enum": [
+            "human_annotation",
+            "tool_analysis",
+            "model_observation"
+          ],
+          "title": "Method",
+          "type": "string"
+        },
+        "out_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Out Ms",
+          "type": "integer"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "quality_usable": {
+          "title": "Quality Usable",
+          "type": "boolean"
+        },
+        "requirement_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requirement Keys",
+          "type": "array"
+        },
+        "segment_id": {
+          "format": "uuid",
+          "title": "Segment Id",
+          "type": "string"
+        },
+        "semantic_support": {
+          "enum": [
+            "supported",
+            "unsupported",
+            "unknown"
+          ],
+          "title": "Semantic Support",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "asset_id",
+        "segment_id",
+        "analysis_run_id",
+        "in_ms",
+        "out_ms",
+        "method",
+        "semantic_support",
+        "quality_usable",
+        "requirement_keys"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "EvidenceManifest": {
+      "$defs": {
+        "Asset": {
+          "additionalProperties": false,
+          "properties": {
+            "duration_ms": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Duration Ms"
+            },
+            "id": {
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "media_type": {
+              "enum": [
+                "video",
+                "image",
+                "audio"
+              ],
+              "title": "Media Type",
+              "type": "string"
+            },
+            "project_id": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            },
+            "sha256": {
+              "pattern": "^[a-f0-9]{64}$",
+              "title": "Sha256",
+              "type": "string"
+            },
+            "state": {
+              "default": "ready",
+              "enum": [
+                "ready",
+                "unavailable",
+                "deleted"
+              ],
+              "title": "State",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "project_id",
+            "media_type",
+            "sha256"
+          ],
+          "title": "Asset",
+          "type": "object"
+        },
+        "Evidence": {
+          "additionalProperties": false,
+          "properties": {
+            "analysis_run_id": {
+              "format": "uuid",
+              "title": "Analysis Run Id",
+              "type": "string"
+            },
+            "asset_id": {
+              "format": "uuid",
+              "title": "Asset Id",
+              "type": "string"
+            },
+            "id": {
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "in_ms": {
+              "minimum": 0,
+              "title": "In Ms",
+              "type": "integer"
+            },
+            "method": {
+              "enum": [
+                "human_annotation",
+                "tool_analysis",
+                "model_observation"
+              ],
+              "title": "Method",
+              "type": "string"
+            },
+            "out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Out Ms",
+              "type": "integer"
+            },
+            "project_id": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            },
+            "quality_usable": {
+              "title": "Quality Usable",
+              "type": "boolean"
+            },
+            "requirement_keys": {
+              "items": {
+                "type": "string"
+              },
+              "minItems": 1,
+              "title": "Requirement Keys",
+              "type": "array"
+            },
+            "segment_id": {
+              "format": "uuid",
+              "title": "Segment Id",
+              "type": "string"
+            },
+            "semantic_support": {
+              "enum": [
+                "supported",
+                "unsupported",
+                "unknown"
+              ],
+              "title": "Semantic Support",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "project_id",
+            "asset_id",
+            "segment_id",
+            "analysis_run_id",
+            "in_ms",
+            "out_ms",
+            "method",
+            "semantic_support",
+            "quality_usable",
+            "requirement_keys"
+          ],
+          "title": "Evidence",
+          "type": "object"
+        },
+        "Segment": {
+          "additionalProperties": false,
+          "properties": {
+            "analysis_run_id": {
+              "format": "uuid",
+              "title": "Analysis Run Id",
+              "type": "string"
+            },
+            "asset_id": {
+              "format": "uuid",
+              "title": "Asset Id",
+              "type": "string"
+            },
+            "id": {
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "in_ms": {
+              "minimum": 0,
+              "title": "In Ms",
+              "type": "integer"
+            },
+            "out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Out Ms",
+              "type": "integer"
+            },
+            "project_id": {
+              "format": "uuid",
+              "title": "Project Id",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "project_id",
+            "asset_id",
+            "analysis_run_id",
+            "in_ms",
+            "out_ms"
+          ],
+          "title": "Segment",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "assets": {
+          "items": {
+            "$ref": "#/$defs/Asset"
+          },
+          "title": "Assets",
+          "type": "array"
+        },
+        "dataset_version": {
+          "title": "Dataset Version",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "segments": {
+          "items": {
+            "$ref": "#/$defs/Segment"
+          },
+          "title": "Segments",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project_id",
+        "dataset_version",
+        "assets",
+        "segments",
+        "evidence"
+      ],
+      "title": "EvidenceManifest",
+      "type": "object"
+    },
+    "ImpactReport": {
+      "additionalProperties": false,
+      "properties": {
+        "approved_affected_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Approved Affected Keys",
+          "type": "array"
+        },
+        "base_content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Base Content Hash",
+          "type": "string"
+        },
+        "causes": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Causes",
+          "type": "object"
+        },
+        "lock_conflicts": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "Lock Conflicts",
+          "type": "array"
+        },
+        "policy_version": {
+          "const": "impact-1",
+          "default": "impact-1",
+          "title": "Policy Version",
+          "type": "string"
+        },
+        "predicted_affected_keys": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Predicted Affected Keys",
+          "type": "array"
+        },
+        "requested_target_keys": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requested Target Keys",
+          "type": "array"
+        },
+        "scope_approval_ref": {
+          "format": "uuid",
+          "title": "Scope Approval Ref",
+          "type": "string"
+        }
+      },
+      "required": [
+        "base_content_hash",
+        "requested_target_keys",
+        "predicted_affected_keys",
+        "approved_affected_keys",
+        "causes",
+        "scope_approval_ref"
+      ],
+      "title": "ImpactReport",
+      "type": "object"
+    },
+    "Intent": {
+      "additionalProperties": false,
+      "properties": {
+        "constraints": {
+          "additionalProperties": true,
+          "default": {},
+          "title": "Constraints",
+          "type": "object"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "source_text": {
+          "minLength": 1,
+          "title": "Source Text",
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "draft",
+            "confirmed"
+          ],
+          "title": "State",
+          "type": "string"
+        },
+        "target_duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Target Duration Ms",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "revision",
+        "source_text",
+        "target_duration_ms",
+        "state"
+      ],
+      "title": "Intent",
+      "type": "object"
+    },
+    "Job": {
+      "$defs": {
+        "JobState": {
+          "enum": [
+            "queued",
+            "running",
+            "waiting_user",
+            "succeeded",
+            "failed",
+            "cancelled"
+          ],
+          "title": "JobState",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "error_code": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error Code"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "mode": {
+          "enum": [
+            "synchronous_replay",
+            "async"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/JobState"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "state",
+        "mode"
+      ],
+      "title": "Job",
+      "type": "object"
+    },
+    "Output": {
+      "additionalProperties": false,
+      "properties": {
+        "fps_den": {
+          "const": 1,
+          "default": 1,
+          "title": "Fps Den",
+          "type": "integer"
+        },
+        "fps_num": {
+          "default": 25,
+          "enum": [
+            25,
+            30
+          ],
+          "title": "Fps Num",
+          "type": "integer"
+        },
+        "height": {
+          "default": 1080,
+          "enum": [
+            720,
+            1080
+          ],
+          "title": "Height",
+          "type": "integer"
+        },
+        "width": {
+          "default": 1920,
+          "enum": [
+            1280,
+            1920
+          ],
+          "title": "Width",
+          "type": "integer"
+        }
+      },
+      "title": "Output",
+      "type": "object"
+    },
+    "Project": {
+      "additionalProperties": false,
+      "properties": {
+        "head_revision": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Head Revision",
+          "type": "integer"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 120,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "revision": {
+          "default": 1,
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        },
+        "scenario": {
+          "enum": [
+            "campus",
+            "travel",
+            "family_friends",
+            "vlog",
+            "organization"
+          ],
+          "title": "Scenario",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "scenario"
+      ],
+      "title": "Project",
+      "type": "object"
+    },
+    "RoleEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "decision_summary": {
+          "title": "Decision Summary",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "issues": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Issues",
+          "type": "array"
+        },
+        "next_action": {
+          "enum": [
+            "validate",
+            "request_gap_resolution",
+            "request_edit_scope",
+            "stop"
+          ],
+          "title": "Next Action",
+          "type": "string"
+        },
+        "result": {
+          "additionalProperties": true,
+          "title": "Result",
+          "type": "object"
+        },
+        "role": {
+          "enum": [
+            "director",
+            "writer",
+            "visual",
+            "camera",
+            "editor",
+            "sound",
+            "reviewer"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "schema_version": {
+          "const": "1.0",
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "needs_confirmation",
+            "blocked",
+            "failed"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "uncertainties": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncertainties",
+          "type": "array"
+        }
+      },
+      "required": [
+        "role",
+        "status",
+        "result",
+        "evidence_refs",
+        "uncertainties",
+        "decision_summary",
+        "issues",
+        "next_action"
+      ],
+      "title": "RoleEnvelope",
+      "type": "object"
+    },
+    "Segment": {
+      "additionalProperties": false,
+      "properties": {
+        "analysis_run_id": {
+          "format": "uuid",
+          "title": "Analysis Run Id",
+          "type": "string"
+        },
+        "asset_id": {
+          "format": "uuid",
+          "title": "Asset Id",
+          "type": "string"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "in_ms": {
+          "minimum": 0,
+          "title": "In Ms",
+          "type": "integer"
+        },
+        "out_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Out Ms",
+          "type": "integer"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "asset_id",
+        "analysis_run_id",
+        "in_ms",
+        "out_ms"
+      ],
+      "title": "Segment",
+      "type": "object"
+    },
+    "StoryNode": {
+      "additionalProperties": false,
+      "properties": {
+        "goal": {
+          "minLength": 1,
+          "title": "Goal",
+          "type": "string"
+        },
+        "minimum_duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Minimum Duration Ms",
+          "type": "integer"
+        },
+        "node_key": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Node Key",
+          "type": "string"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "title": "Required",
+          "type": "boolean"
+        },
+        "requirements": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Requirements",
+          "type": "array"
+        }
+      },
+      "required": [
+        "project_id",
+        "node_key",
+        "goal",
+        "requirements",
+        "minimum_duration_ms"
+      ],
+      "title": "StoryNode",
+      "type": "object"
+    },
+    "Track": {
+      "$defs": {
+        "Clip": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Asset Id"
+            },
+            "clip_key": {
+              "minLength": 1,
+              "title": "Clip Key",
+              "type": "string"
+            },
+            "config": {
+              "additionalProperties": true,
+              "default": {},
+              "title": "Config",
+              "type": "object"
+            },
+            "dependencies": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Dependencies",
+              "type": "array"
+            },
+            "dst_in_ms": {
+              "minimum": 0,
+              "title": "Dst In Ms",
+              "type": "integer"
+            },
+            "dst_out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Dst Out Ms",
+              "type": "integer"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "image",
+                "audio",
+                "subtitle"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "locked": {
+              "default": false,
+              "title": "Locked",
+              "type": "boolean"
+            },
+            "segment_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Segment Id"
+            },
+            "speed_den": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Den",
+              "type": "integer"
+            },
+            "speed_num": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Num",
+              "type": "integer"
+            },
+            "src_in_ms": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src In Ms"
+            },
+            "src_out_ms": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src Out Ms"
+            }
+          },
+          "required": [
+            "clip_key",
+            "kind",
+            "dst_in_ms",
+            "dst_out_ms"
+          ],
+          "title": "Clip",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "clips": {
+          "items": {
+            "$ref": "#/$defs/Clip"
+          },
+          "title": "Clips",
+          "type": "array"
+        },
+        "kind": {
+          "enum": [
+            "video",
+            "subtitle",
+            "voiceover",
+            "music",
+            "ambience"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "position": {
+          "minimum": 0,
+          "title": "Position",
+          "type": "integer"
+        },
+        "track_key": {
+          "minLength": 1,
+          "title": "Track Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "track_key",
+        "kind",
+        "position",
+        "clips"
+      ],
+      "title": "Track",
+      "type": "object"
+    },
+    "Version": {
+      "$defs": {
+        "Clip": {
+          "additionalProperties": false,
+          "properties": {
+            "asset_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Asset Id"
+            },
+            "clip_key": {
+              "minLength": 1,
+              "title": "Clip Key",
+              "type": "string"
+            },
+            "config": {
+              "additionalProperties": true,
+              "default": {},
+              "title": "Config",
+              "type": "object"
+            },
+            "dependencies": {
+              "default": [],
+              "items": {
+                "type": "string"
+              },
+              "title": "Dependencies",
+              "type": "array"
+            },
+            "dst_in_ms": {
+              "minimum": 0,
+              "title": "Dst In Ms",
+              "type": "integer"
+            },
+            "dst_out_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Dst Out Ms",
+              "type": "integer"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "image",
+                "audio",
+                "subtitle"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "locked": {
+              "default": false,
+              "title": "Locked",
+              "type": "boolean"
+            },
+            "segment_id": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Segment Id"
+            },
+            "speed_den": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Den",
+              "type": "integer"
+            },
+            "speed_num": {
+              "default": 1,
+              "exclusiveMinimum": 0,
+              "title": "Speed Num",
+              "type": "integer"
+            },
+            "src_in_ms": {
+              "anyOf": [
+                {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src In Ms"
+            },
+            "src_out_ms": {
+              "anyOf": [
+                {
+                  "exclusiveMinimum": 0,
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "default": null,
+              "title": "Src Out Ms"
+            }
+          },
+          "required": [
+            "clip_key",
+            "kind",
+            "dst_in_ms",
+            "dst_out_ms"
+          ],
+          "title": "Clip",
+          "type": "object"
+        },
+        "EDL": {
+          "additionalProperties": false,
+          "properties": {
+            "duration_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Duration Ms",
+              "type": "integer"
+            },
+            "output": {
+              "$ref": "#/$defs/Output"
+            },
+            "schema_version": {
+              "const": "1.0",
+              "default": "1.0",
+              "title": "Schema Version",
+              "type": "string"
+            },
+            "tracks": {
+              "items": {
+                "$ref": "#/$defs/Track"
+              },
+              "minItems": 1,
+              "title": "Tracks",
+              "type": "array"
+            }
+          },
+          "required": [
+            "duration_ms",
+            "tracks"
+          ],
+          "title": "EDL",
+          "type": "object"
+        },
+        "Output": {
+          "additionalProperties": false,
+          "properties": {
+            "fps_den": {
+              "const": 1,
+              "default": 1,
+              "title": "Fps Den",
+              "type": "integer"
+            },
+            "fps_num": {
+              "default": 25,
+              "enum": [
+                25,
+                30
+              ],
+              "title": "Fps Num",
+              "type": "integer"
+            },
+            "height": {
+              "default": 1080,
+              "enum": [
+                720,
+                1080
+              ],
+              "title": "Height",
+              "type": "integer"
+            },
+            "width": {
+              "default": 1920,
+              "enum": [
+                1280,
+                1920
+              ],
+              "title": "Width",
+              "type": "integer"
+            }
+          },
+          "title": "Output",
+          "type": "object"
+        },
+        "Track": {
+          "additionalProperties": false,
+          "properties": {
+            "clips": {
+              "items": {
+                "$ref": "#/$defs/Clip"
+              },
+              "title": "Clips",
+              "type": "array"
+            },
+            "kind": {
+              "enum": [
+                "video",
+                "subtitle",
+                "voiceover",
+                "music",
+                "ambience"
+              ],
+              "title": "Kind",
+              "type": "string"
+            },
+            "position": {
+              "minimum": 0,
+              "title": "Position",
+              "type": "integer"
+            },
+            "track_key": {
+              "minLength": 1,
+              "title": "Track Key",
+              "type": "string"
+            }
+          },
+          "required": [
+            "track_key",
+            "kind",
+            "position",
+            "clips"
+          ],
+          "title": "Track",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "pattern": "^[a-f0-9]{64}$",
+          "title": "Content Hash",
+          "type": "string"
+        },
+        "edl": {
+          "$ref": "#/$defs/EDL"
+        },
+        "id": {
+          "format": "uuid",
+          "title": "Id",
+          "type": "string"
+        },
+        "parent_version_id": {
+          "anyOf": [
+            {
+              "format": "uuid",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Parent Version Id"
+        },
+        "project_id": {
+          "format": "uuid",
+          "title": "Project Id",
+          "type": "string"
+        },
+        "revision": {
+          "minimum": 1,
+          "title": "Revision",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "project_id",
+        "parent_version_id",
+        "revision",
+        "edl",
+        "content_hash"
+      ],
+      "title": "Version",
+      "type": "object"
+    }
+  },
+  "schema_version": "1.0",
+  "source": "packages/contracts/src/sw_contracts/models.py",
+  "validation_layers": [
+    "JSON Schema structural validation",
+    "documented semantic invariants",
+    "project reference and policy validation"
+  ]
+}

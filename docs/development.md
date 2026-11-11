@@ -1,49 +1,94 @@
-# 开发指南
+# 开发与复现指南
 
-## 当前可以做什么
+第一阶段已有可运行的双端/API 与规则内核。本文命令以仓库根目录的 Windows PowerShell 为例；跨系统请激活 Python 虚拟环境并使用对应可执行路径。实际验证版本和未验证项见[阶段报告](reports/phase-1-report.md)。API 不自动加载 `.env`，配置通过进程环境传入。
 
-仓库已包含需求、架构、目录职责和协作配置。业务子项目尚未初始化，没有安装依赖、启动应用或运行部署的入口。各目录 README 中的后续路径是布局建议，实际引入时需要同步更新文档。
+## 1. 安装工具和依赖
 
-## 准备开发环境
+本次验证使用 Python 3.12.7、Node 24.14.0、Flutter 3.47.9 / Dart 3.13.7、PostgreSQL 17。Python 支持范围由 `pyproject.toml` 限定为 3.12，JS/Dart 依赖由各端锁文件固定。先安装对应工具，并让 ffprobe/FFmpeg 可发现。
 
-| 工作范围 | 初始化时需要准备 | 版本管理要求 |
-| --- | --- | --- |
-| Web | Node.js、一个团队统一的包管理器 | 在项目清单中声明兼容范围，提交对应锁文件 |
-| 移动端 | Flutter / Dart、目标平台 SDK 与真机 | 使用 Flutter 自检验证工具链，提交应用锁文件 |
-| API、Worker、AI、媒体 | Python 与独立虚拟环境 | 统一 Python 支持范围、包布局和依赖锁定方式 |
-| 媒体执行 | FFmpeg / ffprobe 及所需编解码能力 | 记录构建信息、测试格式和部署差异 |
-| 本地基础服务 | Docker 与 Compose（采用容器方案时） | 核实镜像版本、健康检查、卷和持久化策略 |
+```powershell
+python -m venv .venv
+.venv/Scripts/python.exe -m pip install -r requirements.lock.txt
+.venv/Scripts/python.exe -m pip install --no-deps -e .
+npm ci --prefix apps/web
+```
 
-当前没有指定或验证具体工具版本。首次初始化由负责成员记录可复现版本与验证结果，避免各端各自选择不兼容依赖。
+Windows 若没有 ffprobe，可用以下命令安装本地探针工具，缓存目录已忽略：
 
-## 建议初始化顺序
+```powershell
+npm install --prefix .cache/media @ffprobe-installer/ffprobe
+```
 
-先读 [创新性分析](innovation-analysis.md) 与 [评测协议](evaluation.md)，避免先搭完所有基础设施，直到最后才发现核心机制不可用。以下为 R02 建议，完整范围和内部日期窗口见 [路线图](roadmap.md)。
+FFmpeg 可由已安装的 `imageio-ffmpeg` 提供。也可将系统工具放入 PATH，或显式设置 `FFMPEG_PATH` / `FFPROBE_PATH` 为可执行文件路径；不要包含额外命令参数。Linux 可安装系统 ffmpeg 软件包，同时获得 ffprobe。
 
-1. **核心契约与固定样例**：按详细设计第 7/8.3 节定义 Evidence、StoryNode、CoverageReport、CaptureTask、ImpactReport、EditDraft、Version。先用明确标注的固定输入验证覆盖规则、反向依赖、锁定及范围外比较；不把固定响应当模型效果。
-2. **最小工程与媒体探针**：初始化 API/Worker/迁移，落实身份和项目授权，Web 可上传；Flutter 验证真机摄像头与回传；一段授权素材能完成探测和可解码渲染。记录依赖与设备限制。
-3. **证据闭环**：建立分析 run 和 manifest、合法区间检索；接真实模型，形成节点证据、缺口分类、可行补拍卡与回传验证。未完成检索为 uncertain，上传不等于 fulfilled。
-4. **局部修改闭环**：基准快照、影响预报、范围授权、等长开场替换、完整 diff、锁定检查和确认版本；然后加入字幕、声音及全局时长传播。
-5. **角色协作与恢复**：七角色以类型化工具接入闭环；任务/Outbox/租约和人工中断在真实流程使用前完成重复、并发和崩溃验证。
-6. **扩展及冻结对照**：多轨声音、审片、真机摄影和五场景集成；冻结开发/测试集、基线、消融和预算，提交失败样例与实测报告。
+Flutter SDK 自行安装到英文路径；本次为 `.cache/flutter` 下的官方 stable SDK。新终端运行前确认 `flutter --version` 与 `apps/mobile/pubspec.lock` 匹配。
 
-数据落库依据 [数据库设计](design/database-design.md)，角色接入依据 [Agent 设计](design/agent-design.md)。每个工程初始化时提供真实依赖、启动和验证命令；当前尚无这些入口。
+## 2. 数据迁移与 API
 
-## 本地配置
+默认 SQLite 无须容器。先在仓库根目录执行迁移：
 
-`.env.example` 记录计划使用的变量名，当前没有程序自动加载它。后续服务明确配置加载方式后，可将其复制为本地 `.env` 并填写实际值；新增变量同时更新示例和对应服务文档。
+```powershell
+$env:ENABLE_PHASE_ONE_REPLAY='true'
+.venv/Scripts/python.exe -m alembic upgrade head
+.venv/Scripts/python.exe -m uvicorn sw_api.app:app --host 127.0.0.1 --port 8000
+```
 
-真实密钥和本地 `.env` 不进入 Git。前端只接收必要的公开配置，模型凭据与存储密钥由后端持有。使用真实模型前需明确供应商、模型名称、调用上限和数据处理约定。
+保持 API 终端运行。健康入口 `/api/v1/health`；交互接口 `/docs`。开发 JWT 密钥和数据库进入 `artifacts/`，不提交。`ENABLE_PHASE_ONE_REPLAY` 默认关闭，启用后才出现固定样例路由；生产环境禁止启用。生产设置还要求独立 JWT_SECRET，但这并不构成完整生产部署方案。
 
-## 文件和数据位置
+需要 PostgreSQL 时，先按[基础设施说明](../infra/README.md)启动数据库，在迁移和 API 启动前设置同一个 `DATABASE_URL`。第一次使用新库只运行 upgrade；升级回退测试在独立测试 schema 内执行，不在业务库上演示删除表。
 
-- 原片、代理、缓存、输出、模型权重和本地运行日志放入被 Git 忽略的本地目录或对象存储。
-- 可提交的小型样例放在 `examples/`，注明授权、用途与预期结果。
-- 测试固件需专门控制体积和来源，不能通过强制添加的方式混入个人素材。
-- 自动生成的代码标明来源与重新生成命令，真实依赖锁文件应提交。
+## 3. 启动 Web
 
-## 验证与进度记录
+新终端从仓库根目录执行：
 
-当前没有业务实现或自动化测试，不能将骨架检查记为功能测试。各子项目初始化后补齐可直接执行的启动、检查和测试命令。
+```powershell
+npm --prefix apps/web run dev
+```
 
-效果验证统一使用 [评测协议](evaluation.md)，不把静态文档检查算作缺口、Agent 或性能测试。后续重点验证素材范围、锁定保持、依赖传播、版本并发、上传重试、重复任务、权限和失败恢复。跨服务流程放入根目录 `tests/`，局部单元测试放入对应子项目。按 [协作指南](../CONTRIBUTING.md) 将需求编号、验证结果与限制附在提交或 PR 中。
+浏览器访问本机 5173 端口。创建账号，创建项目，点击“运行固定样例”；可查看四态覆盖、补拍验证和完整编辑 diff。固定样例数据是人工合成元数据，页面会标明未调用模型。
+
+## 4. 构建和运行 Flutter Web
+
+```powershell
+cd apps/mobile
+flutter pub get
+flutter analyze
+flutter test
+flutter build web --release --dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1
+python -m http.server 8080 --bind 127.0.0.1 --directory build/web
+```
+
+浏览器访问本机 8080 端口，用 Web 创建的同一账号登录并选择同一项目。默认 CORS 包含 5173/8080 的 localhost 和 127.0.0.1。Flutter Web 渲染器和中文字体首次加载可能访问其默认字体/CDN 资源；离线交付需另做资源自包含验证。
+
+本次 Windows 中文路径引发 Flutter shader 编译和 LSP 编码错误，使用未占用盘符 `subst W: E:\软创\ShadowWeaveAI` 后，在 `W:\apps\mobile` 调用 `W:\.cache\flutter\bin\flutter.bat` 成功。盘符只作本机工具兼容处理，不写入工程配置；用户路径不同需自行替换。勿覆盖现有盘符映射。
+
+Android 工程尚未构建 APK，真机需 Android SDK/设备和可达的 API 地址。设备上的 127.0.0.1 是设备自身，不能直接使用本机回环地址。开发明文访问限 debug/profile，正式版本使用 HTTPS。当前没有真机采集通过证据。
+
+## 5. 统一检查与浏览器联调
+
+```powershell
+# 可选；配置后额外执行真实 PostgreSQL 测试，否则这 4 项明确跳过。
+$env:TEST_DATABASE_URL='postgresql+psycopg://shadowweave:phase_one_local_only@127.0.0.1:55432/shadowweave'
+.venv/Scripts/python.exe scripts/verify.py
+# Flutter 在 PATH 或 FLUTTER_PATH 可用时，同时检查 Flutter。
+.venv/Scripts/python.exe scripts/verify.py --flutter
+.venv/Scripts/python.exe scripts/environment_probe.py
+```
+
+本次映射环境使用 `$env:FLUTTER_PATH='W:\.cache\flutter\bin\flutter.bat'` 和 `$env:FLUTTER_WORKDIR='W:\apps\mobile'` 再运行 `--flutter`。检查脚本保存真实输出和退出码，不安装依赖或自动启动服务。
+
+API、Web、Flutter Web 保持运行，媒体探针已生成后执行：
+
+```powershell
+npm --prefix apps/web run test:e2e
+```
+
+默认使用 Edge。无 Edge 时可在 `apps/web` 安装 Playwright Chromium 并设置 `PLAYWRIGHT_CHANNEL=chromium`。浏览器测试真实注册、创建项目、规则回放、视频上传，并在 Flutter Web 登录同一账号和读取同一项目。Flutter 使用无障碍语义定位，并通过真实键盘输入触发文本控制器。
+
+CI 定义在 `.github/workflows/phase-one.yml`，覆盖核心检查、PostgreSQL 与 Flutter；本次本机结果不能写成远端 CI 已通过。
+
+## 6. 数据与变更约定
+
+修改契约后运行 `scripts/export_contracts.py` 并提交生成文件；CI 用 `--check` 防止过期。数据库首迁移带冻结元数据快照，后续变更新增迁移，不通过导入当前 metadata 偷改旧迁移。
+
+`artifacts/`、设备 SDK、媒体、凭据、数据库和浏览器 trace 均不提交。可审阅的小型证据摘要进入 `docs/reports/evidence/`，保留实际来源和局限。固定输入不能代替真实模型/素材评测。需求原件 `docs/requirements.md` 保持不变；设计范围仍保留七模块、七角色、双端和五场景。

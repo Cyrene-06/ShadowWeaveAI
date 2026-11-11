@@ -1,0 +1,57 @@
+name: Phase one contracts and rules
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: shadowweave
+          POSTGRES_PASSWORD: phase_one_ci_only
+          POSTGRES_DB: shadowweave
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U shadowweave -d shadowweave"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql+psycopg://shadowweave:phase_one_ci_only@127.0.0.1:5432/shadowweave
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+      - run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - run: python -m pip install -r requirements.lock.txt
+      - run: python -m pip install --no-deps -e .
+      - run: npm ci --prefix apps/web
+      - run: python scripts/verify.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: phase-one-core-evidence
+          path: artifacts/phase-one
+  flutter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.9'
+          channel: stable
+          cache: true
+      - run: flutter pub get
+        working-directory: apps/mobile
+      - run: flutter analyze
+        working-directory: apps/mobile
+      - run: flutter test
+        working-directory: apps/mobile
+      - run: flutter build web --release
+        working-directory: apps/mobile

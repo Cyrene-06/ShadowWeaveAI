@@ -1,0 +1,20 @@
+name: shadowweave-phase-one
+services:
+  postgres:
+    image: postgres:17-alpine@sha256:3540c0362c809df084ffac0ae69fe794515f9de92692f02178bcdce0ef0302ac
+    environment:
+      POSTGRES_USER: shadowweave
+      POSTGRES_DB: shadowweave
+      # 公开的本地开发口令；只绑定回环地址。
+      POSTGRES_PASSWORD: ${SW_POSTGRES_PASSWORD:-phase_one_local_only}
+    ports:
+      - "127.0.0.1:${SW_POSTGRES_PORT:-55432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shadowweave -d shadowweave"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+volumes:
+  pgdata:

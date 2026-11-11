@@ -1,0 +1,1387 @@
+{
+  "schema_version": "1.0",
+  "dataset_version": "campus-fixed-1",
+  "mode": "fixed_input",
+  "model_called": false,
+  "provenance": {
+    "source": "project-authored synthetic metadata and human annotations",
+    "scope": "rule validation only",
+    "contains_real_media": false,
+    "license_note": "No third-party footage; not evidence of model accuracy."
+  },
+  "manifest": {
+    "schema_version": "1.0",
+    "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+    "dataset_version": "campus-fixed-1",
+    "assets": [
+      {
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "media_type": "video",
+        "duration_ms": 12000,
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      {
+        "id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "media_type": "video",
+        "duration_ms": 12000,
+        "sha256": "5e1545dcc8e10ff1f15cd988acbd9e938c4952b9616aa5df576994b30fcfba9a",
+        "state": "ready"
+      },
+      {
+        "id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "media_type": "video",
+        "duration_ms": 12000,
+        "sha256": "eaa225c29cf4441da18675c34326e295ea686f089d8de27071e36950f8d97c7c",
+        "state": "ready"
+      },
+      {
+        "id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "media_type": "video",
+        "duration_ms": 12000,
+        "sha256": "d68bac9e8aeb164b6e4aae5be3b31a3d052df526a1a04d9fc41a737286715b9f",
+        "state": "ready"
+      },
+      {
+        "id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "media_type": "video",
+        "duration_ms": 12000,
+        "sha256": "fedccc90c45a149c376b5c0ecd0a7892e4c6cfde8916a0c0ab1ea75e21d26760",
+        "state": "ready"
+      }
+    ],
+    "segments": [
+      {
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "in_ms": 0,
+        "out_ms": 12000
+      },
+      {
+        "id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+        "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+        "in_ms": 0,
+        "out_ms": 12000
+      },
+      {
+        "id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+        "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+        "in_ms": 0,
+        "out_ms": 12000
+      },
+      {
+        "id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+        "analysis_run_id": "665540a6-cf39-56cf-b023-eea84cda10d0",
+        "in_ms": 0,
+        "out_ms": 12000
+      },
+      {
+        "id": "13051115-f558-5be6-81a6-433e5b4fba11",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+        "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+        "in_ms": 0,
+        "out_ms": 12000
+      }
+    ],
+    "evidence": [
+      {
+        "id": "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "in_ms": 0,
+        "out_ms": 6000,
+        "method": "human_annotation",
+        "semantic_support": "supported",
+        "quality_usable": true,
+        "requirement_keys": [
+          "environment"
+        ]
+      },
+      {
+        "id": "cf11117b-de07-51c5-9498-e857fefde806",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+        "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+        "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+        "in_ms": 0,
+        "out_ms": 6000,
+        "method": "human_annotation",
+        "semantic_support": "supported",
+        "quality_usable": true,
+        "requirement_keys": [
+          "activity"
+        ]
+      },
+      {
+        "id": "0890eab2-fd19-56d0-96cb-27c2b100dbfd",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+        "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+        "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+        "in_ms": 0,
+        "out_ms": 6000,
+        "method": "human_annotation",
+        "semantic_support": "supported",
+        "quality_usable": false,
+        "requirement_keys": [
+          "feeling"
+        ]
+      },
+      {
+        "id": "3b05a681-9837-5365-9b96-bed837bc5554",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+        "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+        "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+        "in_ms": 0,
+        "out_ms": 6000,
+        "method": "human_annotation",
+        "semantic_support": "supported",
+        "quality_usable": true,
+        "requirement_keys": [
+          "environment"
+        ]
+      }
+    ]
+  },
+  "nodes": [
+    {
+      "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+      "node_key": "opening",
+      "goal": "开场环境",
+      "requirements": [
+        "environment"
+      ],
+      "minimum_duration_ms": 4000,
+      "required": true
+    },
+    {
+      "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+      "node_key": "process",
+      "goal": "活动过程",
+      "requirements": [
+        "activity"
+      ],
+      "minimum_duration_ms": 4000,
+      "required": true
+    },
+    {
+      "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+      "node_key": "interview",
+      "goal": "人物感受",
+      "requirements": [
+        "feeling"
+      ],
+      "minimum_duration_ms": 4000,
+      "required": true
+    },
+    {
+      "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+      "node_key": "ending",
+      "goal": "结束告别",
+      "requirements": [
+        "farewell"
+      ],
+      "minimum_duration_ms": 4000,
+      "required": true
+    }
+  ],
+  "capture_task": {
+    "id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+    "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+    "kind": "reshoot",
+    "node_key": "ending",
+    "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+    "source_storyboard_revision": 1,
+    "instruction": "补充活动结束时的告别镜头，至少四秒",
+    "purpose": "支持结束告别节点",
+    "state": "open",
+    "revision": 1,
+    "user_choice": {}
+  },
+  "base_edl": {
+    "schema_version": "1.0",
+    "duration_ms": 24000,
+    "output": {
+      "width": 1920,
+      "height": 1080,
+      "fps_num": 25,
+      "fps_den": 1
+    },
+    "tracks": [
+      {
+        "track_key": "video-main",
+        "kind": "video",
+        "position": 0,
+        "clips": [
+          {
+            "clip_key": "opening",
+            "kind": "video",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "src_in_ms": 0,
+            "src_out_ms": 6000,
+            "dst_in_ms": 0,
+            "dst_out_ms": 6000,
+            "speed_num": 1,
+            "speed_den": 1,
+            "locked": false,
+            "config": {},
+            "dependencies": []
+          },
+          {
+            "clip_key": "process",
+            "kind": "video",
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "src_in_ms": 0,
+            "src_out_ms": 6000,
+            "dst_in_ms": 6000,
+            "dst_out_ms": 12000,
+            "speed_num": 1,
+            "speed_den": 1,
+            "locked": false,
+            "config": {},
+            "dependencies": []
+          },
+          {
+            "clip_key": "interview",
+            "kind": "video",
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "src_in_ms": 0,
+            "src_out_ms": 6000,
+            "dst_in_ms": 12000,
+            "dst_out_ms": 18000,
+            "speed_num": 1,
+            "speed_den": 1,
+            "locked": true,
+            "config": {},
+            "dependencies": []
+          },
+          {
+            "clip_key": "ending",
+            "kind": "video",
+            "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+            "src_in_ms": 0,
+            "src_out_ms": 6000,
+            "dst_in_ms": 18000,
+            "dst_out_ms": 24000,
+            "speed_num": 1,
+            "speed_den": 1,
+            "locked": true,
+            "config": {},
+            "dependencies": []
+          }
+        ]
+      },
+      {
+        "track_key": "subtitles",
+        "kind": "subtitle",
+        "position": 1,
+        "clips": [
+          {
+            "clip_key": "opening-title",
+            "kind": "subtitle",
+            "asset_id": null,
+            "segment_id": null,
+            "src_in_ms": null,
+            "src_out_ms": null,
+            "dst_in_ms": 0,
+            "dst_out_ms": 4000,
+            "speed_num": 1,
+            "speed_den": 1,
+            "locked": false,
+            "config": {
+              "text": "校园的一天"
+            },
+            "dependencies": [
+              "opening"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "candidates": {
+    "legal": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "locked_change": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {
+                "crop": "changed"
+              },
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "locked_delete": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "locked_rekey": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "new-interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "locked_move": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        },
+        {
+          "track_key": "video-alt",
+          "kind": "video",
+          "position": 2,
+          "clips": [
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        }
+      ]
+    },
+    "outside_update": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "exposure": 1
+              },
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "outside_add": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            },
+            {
+              "clip_key": "extra-title",
+              "kind": "subtitle",
+              "dst_in_ms": 6000,
+              "dst_out_ms": 7000,
+              "config": {
+                "text": "extra"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "outside_delete": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": []
+        }
+      ]
+    },
+    "dependency_change": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "process"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "cycle": {
+      "schema_version": "1.0",
+      "duration_ms": 24000,
+      "output": {
+        "width": 1920,
+        "height": 1080,
+        "fps_num": 25,
+        "fps_den": 1
+      },
+      "tracks": [
+        {
+          "track_key": "video-main",
+          "kind": "video",
+          "position": 0,
+          "clips": [
+            {
+              "clip_key": "opening",
+              "kind": "video",
+              "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+              "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 0,
+              "dst_out_ms": 6000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": [
+                "opening-title"
+              ]
+            },
+            {
+              "clip_key": "process",
+              "kind": "video",
+              "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+              "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 6000,
+              "dst_out_ms": 12000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "interview",
+              "kind": "video",
+              "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+              "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 12000,
+              "dst_out_ms": 18000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            },
+            {
+              "clip_key": "ending",
+              "kind": "video",
+              "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+              "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+              "src_in_ms": 0,
+              "src_out_ms": 6000,
+              "dst_in_ms": 18000,
+              "dst_out_ms": 24000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": true,
+              "config": {},
+              "dependencies": []
+            }
+          ]
+        },
+        {
+          "track_key": "subtitles",
+          "kind": "subtitle",
+          "position": 1,
+          "clips": [
+            {
+              "clip_key": "opening-title",
+              "kind": "subtitle",
+              "asset_id": null,
+              "segment_id": null,
+              "src_in_ms": null,
+              "src_out_ms": null,
+              "dst_in_ms": 0,
+              "dst_out_ms": 4000,
+              "speed_num": 1,
+              "speed_den": 1,
+              "locked": false,
+              "config": {
+                "text": "校园的一天"
+              },
+              "dependencies": [
+                "opening"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "expected": {
+    "coverage": {
+      "opening": "covered",
+      "process": "covered",
+      "interview": "insufficient",
+      "ending": "missing"
+    },
+    "incomplete_ending": "uncertain",
+    "submitted": "submitted",
+    "verified": "fulfilled",
+    "edits": {
+      "legal": true,
+      "locked_change": false,
+      "locked_delete": false,
+      "locked_rekey": false,
+      "locked_move": false,
+      "outside_update": false,
+      "outside_add": false,
+      "outside_delete": false,
+      "dependency_change": false,
+      "cycle": false
+    }
+  },
+  "base_version_id": "ddbafe07-a45f-5f5f-a235-61b6ebf0e935",
+  "base_revision": 0
+}

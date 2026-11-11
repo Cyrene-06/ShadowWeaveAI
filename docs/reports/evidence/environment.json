@@ -1,0 +1,43 @@
+{
+  "recorded_at": "2026-11-11T06:07:28.118441+00:00",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.7",
+  "node": {
+    "exit_code": 0,
+    "stdout": "v24.14.0",
+    "stderr": ""
+  },
+  "flutter": {
+    "exit_code": 0,
+    "stdout": "{\n  \"frameworkVersion\": \"3.47.9\",\n  \"channel\": \"stable\",\n  \"repositoryUrl\": \"https://github.com/flutter/flutter.git\",\n  \"frameworkRevision\": \"c197ca5199e9ee5661e865596c9c07294dfab51c\",\n  \"frameworkCommitDate\": \"2026-10-29 10:10:20 -0400\",\n  \"engineRevision\": \"89c39edfdfae2949f6806e4a315c0c08522238b7\",\n  \"engineCommitDate\": \"2026-10-27 19:51:20.000Z\",\n  \"engineContentHash\": \"9e025265bef30b838c0c1b68cad19decf97048f2\",\n  \"engineBuildDate\": \"2026-10-28 04:22:45.983\",\n  \"dartSdkVersion\": \"3.13.7\",\n  \"devToolsVersion\": \"2.60.0\",\n  \"flutterVersion\": \"3.47.9\",\n  \"flutterRoot\": \"W:\\\\.cache\\\\flutter\"\n}",
+    "stderr": ""
+  },
+  "devices": {
+    "exit_code": 0,
+    "stdout": "[\n  {\n    \"name\": \"Windows\",\n    \"id\": \"windows\",\n    \"isSupported\": true,\n    \"targetPlatform\": \"windows-x64\",\n    \"emulator\": false,\n    \"sdk\": \"Microsoft Windows [版本 10.0.26200.9711]\",\n    \"capabilities\": {\n      \"hotReload\": true,\n      \"hotRestart\": true,\n      \"screenshot\": false,\n      \"flutterExit\": true,\n      \"hardwareRendering\": false,\n      \"startPaused\": true\n    }\n  },\n  {\n    \"name\": \"Chrome\",\n    \"id\": \"chrome\",\n    \"isSupported\": true,\n    \"targetPlatform\": \"web-javascript\",\n    \"emulator\": false,\n    \"sdk\": \"Google Chrome 126.0.6478.127\",\n    \"capabilities\": {\n      \"hotReload\": true,\n      \"hotRestart\": true,\n      \"screenshot\": false,\n      \"flutterExit\": false,\n      \"hardwareRendering\": false,\n      \"startPaused\": true\n    }\n  },\n  {\n    \"name\": \"Edge\",\n    \"id\": \"edge\",\n    \"isSupported\": true,\n    \"targetPlatform\": \"web-javascript\",\n    \"emulator\": false,\n    \"sdk\": \"Microsoft Edge 157.0.4341.42\",\n    \"capabilities\": {\n      \"hotReload\": true,\n      \"hotRestart\": true,\n      \"screenshot\": false,\n      \"flutterExit\": false,\n      \"hardwareRendering\": false,\n      \"startPaused\": true\n    }\n  }\n]",
+    "stderr": ""
+  },
+  "physical_capture": {
+    "status": "blocked",
+    "physical_devices": [],
+    "reason": "No Android/iOS physical device discovered; Android SDK/adb unavailable on this host",
+    "owner": "A",
+    "review_date": "2026-11-19"
+  },
+  "model": {
+    "status": "not_configured",
+    "model_called": false,
+    "credentials_present": false,
+    "reason": "MODEL_BASE_URL / MODEL_NAME / MODEL_API_KEY are not all configured",
+    "usage": null,
+    "cost": null,
+    "owner": "C",
+    "review_date": "2026-11-19"
+  },
+  "adb_available": false,
+  "notes": [
+    "No secret values are included",
+    "Flutter Web is not a physical capture result",
+    "No creative quality or model accuracy claim is supported by this probe"
+  ]
+}

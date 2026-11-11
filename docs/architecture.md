@@ -1,6 +1,6 @@
 # 架构说明
 
-本文依据需求基线描述拟采用的架构。当前只有目录与文档，尚无运行中的服务、数据库或模型工作流。
+本文描述完整目标架构。第一阶段已落实双端/API、基础迁移及规则子集；可靠异步、对象存储和模型工作流仍待实施。实际边界见[阶段报告](reports/phase-1-report.md)。
 
 ## 分层与依赖方向
 
@@ -44,7 +44,7 @@ flowchart TB
 | Timeline / Clip | 轨道、来源区间、目标区间、转场、锁定与依赖 |
 | ReviewIssue / Version | 问题位置、依据、父版本、差异、预览和导出产物 |
 
-内部剪辑决策结构简称 EDL，是本项目的 JSON 数据约定，不承诺与外部编辑器格式兼容。当前设计采用整数毫秒半开区间和 Schema 1.0，字段与约束见 [系统详细设计](design/detailed-design.md) 和 [数据契约](../packages/contracts/README.md)；尚未生成可执行 Schema。
+内部剪辑决策结构简称 EDL，是本项目的 JSON 数据约定，不承诺与外部编辑器格式兼容。当前设计采用整数毫秒半开区间和 Schema 1.0，字段与约束见 [系统详细设计](design/detailed-design.md) 和 [数据契约](../packages/contracts/README.md)；第一阶段已生成可执行 Schema 和三端共用用例，未覆盖全部未来业务。
 
 ## 创新机制与实现边界
 

@@ -1,0 +1,2083 @@
+{
+  "cases": [
+    {
+      "id": "Project/valid",
+      "input": {
+        "id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "name": "Campus",
+        "scenario": "campus"
+      },
+      "model": "Project",
+      "normalized": {
+        "head_revision": 0,
+        "id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "name": "Campus",
+        "revision": 1,
+        "scenario": "campus"
+      },
+      "valid": true
+    },
+    {
+      "id": "Intent/valid",
+      "input": {
+        "id": "a2666e9b-c789-59e1-80a7-8205bdb92b9a",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "revision": 1,
+        "source_text": "校园活动",
+        "state": "confirmed",
+        "target_duration_ms": 24000
+      },
+      "model": "Intent",
+      "normalized": {
+        "constraints": {},
+        "id": "a2666e9b-c789-59e1-80a7-8205bdb92b9a",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "revision": 1,
+        "source_text": "校园活动",
+        "state": "confirmed",
+        "target_duration_ms": 24000
+      },
+      "valid": true
+    },
+    {
+      "id": "Asset/valid",
+      "input": {
+        "duration_ms": 12000,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "video",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "model": "Asset",
+      "normalized": {
+        "duration_ms": 12000,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "video",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "valid": true
+    },
+    {
+      "id": "Segment/valid",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "normalized": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "valid": true
+    },
+    {
+      "id": "Evidence/valid",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+        "in_ms": 0,
+        "method": "human_annotation",
+        "out_ms": 6000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "quality_usable": true,
+        "requirement_keys": [
+          "environment"
+        ],
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "semantic_support": "supported"
+      },
+      "model": "Evidence",
+      "normalized": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+        "in_ms": 0,
+        "method": "human_annotation",
+        "out_ms": 6000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "quality_usable": true,
+        "requirement_keys": [
+          "environment"
+        ],
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "semantic_support": "supported"
+      },
+      "valid": true
+    },
+    {
+      "id": "EvidenceManifest/valid",
+      "input": {
+        "assets": [
+          {
+            "duration_ms": 12000,
+            "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "5e1545dcc8e10ff1f15cd988acbd9e938c4952b9616aa5df576994b30fcfba9a",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "eaa225c29cf4441da18675c34326e295ea686f089d8de27071e36950f8d97c7c",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "d68bac9e8aeb164b6e4aae5be3b31a3d052df526a1a04d9fc41a737286715b9f",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "fedccc90c45a149c376b5c0ecd0a7892e4c6cfde8916a0c0ab1ea75e21d26760",
+            "state": "ready"
+          }
+        ],
+        "dataset_version": "campus-fixed-1",
+        "evidence": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "id": "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "environment"
+            ],
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "id": "cf11117b-de07-51c5-9498-e857fefde806",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "activity"
+            ],
+            "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "id": "0890eab2-fd19-56d0-96cb-27c2b100dbfd",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": false,
+            "requirement_keys": [
+              "feeling"
+            ],
+            "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+            "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "id": "3b05a681-9837-5365-9b96-bed837bc5554",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "environment"
+            ],
+            "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+            "semantic_support": "supported"
+          }
+        ],
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "schema_version": "1.0",
+        "segments": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "665540a6-cf39-56cf-b023-eea84cda10d0",
+            "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+            "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "id": "13051115-f558-5be6-81a6-433e5b4fba11",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          }
+        ]
+      },
+      "model": "EvidenceManifest",
+      "normalized": {
+        "assets": [
+          {
+            "duration_ms": 12000,
+            "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "5e1545dcc8e10ff1f15cd988acbd9e938c4952b9616aa5df576994b30fcfba9a",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "eaa225c29cf4441da18675c34326e295ea686f089d8de27071e36950f8d97c7c",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "d68bac9e8aeb164b6e4aae5be3b31a3d052df526a1a04d9fc41a737286715b9f",
+            "state": "ready"
+          },
+          {
+            "duration_ms": 12000,
+            "id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "media_type": "video",
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "sha256": "fedccc90c45a149c376b5c0ecd0a7892e4c6cfde8916a0c0ab1ea75e21d26760",
+            "state": "ready"
+          }
+        ],
+        "dataset_version": "campus-fixed-1",
+        "evidence": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "id": "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "environment"
+            ],
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "id": "cf11117b-de07-51c5-9498-e857fefde806",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "activity"
+            ],
+            "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "id": "0890eab2-fd19-56d0-96cb-27c2b100dbfd",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": false,
+            "requirement_keys": [
+              "feeling"
+            ],
+            "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "semantic_support": "supported"
+          },
+          {
+            "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+            "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "id": "3b05a681-9837-5365-9b96-bed837bc5554",
+            "in_ms": 0,
+            "method": "human_annotation",
+            "out_ms": 6000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "quality_usable": true,
+            "requirement_keys": [
+              "environment"
+            ],
+            "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+            "semantic_support": "supported"
+          }
+        ],
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "schema_version": "1.0",
+        "segments": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "556c7a00-0146-58e6-989d-dbfec501b082",
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "3da2328a-9d1f-5939-afd8-d9e7ed26916e",
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "665540a6-cf39-56cf-b023-eea84cda10d0",
+            "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          },
+          {
+            "analysis_run_id": "fd117555-812a-5e9a-85f0-62ac37495fa6",
+            "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+            "id": "13051115-f558-5be6-81a6-433e5b4fba11",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "id": "StoryNode/valid",
+      "input": {
+        "goal": "开场环境",
+        "minimum_duration_ms": 4000,
+        "node_key": "opening",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "required": true,
+        "requirements": [
+          "environment"
+        ]
+      },
+      "model": "StoryNode",
+      "normalized": {
+        "goal": "开场环境",
+        "minimum_duration_ms": 4000,
+        "node_key": "opening",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "required": true,
+        "requirements": [
+          "environment"
+        ]
+      },
+      "valid": true
+    },
+    {
+      "id": "CoverageReport/valid",
+      "input": {
+        "candidate_refs": [
+          "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+          "3b05a681-9837-5365-9b96-bed837bc5554"
+        ],
+        "checked_requirements": [
+          "environment"
+        ],
+        "coverage": "covered",
+        "evaluated_manifest_hash": "eda9e20cbe57cf80fc1ef1d30074291104b005b3bfb30be986342a3f978adea3",
+        "node_key": "opening",
+        "policy_version": "coverage-1",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "reason_codes": [
+          "qualified_evidence"
+        ],
+        "search_complete": true,
+        "usable_duration_ms": 12000
+      },
+      "model": "CoverageReport",
+      "normalized": {
+        "candidate_refs": [
+          "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+          "3b05a681-9837-5365-9b96-bed837bc5554"
+        ],
+        "checked_requirements": [
+          "environment"
+        ],
+        "coverage": "covered",
+        "evaluated_manifest_hash": "eda9e20cbe57cf80fc1ef1d30074291104b005b3bfb30be986342a3f978adea3",
+        "node_key": "opening",
+        "policy_version": "coverage-1",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "reason_codes": [
+          "qualified_evidence"
+        ],
+        "search_complete": true,
+        "usable_duration_ms": 12000
+      },
+      "valid": true
+    },
+    {
+      "id": "CaptureTask/valid",
+      "input": {
+        "id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "instruction": "补充活动结束时的告别镜头，至少四秒",
+        "kind": "reshoot",
+        "node_key": "ending",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "purpose": "支持结束告别节点",
+        "revision": 1,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "state": "open",
+        "user_choice": {}
+      },
+      "model": "CaptureTask",
+      "normalized": {
+        "id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "instruction": "补充活动结束时的告别镜头，至少四秒",
+        "kind": "reshoot",
+        "node_key": "ending",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "purpose": "支持结束告别节点",
+        "revision": 1,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "state": "open",
+        "user_choice": {}
+      },
+      "valid": true
+    },
+    {
+      "id": "CaptureVerification/valid",
+      "input": {
+        "analysis_run_ids": [
+          "665540a6-cf39-56cf-b023-eea84cda10d0"
+        ],
+        "job_id": "507a3117-3b6a-50a8-be0e-e06af7547e9b",
+        "report": {
+          "candidate_refs": [
+            "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+          ],
+          "checked_requirements": [
+            "farewell"
+          ],
+          "coverage": "covered",
+          "evaluated_manifest_hash": "7d29912b36e97bed71efbabfaee4011211d1023f4a876ce5a6b8dc4904202363",
+          "node_key": "ending",
+          "policy_version": "coverage-1",
+          "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+          "reason_codes": [
+            "qualified_evidence"
+          ],
+          "search_complete": true,
+          "usable_duration_ms": 6000
+        },
+        "report_ref": "0197f789-4ee2-5319-b607-949f3135b067",
+        "result_storyboard_id": "02307e8b-0fcf-5a8f-bce5-8b67b7535b73",
+        "result_storyboard_revision": 2,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "task_id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "task_revision": 2
+      },
+      "model": "CaptureVerification",
+      "normalized": {
+        "analysis_run_ids": [
+          "665540a6-cf39-56cf-b023-eea84cda10d0"
+        ],
+        "job_id": "507a3117-3b6a-50a8-be0e-e06af7547e9b",
+        "report": {
+          "candidate_refs": [
+            "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+          ],
+          "checked_requirements": [
+            "farewell"
+          ],
+          "coverage": "covered",
+          "evaluated_manifest_hash": "7d29912b36e97bed71efbabfaee4011211d1023f4a876ce5a6b8dc4904202363",
+          "node_key": "ending",
+          "policy_version": "coverage-1",
+          "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+          "reason_codes": [
+            "qualified_evidence"
+          ],
+          "search_complete": true,
+          "usable_duration_ms": 6000
+        },
+        "report_ref": "0197f789-4ee2-5319-b607-949f3135b067",
+        "result_storyboard_id": "02307e8b-0fcf-5a8f-bce5-8b67b7535b73",
+        "result_storyboard_revision": 2,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "task_id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "task_revision": 2
+      },
+      "valid": true
+    },
+    {
+      "id": "Output/valid",
+      "input": {},
+      "model": "Output",
+      "normalized": {
+        "fps_den": 1,
+        "fps_num": 25,
+        "height": 1080,
+        "width": 1920
+      },
+      "valid": true
+    },
+    {
+      "id": "Clip/valid",
+      "input": {
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "clip_key": "opening",
+        "config": {},
+        "dependencies": [],
+        "dst_in_ms": 0,
+        "dst_out_ms": 6000,
+        "kind": "video",
+        "locked": false,
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "speed_den": 1,
+        "speed_num": 1,
+        "src_in_ms": 0,
+        "src_out_ms": 6000
+      },
+      "model": "Clip",
+      "normalized": {
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "clip_key": "opening",
+        "config": {},
+        "dependencies": [],
+        "dst_in_ms": 0,
+        "dst_out_ms": 6000,
+        "kind": "video",
+        "locked": false,
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "speed_den": 1,
+        "speed_num": 1,
+        "src_in_ms": 0,
+        "src_out_ms": 6000
+      },
+      "valid": true
+    },
+    {
+      "id": "Track/valid",
+      "input": {
+        "clips": [
+          {
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "clip_key": "opening",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 0,
+            "dst_out_ms": 6000,
+            "kind": "video",
+            "locked": false,
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "clip_key": "process",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 6000,
+            "dst_out_ms": 12000,
+            "kind": "video",
+            "locked": false,
+            "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "clip_key": "interview",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 12000,
+            "dst_out_ms": 18000,
+            "kind": "video",
+            "locked": true,
+            "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "clip_key": "ending",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 18000,
+            "dst_out_ms": 24000,
+            "kind": "video",
+            "locked": true,
+            "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          }
+        ],
+        "kind": "video",
+        "position": 0,
+        "track_key": "video-main"
+      },
+      "model": "Track",
+      "normalized": {
+        "clips": [
+          {
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "clip_key": "opening",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 0,
+            "dst_out_ms": 6000,
+            "kind": "video",
+            "locked": false,
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+            "clip_key": "process",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 6000,
+            "dst_out_ms": 12000,
+            "kind": "video",
+            "locked": false,
+            "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+            "clip_key": "interview",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 12000,
+            "dst_out_ms": 18000,
+            "kind": "video",
+            "locked": true,
+            "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          },
+          {
+            "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+            "clip_key": "ending",
+            "config": {},
+            "dependencies": [],
+            "dst_in_ms": 18000,
+            "dst_out_ms": 24000,
+            "kind": "video",
+            "locked": true,
+            "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+            "speed_den": 1,
+            "speed_num": 1,
+            "src_in_ms": 0,
+            "src_out_ms": 6000
+          }
+        ],
+        "kind": "video",
+        "position": 0,
+        "track_key": "video-main"
+      },
+      "valid": true
+    },
+    {
+      "id": "EDL/valid",
+      "input": {
+        "duration_ms": 24000,
+        "output": {
+          "fps_den": 1,
+          "fps_num": 25,
+          "height": 1080,
+          "width": 1920
+        },
+        "schema_version": "1.0",
+        "tracks": [
+          {
+            "clips": [
+              {
+                "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+                "clip_key": "opening",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 0,
+                "dst_out_ms": 6000,
+                "kind": "video",
+                "locked": false,
+                "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                "clip_key": "process",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 6000,
+                "dst_out_ms": 12000,
+                "kind": "video",
+                "locked": false,
+                "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                "clip_key": "interview",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 12000,
+                "dst_out_ms": 18000,
+                "kind": "video",
+                "locked": true,
+                "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                "clip_key": "ending",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 18000,
+                "dst_out_ms": 24000,
+                "kind": "video",
+                "locked": true,
+                "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              }
+            ],
+            "kind": "video",
+            "position": 0,
+            "track_key": "video-main"
+          },
+          {
+            "clips": [
+              {
+                "asset_id": null,
+                "clip_key": "opening-title",
+                "config": {
+                  "text": "校园的一天"
+                },
+                "dependencies": [
+                  "opening"
+                ],
+                "dst_in_ms": 0,
+                "dst_out_ms": 4000,
+                "kind": "subtitle",
+                "locked": false,
+                "segment_id": null,
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": null,
+                "src_out_ms": null
+              }
+            ],
+            "kind": "subtitle",
+            "position": 1,
+            "track_key": "subtitles"
+          }
+        ]
+      },
+      "model": "EDL",
+      "normalized": {
+        "duration_ms": 24000,
+        "output": {
+          "fps_den": 1,
+          "fps_num": 25,
+          "height": 1080,
+          "width": 1920
+        },
+        "schema_version": "1.0",
+        "tracks": [
+          {
+            "clips": [
+              {
+                "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+                "clip_key": "opening",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 0,
+                "dst_out_ms": 6000,
+                "kind": "video",
+                "locked": false,
+                "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                "clip_key": "process",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 6000,
+                "dst_out_ms": 12000,
+                "kind": "video",
+                "locked": false,
+                "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                "clip_key": "interview",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 12000,
+                "dst_out_ms": 18000,
+                "kind": "video",
+                "locked": true,
+                "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              },
+              {
+                "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                "clip_key": "ending",
+                "config": {},
+                "dependencies": [],
+                "dst_in_ms": 18000,
+                "dst_out_ms": 24000,
+                "kind": "video",
+                "locked": true,
+                "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": 0,
+                "src_out_ms": 6000
+              }
+            ],
+            "kind": "video",
+            "position": 0,
+            "track_key": "video-main"
+          },
+          {
+            "clips": [
+              {
+                "asset_id": null,
+                "clip_key": "opening-title",
+                "config": {
+                  "text": "校园的一天"
+                },
+                "dependencies": [
+                  "opening"
+                ],
+                "dst_in_ms": 0,
+                "dst_out_ms": 4000,
+                "kind": "subtitle",
+                "locked": false,
+                "segment_id": null,
+                "speed_den": 1,
+                "speed_num": 1,
+                "src_in_ms": null,
+                "src_out_ms": null
+              }
+            ],
+            "kind": "subtitle",
+            "position": 1,
+            "track_key": "subtitles"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
+      "id": "ImpactReport/valid",
+      "input": {
+        "approved_affected_keys": [
+          "opening"
+        ],
+        "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "causes": {
+          "opening": [
+            "explicit_target"
+          ],
+          "opening-title": [
+            "depends_on:opening"
+          ]
+        },
+        "lock_conflicts": [],
+        "policy_version": "impact-1",
+        "predicted_affected_keys": [
+          "opening",
+          "opening-title"
+        ],
+        "requested_target_keys": [
+          "opening"
+        ],
+        "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
+      },
+      "model": "ImpactReport",
+      "normalized": {
+        "approved_affected_keys": [
+          "opening"
+        ],
+        "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "causes": {
+          "opening": [
+            "explicit_target"
+          ],
+          "opening-title": [
+            "depends_on:opening"
+          ]
+        },
+        "lock_conflicts": [],
+        "policy_version": "impact-1",
+        "predicted_affected_keys": [
+          "opening",
+          "opening-title"
+        ],
+        "requested_target_keys": [
+          "opening"
+        ],
+        "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
+      },
+      "valid": true
+    },
+    {
+      "id": "EditDraft/valid",
+      "input": {
+        "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "base_revision": 0,
+        "base_version_id": "ddbafe07-a45f-5f5f-a235-61b6ebf0e935",
+        "candidate_edl": {
+          "duration_ms": 24000,
+          "output": {
+            "fps_den": 1,
+            "fps_num": 25,
+            "height": 1080,
+            "width": 1920
+          },
+          "schema_version": "1.0",
+          "tracks": [
+            {
+              "clips": [
+                {
+                  "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+                  "clip_key": "opening",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 6000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                  "clip_key": "process",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 6000,
+                  "dst_out_ms": 12000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                  "clip_key": "interview",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 12000,
+                  "dst_out_ms": 18000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                  "clip_key": "ending",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 18000,
+                  "dst_out_ms": 24000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                }
+              ],
+              "kind": "video",
+              "position": 0,
+              "track_key": "video-main"
+            },
+            {
+              "clips": [
+                {
+                  "asset_id": null,
+                  "clip_key": "opening-title",
+                  "config": {
+                    "text": "校园的一天"
+                  },
+                  "dependencies": [
+                    "opening"
+                  ],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 4000,
+                  "kind": "subtitle",
+                  "locked": false,
+                  "segment_id": null,
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": null,
+                  "src_out_ms": null
+                }
+              ],
+              "kind": "subtitle",
+              "position": 1,
+              "track_key": "subtitles"
+            }
+          ]
+        },
+        "diff": {
+          "added": [],
+          "global_changed": false,
+          "removed": [],
+          "updated": [
+            "opening"
+          ]
+        },
+        "impact_report": {
+          "approved_affected_keys": [
+            "opening"
+          ],
+          "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+          "causes": {
+            "opening": [
+              "explicit_target"
+            ],
+            "opening-title": [
+              "depends_on:opening"
+            ]
+          },
+          "lock_conflicts": [],
+          "policy_version": "impact-1",
+          "predicted_affected_keys": [
+            "opening",
+            "opening-title"
+          ],
+          "requested_target_keys": [
+            "opening"
+          ],
+          "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
+        },
+        "payload_hash": "8b5c44ca96ca6cbbb3a3aa83f483205fc71906ed6fc0af124a88c2d2ce559345",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "requested_unlock_clip_keys": [],
+        "state": "ready",
+        "validation_report": {
+          "diff": {
+            "added": [],
+            "global_changed": false,
+            "removed": [],
+            "updated": [
+              "opening"
+            ]
+          },
+          "hard_errors": [],
+          "locked_hash_comparison": {
+            "ending": true,
+            "interview": true
+          },
+          "outside_scope_comparison": [],
+          "rules_version": "policy-1"
+        }
+      },
+      "model": "EditDraft",
+      "normalized": {
+        "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "base_revision": 0,
+        "base_version_id": "ddbafe07-a45f-5f5f-a235-61b6ebf0e935",
+        "candidate_edl": {
+          "duration_ms": 24000,
+          "output": {
+            "fps_den": 1,
+            "fps_num": 25,
+            "height": 1080,
+            "width": 1920
+          },
+          "schema_version": "1.0",
+          "tracks": [
+            {
+              "clips": [
+                {
+                  "asset_id": "fd3025c9-411b-554e-b0ee-50e2abaa7617",
+                  "clip_key": "opening",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 6000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "13051115-f558-5be6-81a6-433e5b4fba11",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                  "clip_key": "process",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 6000,
+                  "dst_out_ms": 12000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                  "clip_key": "interview",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 12000,
+                  "dst_out_ms": 18000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                  "clip_key": "ending",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 18000,
+                  "dst_out_ms": 24000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                }
+              ],
+              "kind": "video",
+              "position": 0,
+              "track_key": "video-main"
+            },
+            {
+              "clips": [
+                {
+                  "asset_id": null,
+                  "clip_key": "opening-title",
+                  "config": {
+                    "text": "校园的一天"
+                  },
+                  "dependencies": [
+                    "opening"
+                  ],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 4000,
+                  "kind": "subtitle",
+                  "locked": false,
+                  "segment_id": null,
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": null,
+                  "src_out_ms": null
+                }
+              ],
+              "kind": "subtitle",
+              "position": 1,
+              "track_key": "subtitles"
+            }
+          ]
+        },
+        "diff": {
+          "added": [],
+          "global_changed": false,
+          "removed": [],
+          "updated": [
+            "opening"
+          ]
+        },
+        "impact_report": {
+          "approved_affected_keys": [
+            "opening"
+          ],
+          "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+          "causes": {
+            "opening": [
+              "explicit_target"
+            ],
+            "opening-title": [
+              "depends_on:opening"
+            ]
+          },
+          "lock_conflicts": [],
+          "policy_version": "impact-1",
+          "predicted_affected_keys": [
+            "opening",
+            "opening-title"
+          ],
+          "requested_target_keys": [
+            "opening"
+          ],
+          "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
+        },
+        "payload_hash": "8b5c44ca96ca6cbbb3a3aa83f483205fc71906ed6fc0af124a88c2d2ce559345",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "requested_unlock_clip_keys": [],
+        "state": "ready",
+        "validation_report": {
+          "diff": {
+            "added": [],
+            "global_changed": false,
+            "removed": [],
+            "updated": [
+              "opening"
+            ]
+          },
+          "hard_errors": [],
+          "locked_hash_comparison": {
+            "ending": true,
+            "interview": true
+          },
+          "outside_scope_comparison": [],
+          "rules_version": "policy-1"
+        }
+      },
+      "valid": true
+    },
+    {
+      "id": "Version/valid",
+      "input": {
+        "content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "edl": {
+          "duration_ms": 24000,
+          "output": {
+            "fps_den": 1,
+            "fps_num": 25,
+            "height": 1080,
+            "width": 1920
+          },
+          "schema_version": "1.0",
+          "tracks": [
+            {
+              "clips": [
+                {
+                  "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+                  "clip_key": "opening",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 6000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                  "clip_key": "process",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 6000,
+                  "dst_out_ms": 12000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                  "clip_key": "interview",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 12000,
+                  "dst_out_ms": 18000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                  "clip_key": "ending",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 18000,
+                  "dst_out_ms": 24000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                }
+              ],
+              "kind": "video",
+              "position": 0,
+              "track_key": "video-main"
+            },
+            {
+              "clips": [
+                {
+                  "asset_id": null,
+                  "clip_key": "opening-title",
+                  "config": {
+                    "text": "校园的一天"
+                  },
+                  "dependencies": [
+                    "opening"
+                  ],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 4000,
+                  "kind": "subtitle",
+                  "locked": false,
+                  "segment_id": null,
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": null,
+                  "src_out_ms": null
+                }
+              ],
+              "kind": "subtitle",
+              "position": 1,
+              "track_key": "subtitles"
+            }
+          ]
+        },
+        "id": "70dbc6ac-2218-5ea5-8933-4b2ff34ae0f5",
+        "parent_version_id": null,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "revision": 1
+      },
+      "model": "Version",
+      "normalized": {
+        "content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "edl": {
+          "duration_ms": 24000,
+          "output": {
+            "fps_den": 1,
+            "fps_num": 25,
+            "height": 1080,
+            "width": 1920
+          },
+          "schema_version": "1.0",
+          "tracks": [
+            {
+              "clips": [
+                {
+                  "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+                  "clip_key": "opening",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 6000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                  "clip_key": "process",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 6000,
+                  "dst_out_ms": 12000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                  "clip_key": "interview",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 12000,
+                  "dst_out_ms": 18000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                  "clip_key": "ending",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 18000,
+                  "dst_out_ms": 24000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                }
+              ],
+              "kind": "video",
+              "position": 0,
+              "track_key": "video-main"
+            },
+            {
+              "clips": [
+                {
+                  "asset_id": null,
+                  "clip_key": "opening-title",
+                  "config": {
+                    "text": "校园的一天"
+                  },
+                  "dependencies": [
+                    "opening"
+                  ],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 4000,
+                  "kind": "subtitle",
+                  "locked": false,
+                  "segment_id": null,
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": null,
+                  "src_out_ms": null
+                }
+              ],
+              "kind": "subtitle",
+              "position": 1,
+              "track_key": "subtitles"
+            }
+          ]
+        },
+        "id": "70dbc6ac-2218-5ea5-8933-4b2ff34ae0f5",
+        "parent_version_id": null,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "revision": 1
+      },
+      "valid": true
+    },
+    {
+      "id": "Job/valid",
+      "input": {
+        "id": "184730cd-c952-5bc7-8707-e56afcc790e2",
+        "mode": "synchronous_replay",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "state": "queued"
+      },
+      "model": "Job",
+      "normalized": {
+        "error_code": null,
+        "id": "184730cd-c952-5bc7-8707-e56afcc790e2",
+        "mode": "synchronous_replay",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "state": "queued"
+      },
+      "valid": true
+    },
+    {
+      "id": "RoleEnvelope/valid",
+      "input": {
+        "decision_summary": "fixture only",
+        "evidence_refs": [],
+        "issues": [],
+        "next_action": "validate",
+        "result": {},
+        "role": "director",
+        "status": "ok",
+        "uncertainties": []
+      },
+      "model": "RoleEnvelope",
+      "normalized": {
+        "decision_summary": "fixture only",
+        "evidence_refs": [],
+        "issues": [],
+        "next_action": "validate",
+        "result": {},
+        "role": "director",
+        "schema_version": "1.0",
+        "status": "ok",
+        "uncertainties": []
+      },
+      "valid": true
+    },
+    {
+      "id": "ErrorBody/valid",
+      "input": {
+        "code": "INVALID_ARGUMENT",
+        "message": "Invalid input",
+        "retryable": false
+      },
+      "model": "ErrorBody",
+      "normalized": {
+        "code": "INVALID_ARGUMENT",
+        "details": [],
+        "message": "Invalid input",
+        "retryable": false
+      },
+      "valid": true
+    },
+    {
+      "id": "ErrorEnvelope/valid",
+      "input": {
+        "error": {
+          "code": "INVALID_ARGUMENT",
+          "message": "Invalid input",
+          "retryable": false
+        },
+        "request_id": "10991784-edcc-50a1-ad74-b027853d8e7d"
+      },
+      "model": "ErrorEnvelope",
+      "normalized": {
+        "error": {
+          "code": "INVALID_ARGUMENT",
+          "details": [],
+          "message": "Invalid input",
+          "retryable": false
+        },
+        "request_id": "10991784-edcc-50a1-ad74-b027853d8e7d"
+      },
+      "valid": true
+    },
+    {
+      "id": "Project/bad-uuid",
+      "input": {
+        "id": "not-a-uuid",
+        "name": "Campus",
+        "scenario": "campus"
+      },
+      "model": "Project",
+      "valid": false
+    },
+    {
+      "id": "Project/missing-name",
+      "input": {
+        "id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "name": null,
+        "scenario": "campus"
+      },
+      "model": "Project",
+      "valid": false
+    },
+    {
+      "id": "Project/unknown-scenario",
+      "input": {
+        "id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "name": "Campus",
+        "scenario": "other"
+      },
+      "model": "Project",
+      "valid": false
+    },
+    {
+      "id": "Project/bool-revision",
+      "input": {
+        "id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "name": "Campus",
+        "revision": true,
+        "scenario": "campus"
+      },
+      "model": "Project",
+      "valid": false
+    },
+    {
+      "id": "Segment/negative",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": -1,
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Segment/zero",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": 0,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Segment/reversed",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 12,
+        "out_ms": 10,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Segment/fraction",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": 1.5,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Segment/string-ms",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": "12000",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1"
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Segment/extra-field",
+      "input": {
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "surprise": true
+      },
+      "model": "Segment",
+      "valid": false
+    },
+    {
+      "id": "Asset/video-no-duration",
+      "input": {
+        "duration_ms": null,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "video",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "model": "Asset",
+      "valid": false
+    },
+    {
+      "id": "Asset/image-with-duration",
+      "input": {
+        "duration_ms": 12000,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "image",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "model": "Asset",
+      "valid": false
+    },
+    {
+      "id": "Asset/image-valid",
+      "input": {
+        "duration_ms": null,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "image",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "model": "Asset",
+      "normalized": {
+        "duration_ms": null,
+        "id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "media_type": "image",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "sha256": "4b984f58336a465ab67717f8c4edf9a3ba7d5421d2e7633b1fe800debe3f85cf",
+        "state": "ready"
+      },
+      "valid": true
+    },
+    {
+      "id": "CaptureTask/missing-reshoot-node",
+      "input": {
+        "id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "instruction": "补充活动结束时的告别镜头，至少四秒",
+        "kind": "reshoot",
+        "node_key": null,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "purpose": "支持结束告别节点",
+        "revision": 1,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "state": "open",
+        "user_choice": {}
+      },
+      "model": "CaptureTask",
+      "valid": false
+    },
+    {
+      "id": "Output/mismatched-preset",
+      "input": {
+        "height": 1080,
+        "width": 1280
+      },
+      "model": "Output",
+      "valid": false
+    },
+    {
+      "id": "Clip/invalid-speed-duration",
+      "input": {
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "clip_key": "opening",
+        "config": {},
+        "dependencies": [],
+        "dst_in_ms": 0,
+        "dst_out_ms": 6000,
+        "kind": "video",
+        "locked": false,
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "speed_den": 1,
+        "speed_num": 2,
+        "src_in_ms": 0,
+        "src_out_ms": 6000
+      },
+      "model": "Clip",
+      "valid": false
+    },
+    {
+      "id": "Clip/invalid-target",
+      "input": {
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "clip_key": "opening",
+        "config": {},
+        "dependencies": [],
+        "dst_in_ms": 0,
+        "dst_out_ms": 0,
+        "kind": "video",
+        "locked": false,
+        "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "speed_den": 1,
+        "speed_num": 1,
+        "src_in_ms": 0,
+        "src_out_ms": 6000
+      },
+      "model": "Clip",
+      "valid": false
+    },
+    {
+      "id": "StoryNode/required-not-bool",
+      "input": {
+        "goal": "开场环境",
+        "minimum_duration_ms": 4000,
+        "node_key": "opening",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "required": 1,
+        "requirements": [
+          "environment"
+        ]
+      },
+      "model": "StoryNode",
+      "valid": false
+    },
+    {
+      "id": "Job/unknown-state",
+      "input": {
+        "id": "184730cd-c952-5bc7-8707-e56afcc790e2",
+        "mode": "synchronous_replay",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "state": "done"
+      },
+      "model": "Job",
+      "valid": false
+    },
+    {
+      "id": "CaptureTask/node-absent",
+      "input": {
+        "id": "2726b696-c07c-55ad-a2a9-2f692fe2887e",
+        "instruction": "补充活动结束时的告别镜头，至少四秒",
+        "kind": "reshoot",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "purpose": "支持结束告别节点",
+        "revision": 1,
+        "source_storyboard_id": "c55d8d34-1d2d-50bd-b9a9-c5c49ff81d16",
+        "source_storyboard_revision": 1,
+        "state": "open",
+        "user_choice": {}
+      },
+      "model": "CaptureTask",
+      "valid": false
+    },
+    {
+      "id": "Version/parent-absent",
+      "input": {
+        "content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
+        "edl": {
+          "duration_ms": 24000,
+          "output": {
+            "fps_den": 1,
+            "fps_num": 25,
+            "height": 1080,
+            "width": 1920
+          },
+          "schema_version": "1.0",
+          "tracks": [
+            {
+              "clips": [
+                {
+                  "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+                  "clip_key": "opening",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 6000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "80d720ae-9682-52e2-b838-f6de030de1f7",
+                  "clip_key": "process",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 6000,
+                  "dst_out_ms": 12000,
+                  "kind": "video",
+                  "locked": false,
+                  "segment_id": "f9e5b9ec-bd97-5594-a490-0f70b52ee0fc",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "47915407-0a7c-55ce-9225-8d1f504d3a3f",
+                  "clip_key": "interview",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 12000,
+                  "dst_out_ms": 18000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "620c3792-b2e5-53fd-b0a9-90123c1483e2",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                },
+                {
+                  "asset_id": "67defd7d-8d70-5f01-9b8f-8ffbe66defb4",
+                  "clip_key": "ending",
+                  "config": {},
+                  "dependencies": [],
+                  "dst_in_ms": 18000,
+                  "dst_out_ms": 24000,
+                  "kind": "video",
+                  "locked": true,
+                  "segment_id": "b80911d9-dc01-549a-934a-343db5a93ffe",
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": 0,
+                  "src_out_ms": 6000
+                }
+              ],
+              "kind": "video",
+              "position": 0,
+              "track_key": "video-main"
+            },
+            {
+              "clips": [
+                {
+                  "asset_id": null,
+                  "clip_key": "opening-title",
+                  "config": {
+                    "text": "校园的一天"
+                  },
+                  "dependencies": [
+                    "opening"
+                  ],
+                  "dst_in_ms": 0,
+                  "dst_out_ms": 4000,
+                  "kind": "subtitle",
+                  "locked": false,
+                  "segment_id": null,
+                  "speed_den": 1,
+                  "speed_num": 1,
+                  "src_in_ms": null,
+                  "src_out_ms": null
+                }
+              ],
+              "kind": "subtitle",
+              "position": 1,
+              "track_key": "subtitles"
+            }
+          ]
+        },
+        "id": "70dbc6ac-2218-5ea5-8933-4b2ff34ae0f5",
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "revision": 1
+      },
+      "model": "Version",
+      "valid": false
+    }
+  ],
+  "schema_version": "1.0"
+}

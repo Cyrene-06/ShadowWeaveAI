@@ -1,0 +1,147 @@
+{
+  "packaged_at": "2026-11-11T06:26:44.650307+00:00",
+  "kind": "local_advance_engineering_verification",
+  "assembly_code": {
+    "commit": "9648d96098cd6a18b02d659162d7f578154be07d",
+    "dirty": true
+  },
+  "assembly_source_hashes": {
+    "alembic.ini": "a47dc68f878b0235869d04f9843d962086e050a0fdf228532c10c2e4f9fd7eac",
+    "apps/mobile/.gitignore": "0581d23086f7283dc97d2d5bde4f60724f8115f67baa76949596790ab9800dd7",
+    "apps/mobile/.metadata": "ba8146e8b5e2275e016fb0348781b227f410ef95a157f2dbc48d3f86df15eb92",
+    "apps/mobile/analysis_options.yaml": "ff56f6372293dbd6e9a9ba935988332caccfe59d6978d2f36c1e25898b316ce4",
+    "apps/mobile/android/.gitignore": "c9af75dbc2c8aa867476a09426c80b178c4aeed8b9393ae48503eedfa3273d71",
+    "apps/mobile/android/app/build.gradle.kts": "7180e873813279ff5347dbce8b2d003bcb5d34ecac750c2b4a9983fe2020d08e",
+    "apps/mobile/android/app/src/debug/AndroidManifest.xml": "833ceca807d101a152bfe898ef849446b863af4cf505ffa156d7d4b04d82901e",
+    "apps/mobile/android/app/src/main/AndroidManifest.xml": "8bb0a50738e955fa1afa51cbf139f24c675f36d224c57fca85be207aa2f980d9",
+    "apps/mobile/android/app/src/main/kotlin/ai/shadowweave/shadowweave_mobile/MainActivity.kt": "b9a03b0f0fa48360d5ea608b39ca01b26fa729dd07bab7cc0d52ac1ed223c2e7",
+    "apps/mobile/android/app/src/main/res/drawable-v21/launch_background.xml": "dca312ec77de83e43ef70a825c299b51451247286c29167d62f19165750b8793",
+    "apps/mobile/android/app/src/main/res/drawable/launch_background.xml": "2df60e2cfbee873ce2858088cf003e6b93498f2f568476da437610467ea1a9d7",
+    "apps/mobile/android/app/src/main/res/mipmap-hdpi/ic_launcher.png": "6a7c8f0d703e3682108f9662f813302236240d3f8f638bb391e32bfb96055fef",
+    "apps/mobile/android/app/src/main/res/mipmap-mdpi/ic_launcher.png": "c7c0c0189145e4e32a401c61c9bdc615754b0264e7afae24e834bb81049eaf81",
+    "apps/mobile/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": "e14aa40904929bf313fded22cf7e7ffcbf1d1aac4263b5ef1be8bfce650397aa",
+    "apps/mobile/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": "4d470bf22d5c17d84edc5f82516d1ba8a1c09559cd761cefb792f86d9f52b540",
+    "apps/mobile/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": "3c34e1f298d0c9ea3455d46db6b7759c8211a49e9ec6e44b635fc5c87dfb4180",
+    "apps/mobile/android/app/src/main/res/values-night/styles.xml": "ea763597dc1a84c8034251caee98d7753e0fbf57340ffc94677427de4b537516",
+    "apps/mobile/android/app/src/main/res/values/styles.xml": "cca15a99b59380a548bf6a890f7ca5380ee509b1f9bbb2f5f9ec3589fa25c2f7",
+    "apps/mobile/android/app/src/profile/AndroidManifest.xml": "833ceca807d101a152bfe898ef849446b863af4cf505ffa156d7d4b04d82901e",
+    "apps/mobile/android/build.gradle.kts": "218f400e3fff31c9c986a2535dfb974560e1b4d33cc27b7c1fee96a2b7e44454",
+    "apps/mobile/android/gradle.properties": "7714698de712a7872e371f0dbae626c255fc83ac1c15e52e7cd9fcaa241b5092",
+    "apps/mobile/android/gradle/wrapper/gradle-wrapper.properties": "594a00250ef7a36609a01f3263bf5ed63963afaf9ca9f82f2cd1de0f6f056383",
+    "apps/mobile/android/settings.gradle.kts": "092ba880c8d4a07591aafc082f45deedc9afcf60c113a4bb3d13cbe1a1fce9de",
+    "apps/mobile/assets/contracts.json": "26bc39e9cad0eeeda69bb29ab818de4199d226bd90cac54b5877d880d36d9a09",
+    "apps/mobile/lib/api.dart": "e858971e68fdf034f99aa2673ebc42a96c288c34ff1a76f6df6557db36fb4c87",
+    "apps/mobile/lib/contracts.dart": "ef96bea8f0fb2b2bf1db099cc5b957a4b145a8a5f6a8c5bef234896c7c5bbfd2",
+    "apps/mobile/lib/main.dart": "ae8f7206c96848c6b4dcae7c70a595aea464b57407ca2cb1535c1ffd68fd78d9",
+    "apps/mobile/pubspec.lock": "2072880ef2e34a2f5274bc524364f15ac09df9709046310d2f331067824b1d47",
+    "apps/mobile/pubspec.yaml": "040918b6da465ce8d1a7aac340c015da26d83aab7f3169391f42010ee7bc7b89",
+    "apps/mobile/test/contracts_test.dart": "3881be323cbf74acfabd8ecdd4ea9470881678b196c8e9dbd25aaca2bc5e6395",
+    "apps/mobile/test/widget_test.dart": "cf474d8e269ae1286032e694106776d4e17661e93498bcf87428dc67045a1073",
+    "apps/mobile/web/favicon.png": "7ab2525f4b86b65d3e4c70358a17e5a1aaf6f437f99cbcc046dad73d59bb9015",
+    "apps/mobile/web/icons/Icon-192.png": "3dce99077602f70421c1c6b2a240bc9b83d64d86681d45f2154143310c980be3",
+    "apps/mobile/web/icons/Icon-512.png": "baccb205ae45f0b421be1657259b4943ac40c95094ab877f3bcbe12cd544dcbe",
+    "apps/mobile/web/icons/Icon-maskable-192.png": "d2c842e22a9f4ec9d996b23373a905c88d9a203b220c5c151885ad621f974b5c",
+    "apps/mobile/web/icons/Icon-maskable-512.png": "6aee06cdcab6b2aef74b1734c4778f4421d2da100b0ff9e52b21b55240202929",
+    "apps/mobile/web/index.html": "2674c030bf0f6cfa951977254b9d00359f60922482a2d2f289b7b6d2fa038701",
+    "apps/mobile/web/manifest.json": "dbf921e6beff82a71160dd6233177b8726219f0bf39c6292587f19eb3517058f",
+    "apps/web/e2e/workspace.spec.ts": "03f87c7f93db0d17caa68a0dc2287bfe545bbc20984eab32806316c3bf8cfbc5",
+    "apps/web/index.html": "3cb4751a1ce2a797e5a3c83b6126140f6ac8f795453a8903ad799de9e5b1973b",
+    "apps/web/package-lock.json": "abc343aab4526c8c321920d947b2454de6d34ea1b43bb282a2106f790bb2c981",
+    "apps/web/package.json": "21cf2d1b3667004f62de130282d30249a6dcf0d2dd90cd2c72cfa27808e712ac",
+    "apps/web/playwright.config.ts": "c1cc56ea3eedf0038602fdd162c1bd70c99d2c9cedd3edd48d6d7ef85804330b",
+    "apps/web/src/App.vue": "fe95dbf261eadd58e8f6bffebaa06a00e8d5bb68af91e966964db75461350d60",
+    "apps/web/src/contracts.ts": "cf3eb76a029679e65c5e49fc0283fa5a8c0f901e3f3fa08598bd73edfa76bd37",
+    "apps/web/src/main.ts": "3b6272aa9a34de03c9e2562e04bd46bdd29875276501ed7eead0f9f9d6d629bd",
+    "apps/web/src/store.ts": "83c7cfeb85ba9617e9c9e563a11dcc518cf6918e22184bbf5ae8217987dc8c24",
+    "apps/web/src/style.css": "4c5c901dcb1ddaaa67617c5461e35408c0e67ba2bf0a98cfe5760c0c08beb102",
+    "apps/web/tests/contracts.test.ts": "697f57a95a2811007282660f2a04b2cf7d955b617963efdb0e249f47c2fd9b8b",
+    "apps/web/tsconfig.json": "bf72fd7dc919dfd4d41b0dfe2674c7f78f2255ac0a1524849003c5389ca1be8b",
+    "apps/web/vite.config.ts": "2021c324116964585cc4e9f6e086315b48d5947ef59dfb9dda73884498e9dac9",
+    "examples/phase-1/campus.json": "0f322ef1a8b13f17694d3b17b1736562a32a5c194ec8e9b245d5045137869f4a",
+    "infra/compose.yaml": "2f5b676c748724a6f43bdd1a30a4157cba6401f1526b93c68eec3c7da61e54e0",
+    "packages/ai/src/sw_ai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "packages/ai/src/sw_ai/coverage.py": "3f259591a12fb99b35deee1c020262331ddee666f54d60b07812c8bdbf46fc01",
+    "packages/contracts/examples/cases.json": "0b3c419d445ce1694d3f7417010c635e1aef75cafb07312d4e23de55313d1d6e",
+    "packages/contracts/schema/catalog.json": "26bc39e9cad0eeeda69bb29ab818de4199d226bd90cac54b5877d880d36d9a09",
+    "packages/contracts/src/sw_contracts/__init__.py": "5f75499b527fa8ac86c6437f661d410ee165743a46c32d7c31ddad633494c180",
+    "packages/contracts/src/sw_contracts/models.py": "62eb0cf70b32345d277bd50572e2c7eb3ba54d3be09a92654ac7b6a7eaae345b",
+    "packages/contracts/src/sw_contracts/validation.py": "3da00840c5a34a2494adaf84ebc439caff89a426ae6ff0a8ac09f6ba8e078d65",
+    "packages/media/src/sw_media/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "packages/media/src/sw_media/policy.py": "e90a093c5f8ce424683f14eb7bbfb5d9d4c9905dad6faa4d8bfc425ef9e8e797",
+    "packages/media/src/sw_media/tools.py": "4ac572e8433b48d8be14f925a7dde7cf919b8b711aa2d61b97c26c8fc4fa2f46",
+    "pyproject.toml": "b6efe017382751fcabc34c046ebdb99266f74628eb7476e793c32a9760e5b599",
+    "requirements.lock.txt": "2ad63714634904bb5b9c0de5bc8dc11068305ccab4397fe2063dd808913b9083",
+    "scripts/build_fixtures.py": "8901b19c5d9f9b4699cc17d5f14cac2e9653de7ee94cebd5d91fcb9eee176441",
+    "scripts/environment_probe.py": "721c5e933383ee86dfd75e84fa059140be057f3e211c3ac41ba73a7239e9a120",
+    "scripts/export_contracts.py": "e85b07394cf157c4f823fefd5c17bef2906a8d9a1a0f9d9a9165f6d698c32448",
+    "scripts/media_probe.py": "5cfa3fd578003b3988567137b7e6d6c82fc931903a7bf29e206fe87c3191cf62",
+    "scripts/package_evidence.py": "dac395a55654ee45a2818e553560c16a5987a5821ad509473c073b04261a2daf",
+    "scripts/verify.py": "7db5d2ee43b9e33eb5b60162ccf02785b0c8dbc2bac944e5bf19887b786e9fcf",
+    "services/api/migrations/env.py": "18a0ecdc2e91aad00d982c08397b24c9c50e56b6565bdf374981fb7c8e8331e0",
+    "services/api/migrations/snapshots/foundation_schema.py": "0e70b92e9225abaaf0245af3698f34941d63d39b2f12be25116a35d574156fe7",
+    "services/api/migrations/versions/0001_foundation.py": "656725698ce09d0a6e38b71a76884ecbe929cfd9e2f46c083aeb76b38132fcc8",
+    "services/api/src/sw_api/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "services/api/src/sw_api/app.py": "c947bfedd7921911f8c5f08467445e7b24abf49a2c10cb267a2d5a73bcaad4aa",
+    "services/api/src/sw_api/auth.py": "07a7fd81bbc6b460aa261df6eb30be26b864f819f1d97b1a2227cc8b90af847c",
+    "services/api/src/sw_api/db.py": "0c5908793d3efcb6bd2cd8ce9b3d9baccdb35545c960bd66d6720a0df7497e77",
+    "services/api/src/sw_api/replay.py": "a96a945e06d3cdc41c42caca5db6f3f81f0bd7273dd430165faea5f7c5dd1fd9",
+    "services/worker/src/sw_worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "services/worker/src/sw_worker/state.py": "6ae808ba0e40aa0c071381f40c59ea6d358d26bf938da79b2c91bee6e870e120",
+    "tests/conftest.py": "0fd023ad75d4fb5734212632bde886d104328d9c6353660b4edb0a626ebf53f7",
+    "tests/test_api.py": "c6eb63f810d9d4df9960bf79054ffe89a9f9a1492c1b874ce92ae6e8a50f7b56",
+    "tests/test_contracts.py": "fea9a0c60d0fa1130459733ca87c892961c97a09e0f725711a28ba6df8559a53",
+    "tests/test_coverage.py": "45f1c98eb15a01527e9c2b88c162610ce0640078dcd9a313c0b63bc5561ff5b9",
+    "tests/test_editing.py": "80aa93e58ebcff4d2c745d9feaf993584e58324c268af89c76778ff4f49f6572",
+    "tests/test_media.py": "a6f70afffe1361fe05ed1bbfde8e3c2103b959e131655bc7437f8dae3bfb02df",
+    "tests/test_postgres.py": "07fe340f1df20663ee35699dbd990f657616dae79bf0fa0e4b5fe54e8b2dc1b9",
+    "tests/test_replay_worker.py": "7b59dd8deb3bfc71130f06497fa601dfc58e9251c9024d942798bbd7270b0269"
+  },
+  "assembly_note": "Source hashes identify files at packaging time; command-time provenance remains in replay.json.",
+  "raw_artifacts": [
+    {
+      "path": "artifacts/phase-one/verification.json",
+      "sha256": "2ccf530620f293c6d2ef1f8d58089d1419a1615b880ce09cab615bf18664f139"
+    },
+    {
+      "path": "artifacts/phase-one/python-tests.xml",
+      "sha256": "133ec94744e95fa88270e3b1f3dfb3bb87519f0f4e12ffea42b1893afc7be265"
+    },
+    {
+      "path": "artifacts/phase-one/replay.json",
+      "sha256": "e806d0e1a4c9fd269ff697dd8d9fe29c45ca990fa827e7c075123c03af37fa11"
+    },
+    {
+      "path": "artifacts/phase-one/environment.json",
+      "sha256": "124619575b340cba790a0461059eb2c5b435f0334d6cd8e57554e70d96f877b1"
+    },
+    {
+      "path": "artifacts/phase-one/media/report.json",
+      "sha256": "55fba738e24a9ace4293351184653fae9097449b96c13f795d991a2a6f4f3362"
+    },
+    {
+      "path": "artifacts/phase-one/browser/results.json",
+      "sha256": "e9d6e820705edd5f3b983d1e35d05133617059c4e7d6eda02d279af573b77a86"
+    }
+  ],
+  "packaged_files": [
+    {
+      "path": "replay.json",
+      "sha256": "e806d0e1a4c9fd269ff697dd8d9fe29c45ca990fa827e7c075123c03af37fa11"
+    },
+    {
+      "path": "media.json",
+      "sha256": "55fba738e24a9ace4293351184653fae9097449b96c13f795d991a2a6f4f3362"
+    },
+    {
+      "path": "environment.json",
+      "sha256": "124619575b340cba790a0461059eb2c5b435f0334d6cd8e57554e70d96f877b1"
+    },
+    {
+      "path": "verification-summary.json",
+      "sha256": "8ae34a644be6686457d795800eb4d22d472c0796afc902413a052f0db4b8ee56"
+    }
+  ],
+  "requirements_sha256": "9e6712ad7473a2d99c2945403fa56b2226d8294635855e956082640e17b7507b",
+  "formal_phase_acceptance": "pending_independent_reproduction",
+  "model_called": false
+}

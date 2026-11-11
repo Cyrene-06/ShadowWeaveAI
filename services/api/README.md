@@ -1,13 +1,17 @@
-# 业务 API
+# FastAPI 第一阶段服务
 
-状态：目录骨架，尚无 FastAPI 应用或已实现接口。
+从仓库根目录安装依赖并迁移后运行：
 
-负责用户与项目权限、素材上传协调、任务受理与查询、创作意图和故事板、修改草案确认、版本管理及导出记录。耗时分析与渲染通过后台任务执行。
+```powershell
+$env:ENABLE_PHASE_ONE_REPLAY='true'
+.venv/Scripts/python.exe -m alembic upgrade head
+.venv/Scripts/python.exe -m uvicorn sw_api.app:app --host 127.0.0.1 --port 8000
+```
 
-初始化后的建议布局：`app/api/` 放路由，`app/core/` 放设置和鉴权，`app/models/` 放持久化对象，`app/schemas/` 放请求响应，`app/services/` 放业务协调，`migrations/` 放数据库迁移。
+默认数据库为 SQLite `artifacts/phase-one.sqlite3`，PostgreSQL 通过 `DATABASE_URL` 切换。API 不自动建表，也不自动读取 `.env`。开发 JWT 密钥保存在被 Git 忽略的 `artifacts/jwt-secret.txt`；生产要求环境密钥，且禁止固定输入回放。
 
-外部 API 设计集中维护在 [接口文档](../../docs/api/README.md)，跨端对象见 [数据契约](../../packages/contracts/README.md)。引入持久化时明确事务、幂等和并发版本检查。
+已实现健康检查、注册/登录、刷新轮换/退出、项目幂等创建/读取、owner/editor/viewer 授权，以及显式启用的第一阶段固定样例导入、回放、证据校验和真实媒体上传探针。错误格式、路径和请求字段见 [OpenAPI](../../docs/api/openapi.json)。
 
-初始化时补齐 Python 环境、依赖与锁定、数据库迁移、开发启动、健康检查和测试命令。
+样例导入在单事务内完成，PostgreSQL 测试覆盖并发导入和失败回滚。样例素材记录明确标记 `fixture://human-annotation/`，不代表已上传原片。媒体探针上传文件处理后清理，不登记为真实 Asset，也不能完成补拍任务。
 
-接口和事务以 [系统详细设计](../../docs/design/detailed-design.md) 为准，表结构和迁移以 [数据库设计](../../docs/design/database-design.md) 为准。
+访问令牌 15 分钟；Web 刷新令牌由 HttpOnly Cookie 承载，cookie 刷新需可信 Origin；Flutter 令牌只在内存保存。开发限流为单进程内存实现。生产级用户管理、分布式限流、对象存储、可靠异步和版本提交尚未启用。
