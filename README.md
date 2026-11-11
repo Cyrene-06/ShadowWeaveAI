@@ -91,6 +91,7 @@ ShadowWeaveAI/
 ├── docs/
 │   ├── requirements.md       # 完整需求基线
 │   ├── architecture.md       # 架构、职责与数据约束
+│   ├── design/               # 系统详细设计、数据库设计、Agent 设计
 │   ├── development.md        # 开发约定与初始化顺序
 │   ├── roadmap.md            # 八阶段计划与验收产物
 │   └── api/README.md         # 接口设计边界
@@ -117,8 +118,9 @@ cd ShadowWeaveAI
 
 1. 阅读 [需求分析](docs/requirements.md)，确认场景、需求编号与验收条件。
 2. 阅读 [架构说明](docs/architecture.md)，了解服务边界及关键约束。
-3. 按 [开发指南](docs/development.md) 初始化对应子项目，并补齐依赖、启动方式和测试说明。
-4. 参考 [开发路线](docs/roadmap.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
+3. 阅读 [系统详细设计](docs/design/detailed-design.md)、[数据库设计](docs/design/database-design.md) 和 [Agent 设计](docs/design/agent-design.md)，按统一契约拆分实现。
+4. 按 [开发指南](docs/development.md) 初始化对应子项目，并补齐依赖、启动方式和测试说明。
+5. 参考 [开发路线](docs/roadmap.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
 
 当前可进行文档阅读和仓库协作；尚无 `npm run dev`、API 启动或 Docker 启动入口。`.env.example` 供后续配置设计参考，不需要在此阶段填写模型密钥。
 
@@ -128,6 +130,7 @@ cd ShadowWeaveAI
 
 - [x] 整理完整需求基线与架构说明
 - [x] 建立仓库目录骨架和协作配置
+- [x] 编制系统详细设计、数据库设计与 Agent 设计草案
 - [ ] 初始化 Web、Flutter、API 与后台任务工程
 - [ ] 跑通创建项目 → 上传 → 样例分析 → 预览导出的首个闭环
 - [ ] 完成七大模块及七角色协作

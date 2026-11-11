@@ -9,3 +9,5 @@
 外部 API 设计集中维护在 [接口文档](../../docs/api/README.md)，跨端对象见 [数据契约](../../packages/contracts/README.md)。引入持久化时明确事务、幂等和并发版本检查。
 
 初始化时补齐 Python 环境、依赖与锁定、数据库迁移、开发启动、健康检查和测试命令。
+
+接口和事务以 [系统详细设计](../../docs/design/detailed-design.md) 为准，表结构和迁移以 [数据库设计](../../docs/design/database-design.md) 为准。

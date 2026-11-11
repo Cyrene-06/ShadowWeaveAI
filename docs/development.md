@@ -18,7 +18,7 @@
 
 ## 建议初始化顺序
 
-1. **冻结首个接口契约**：明确 Project、Asset、Job、Version 的最小字段、错误结构与状态；确定时间单位与 ID 规则。
+1. **落实首个接口契约**：依据 [详细设计](design/detailed-design.md) 中的 UUID、毫秒区间、状态与错误约定，生成 Project、Asset、Job、Version 的可校验 Schema；建表依据 [数据库设计](design/database-design.md)，工作流依据 [Agent 设计](design/agent-design.md)。
 2. **建立 API 基础**：初始化 FastAPI 工程、设置加载、健康检查、项目与上传入口，补齐数据库迁移与启动说明。
 3. **建立 Worker 与媒体链路**：先处理一个授权样例，完成探测、代理或简单渲染，提供真实阶段状态和失败原因。
 4. **初始化双端**：Web 提供项目、上传和进度页面；移动端验证摄像头权限、采集和素材回传。
