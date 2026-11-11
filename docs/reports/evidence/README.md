@@ -9,6 +9,7 @@
 | [verification-summary.json](verification-summary.json) | 真实命令、退出码、耗时、JUnit 数量和浏览器结果摘要 |
 | [media.json](media.json) | 原创真实媒体探测、解码/渲染结果、工具版本和二进制摘要 |
 | [ci.json](ci.json) | GitHub Actions 只读 API 获取的实现提交、最终状态及两个 job 的结果 |
+| [model-probe.json](model-probe.json) | 模型协议探针的实际配置/执行记录；not_configured 不代表已调用 |
 | [environment.json](environment.json) | 工具版本、设备发现、真机阻塞与模型未配置记录 |
 
 固定元数据与真实媒体是两条独立验证路径，均未调用模型。源码摘要是整理时状态；回放中的 commit/dirty 是回放运行时状态，二者分别保留。测试摘要不替代独立复现或正式阶段签署。

@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-11T06:07:28.118441+00:00",
+  "recorded_at": "2026-11-11T06:58:16.364035+00:00",
   "platform": "Windows-11-10.0.26200-SP0",
   "python": "3.12.7",
   "node": {
@@ -20,7 +20,7 @@
   "physical_capture": {
     "status": "blocked",
     "physical_devices": [],
-    "reason": "No Android/iOS physical device discovered; Android SDK/adb unavailable on this host",
+    "reason": "No Android/iOS physical device discovered; inspect adb_available and Flutter device diagnostics",
     "owner": "A",
     "review_date": "2026-11-19"
   },
@@ -28,7 +28,7 @@
     "status": "not_configured",
     "model_called": false,
     "credentials_present": false,
-    "reason": "MODEL_BASE_URL / MODEL_NAME / MODEL_API_KEY are not all configured",
+    "reason": "MODEL_PROVIDER / MODEL_BASE_URL / MODEL_NAME / MODEL_API_KEY are not all configured",
     "usage": null,
     "cost": null,
     "owner": "C",

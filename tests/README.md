@@ -18,3 +18,5 @@ $env:TEST_DATABASE_URL='postgresql+psycopg://shadowweave:phase_one_local_only@12
 Web/Flutter 共用同一组 42 个有效和无效契约用例。浏览器测试真实连接双端和 API，复现方法见 [Web 说明](../apps/web/README.md)。实际结果和适用边界见[阶段报告](../docs/reports/phase-1-report.md)。
 
 `test_evaluation_records.py` 检查离线准备记录的 ready 门、事件/字节/近重复/原片家族跨集合泄漏、授权声明、标注引用区间和覆盖一致性，以及失败、无模型调用和计时记录。测试夹具为单元测试声明，不属于实拍数据集或人工标注成绩。
+
+`test_model_probe.py` 使用真实回环 HTTP 服务及受控超时验证模型协议适配器、失败/截断/拒绝、请求上限、不跟随重定向、错误正文脱敏和用量/估算口径。测试不连接模型服务、不发生计费，也不证明真实模型可达。

@@ -23,6 +23,7 @@ def main():
         ("ruff", [py, "-m", "ruff", "check", "."], ROOT),
         ("contracts", [py, "scripts/export_contracts.py", "--check"], ROOT),
         ("evaluation_templates", [py, "scripts/prepare_evaluation.py", "--check"], ROOT),
+        ("model_probe_readiness", [py, "scripts/model_probe.py"], ROOT),
         ("python", [py, "-m", "pytest", "-q", "--junitxml=artifacts/phase-one/python-tests.xml"], ROOT),
         ("replay", [py, "-m", "sw_api.replay"], ROOT),
         ("media", [py, "scripts/media_probe.py"], ROOT),

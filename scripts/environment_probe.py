@@ -45,7 +45,7 @@ def main():
         ]
     except json.JSONDecodeError:
         pass
-    model_ready = all(os.environ.get(name) for name in ("MODEL_BASE_URL", "MODEL_NAME", "MODEL_API_KEY"))
+    model_ready = all(os.environ.get(name) for name in ("MODEL_PROVIDER", "MODEL_BASE_URL", "MODEL_NAME", "MODEL_API_KEY"))
     record = {
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "platform": platform.platform(),
@@ -58,7 +58,7 @@ def main():
             "physical_devices": physical,
             "reason": "Capture on an authorized physical device is still required"
             if physical
-            else "No Android/iOS physical device discovered; Android SDK/adb unavailable on this host",
+            else "No Android/iOS physical device discovered; inspect adb_available and Flutter device diagnostics",
             "owner": "A",
             "review_date": "2026-11-19",
         },
@@ -68,7 +68,7 @@ def main():
             "credentials_present": bool(os.environ.get("MODEL_API_KEY")),
             "reason": "Provider-specific connectivity, structured result and usage/cost probe still required"
             if model_ready
-            else "MODEL_BASE_URL / MODEL_NAME / MODEL_API_KEY are not all configured",
+            else "MODEL_PROVIDER / MODEL_BASE_URL / MODEL_NAME / MODEL_API_KEY are not all configured",
             "usage": None,
             "cost": None,
             "owner": "C",

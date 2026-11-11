@@ -13,6 +13,7 @@
 | 实施数据层 | [数据库设计](design/database-design.md) | 36 张业务表、机制字段、关系/索引、事务和生命周期 |
 | 实施角色协作 | [Agent 设计](design/agent-design.md) | 七职责如何产出证据、执行门控、恢复和受限建议 |
 | 执行第一阶段 | [第一阶段实施大纲](phase-1-outline.md) | 7 日工作包、T01—T10、创新对照及 P1-01—11；实际结果另见阶段报告 |
+| 执行模型协议探针 | [模型探针说明](model-probe.md) | 配置、显式请求、结构校验、用量、费用估算与真实调用边界 |
 | 查看第一阶段实际结果 | [阶段实施与验证报告](reports/phase-1-report.md) | 对应任务/验收、实际命令结果、阻塞和下一阶段输入 |
 | 初始化与分工 | [开发指南](development.md)、[执行路线](roadmap.md) | 风险优先的实施建议、日期窗口和资源假设 |
 | 实施 API 与契约 | [接口入口](api/README.md)、[共享契约](../packages/contracts/README.md) | Pydantic 单一来源、共享 Schema 用例与实际路由 OpenAPI |

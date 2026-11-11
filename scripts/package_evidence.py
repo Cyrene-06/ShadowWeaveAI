@@ -70,6 +70,12 @@ def main():
             "No independent human reproduction, physical capture or model evaluation has passed.",
         ],
     })
+    optional_probe = RAW / "model-probe.json"
+    if optional_probe.exists():
+        probe = load(optional_probe)
+        if probe.get("code", {}).get("script_sha256") != sha(ROOT / "scripts/model_probe.py"):
+            raise SystemExit("Model probe record is stale; run scripts/model_probe.py again")
+        write("model-probe.json", probe)
     # All implementation inputs, not a self-referential hash of reports/outputs.
     candidates = git("ls-files", "--cached", "--others", "--exclude-standard").splitlines()
     source_hashes = {
@@ -83,6 +89,11 @@ def main():
         "verification.json", "python-tests.xml", "replay.json", "environment.json",
         "media/report.json", "browser/results.json",
     ]
+    if optional_probe.exists():
+        raw_paths.append("model-probe.json")
+    packaged_names = ["replay.json", "media.json", "environment.json", "verification-summary.json"]
+    if optional_probe.exists():
+        packaged_names.append("model-probe.json")
     # There are no browser traces or credentials in this whitelist.
     write("index.json", {
         "packaged_at": datetime.now(timezone.utc).isoformat(),
@@ -95,11 +106,11 @@ def main():
         ],
         "packaged_files": [
             {"path": name, "sha256": sha(DEST / name)}
-            for name in ("replay.json", "media.json", "environment.json", "verification-summary.json")
+            for name in packaged_names
         ],
         "requirements_sha256": sha(ROOT / "docs/requirements.md"),
         "formal_phase_acceptance": "pending_independent_reproduction",
-        "model_called": False,
+        "model_called": probe.get("model_called") if optional_probe.exists() else False,
     })
     print(DEST)
 

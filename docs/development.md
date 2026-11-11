@@ -96,3 +96,7 @@ CI 定义在 `.github/workflows/phase-one.yml`，覆盖核心检查、PostgreSQL
 ## 评测数据准备与独立交接
 
 按[数据准备与标注指南](evaluation-data.md)复制并填写[离线模板](../examples/evaluation/README.md)。`python scripts/prepare_evaluation.py --check` 已进入统一检查；实际数据、独立标注与运行记录使用 `scripts/validate_evaluation.py` 的 `--ready` 和 `--manifest` 校验。模板通过不表示完成采集或实验。复现者使用指南中的空白交接表记录真实结果；另一成员尚未独立签署时保持待复核。
+
+## 模型协议探针
+
+`scripts/model_probe.py` 默认仅记录配置状态，统一检查也只执行此模式。获得提供商配置后按[模型探针说明](model-probe.md)使用 `--execute` 显式请求一次并保存实际返回；不自动重试，不把回环测试当作模型效果。费用若有费率文件仅记录估算，实际账单字段保持缺测。

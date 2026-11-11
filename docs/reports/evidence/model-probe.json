@@ -1,0 +1,37 @@
+{
+  "recorded_at": "2026-11-11T06:58:43.801244+00:00",
+  "kind": "phase_one_model_protocol_probe",
+  "source_kind": "synthetic_metadata",
+  "status": "not_configured",
+  "request_attempted": false,
+  "model_called": false,
+  "endpoint_kind": null,
+  "http_status": null,
+  "structured_result": null,
+  "usage": null,
+  "usage_status": "not_observed",
+  "cost": null,
+  "cost_estimate": null,
+  "failure_code": "missing_provider_configuration",
+  "model_name": null,
+  "endpoint_sha256": null,
+  "prompt_version": "phase-one-protocol-v1",
+  "request_sha256": null,
+  "response_sha256": null,
+  "max_output_tokens": 256,
+  "timeout_seconds": 30,
+  "retry_count": 0,
+  "limitations": [
+    "This probes a declared provider protocol, not model quality or real media understanding.",
+    "model_called=null means a request was attempted but inference could not be established.",
+    "A loopback test response never counts as a real model call.",
+    "cost stays null: an optional flat-rate estimate is not an invoice or actual billed charge."
+  ],
+  "duration_seconds": 0.0,
+  "finished_at": "2026-11-11T06:58:43.801244+00:00",
+  "code": {
+    "commit": "3126e436eaac9a97e987014cdbd2a4ff07333900",
+    "dirty": true,
+    "script_sha256": "2dffe86d92c215de92501cefc699cb759cc6cb5653fb75ffc4d203d2be97ee0e"
+  }
+}

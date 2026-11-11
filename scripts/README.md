@@ -10,6 +10,7 @@
 | `python scripts/validate_evaluation.py RECORD... [--manifest PATH] [--ready]` | 检查记录结构、来源引用和分组一致性 | stdout；不证明实际执行或人工评审 |
 | `python -m sw_api.replay` | 实际执行两组样例规则 | `artifacts/phase-one/replay.json` |
 | `python scripts/media_probe.py` | 原创媒体生成、真实解码与最小渲染 | `artifacts/phase-one/media/` |
+| `python scripts/model_probe.py [--execute] [--pricing PATH]` | 默认记录模型配置；显式执行一次结构化协议探针 | `artifacts/phase-one/model-probe.json`，见[口径说明](../docs/model-probe.md) |
 | `python scripts/environment_probe.py` | 工具、设备与模型配置可用性记录 | `artifacts/phase-one/environment.json` |
 | `python scripts/package_evidence.py` | 整理白名单证据与原始工件摘要；缺失记录会失败 | `docs/reports/evidence/` |
 | `python scripts/verify.py [--flutter]` | 检查 Python/Web 并保存真实命令结果 | `artifacts/phase-one/verification.json` |

@@ -27,7 +27,7 @@
 | T07 确认契约 | 完整草案摘要、基准修订、显式解锁键核对 | 契约通过；不发布生产版本 |
 | T08 双端联调 | 身份/项目、证据、覆盖、补拍卡、修改差异和拒绝原因、媒体上传 | 真实浏览器流程通过；Android 真机待验证 |
 | T09 复现与报告 | A/B 固定样例、测试入口、运行记录、开发指南、评测数据/标注模板和证据摘要 | 本机复跑通过；另一成员独立复现待执行 |
-| T10 技术探针 | 原创媒体上传、真实解码/渲染、设备与模型配置检查 | 媒体通过；真机 blocked，模型 not_configured |
+| T10 技术探针 | 原创媒体上传、真实解码/渲染、设备检查、可显式执行的模型协议探针 | 媒体通过；真机 blocked，模型 not_configured |
 
 ## 2. 创新机制与本阶段证据
 
@@ -114,7 +114,7 @@
 | --- | --- |
 | Ruff | 通过 |
 | 契约/Schema/OpenAPI 导出一致性 | 通过 |
-| Python | 132 passed，包含 4 项真实 PostgreSQL 检查 |
+| Python | 152 passed，包含 4 项真实 PostgreSQL 检查 |
 | 固定输入规则回放 | 18/18 断言通过 |
 | 真实媒体生成、解码与渲染 | 通过 |
 | Web 契约测试 | 42 passed |
@@ -140,7 +140,7 @@
 | 原创真实媒体 | 1000 ms、1280×720、H.264/AAC 输入；实际解码渲染为 520 ms 输出 | 当前工具链和这一格式可用 |
 | 媒体工具版本 | FFmpeg 9.0.2；ffprobe 2023-02-13 构建；详见媒体报告 | 两工具版本不同，其他设备/格式兼容性待验证 |
 | Android 真机采集 | blocked：本机未发现 Android/iOS 真机，缺 Android SDK/adb | 未构建 APK，未完成真机相机验证 |
-| 模型探针 | not_configured；model_called=false，usage/cost=null | 三项配置不齐，未调用模型，未测效果或成本 |
+| 模型探针 | not_configured；model_called=false，usage/cost=null | 四项配置不齐，未调用模型，未测效果或成本 |
 
 媒体来源为本项目 FFmpeg 生成的色块/正弦信号，独立于固定样例中的人工事实。媒体摘要保留输入/输出探测结果与二进制 hash；不提交媒体、SDK 或数据库。设备与模型结果见[环境记录](evidence/environment.json)，媒体结果见[工具报告](evidence/media.json)。
 
@@ -151,6 +151,14 @@
 离线记录独立于 21 个业务对象；23 项新增单元测试检查模板不能冒充 ready、四类跨集合泄漏、授权声明、证据越界、覆盖矛盾、失败保留及无模型调用/计时一致性。三份空白模板结构校验通过；对空清单使用 `--ready` 实际以退出码 1 拒绝。生成一致性检查已进入统一校验及 CI。当前没有把单元夹具当成真实数据或标注结果。
 
 本次补充后重新执行 Python、真实 PostgreSQL、Web、Flutter 分析/测试/Web 构建，均通过。浏览器 1 项流程沿用同日此前的真实运行，开始时间保留在证据摘要 browser.startTime，未将其改写成本次重新执行。数据准备材料不表示完成 15 任务/300 素材采集、双人标注或正式效果实验；结构校验也不能证明实际授权、执行与人工独立性。
+
+### 6.5 模型协议探针入口
+
+T10 现有可执行入口 `scripts/model_probe.py`，说明见[模型探针文档](../model-probe.md)。默认只检查配置；加 `--execute` 后向配置的 Chat Completions 服务发送一次合成输入，检查 strict JSON 返回、本地 Schema、完成原因及用量。失败、超时或拒绝均保留；不自动重试、不跟随重定向、不回显上游错误正文。
+
+新增 20 项测试使用真实回环 HTTP 服务及受控超时，覆盖协议、结构错误、拒绝、截断、401/429/500、重定向、响应大小和费用估算。回环结果显式标为 loopback_fixture，model_called=false，不计入真实模型验证。费用仅在提供审核费率与有效 token 时生成估算，实际账单 cost 仍为 null。
+
+2026-11-11 重新执行环境检测与探针：未发现 Android/iOS 真机；MODEL_PROVIDER、MODEL_BASE_URL、MODEL_NAME、MODEL_API_KEY 未齐。默认和显式执行均实际记录 not_configured，request_attempted=false、model_called=false；显式执行退出码 1。证据见[探针记录](evidence/model-probe.json)。当前新增的是可执行工具，不把它记成真实调用完成。
 
 ## 7. 创新结论与证据限制
 
