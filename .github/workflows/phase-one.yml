@@ -55,3 +55,35 @@ jobs:
         working-directory: apps/mobile
       - run: flutter build web --release
         working-directory: apps/mobile
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.9'
+          channel: stable
+          cache: true
+      - name: Resolve Flutter dependencies
+        run: flutter pub get
+        working-directory: apps/mobile
+      - name: Build Android debug APK
+        run: flutter build apk --debug --dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1
+        working-directory: apps/mobile
+      - name: Record APK checksum
+        run: sha256sum app-debug.apk > app-debug.apk.sha256
+        working-directory: apps/mobile/build/app/outputs/flutter-apk
+      - name: Save Android installation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase-one-android-debug
+          path: |
+            apps/mobile/build/app/outputs/flutter-apk/app-debug.apk
+            apps/mobile/build/app/outputs/flutter-apk/app-debug.apk.sha256
+          if-no-files-found: error
+          retention-days: 14

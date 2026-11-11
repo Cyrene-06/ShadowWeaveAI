@@ -62,7 +62,7 @@ python -m http.server 8080 --bind 127.0.0.1 --directory build/web
 
 本次 Windows 中文路径引发 Flutter shader 编译和 LSP 编码错误，使用未占用盘符 `subst W: E:\软创\ShadowWeaveAI` 后，在 `W:\apps\mobile` 调用 `W:\.cache\flutter\bin\flutter.bat` 成功。盘符只作本机工具兼容处理，不写入工程配置；用户路径不同需自行替换。勿覆盖现有盘符映射。
 
-Android 工程尚未构建 APK，真机需 Android SDK/设备和可达的 API 地址。设备上的 127.0.0.1 是设备自身，不能直接使用本机回环地址。开发明文访问限 debug/profile，正式版本使用 HTTPS。当前没有真机采集通过证据。
+Android 原生工程新增独立 CI debug APK 构建入口，实际结果见阶段报告；本机缺 Android SDK，真机仍需设备和可达的 API 地址。设备上的 127.0.0.1 是设备自身，不能直接使用本机回环地址。开发明文访问限 debug/profile，正式版本使用 HTTPS。当前没有真机采集通过证据。安装和 USB 反向端口步骤见[Android 探针指南](android-probe.md)。
 
 ## 5. 统一检查与浏览器联调
 

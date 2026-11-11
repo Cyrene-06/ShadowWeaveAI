@@ -16,3 +16,5 @@ python -m http.server 8080 --bind 127.0.0.1 --directory build/web
 Windows 本次环境的中文路径触发了 Flutter 工具的 shader/LSP 错误，使用空闲盘符 `subst W: E:\软创\ShadowWeaveAI` 映射后成功；在 `W:\apps\mobile` 调用 `W:\.cache\flutter\bin\flutter.bat`。其他环境优先选择英文路径，不要覆盖已占用盘符。
 
 Web 运行不代表 Android APK 或相机能力通过。设备、SDK 和模型未验证项见[阶段报告](../../docs/reports/phase-1-report.md)。
+
+原生 Android 新增独立 CI debug APK 构建入口，成功后上传 APK 和 SHA-256 工件；构建与真机状态分开记录。USB 连接、安装、相机采集与上传检查见[Android 探针指南](../../docs/android-probe.md)。
