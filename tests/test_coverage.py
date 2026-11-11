@@ -20,6 +20,58 @@ def test_four_states_and_incomplete_search(bundle, manifest):
     assert evaluate_coverage(node, manifest, True).coverage == "uncertain"
 
 
+def test_report_explains_each_requirement_and_selects_irreducible_evidence(bundle, manifest):
+    node = StoryNode.model_validate(bundle["nodes"][0])
+    node.requirements = ["environment", "activity"]
+    node.minimum_duration_ms = 4000
+    shared = manifest.evidence[0]
+    shared.requirement_keys = ["environment", "activity"]
+    report = evaluate_coverage(node, manifest, True)
+
+    assert report.coverage == "covered"
+    assert report.selection_complete is True
+    assert report.usable_duration_ms >= report.minimum_duration_ms
+    assert report.selected_evidence_refs == [shared.id]
+    assert all(row.state == "covered" for row in report.requirement_results)
+    assert all(row.selected_refs == [shared.id] for row in report.requirement_results)
+    assert all(row.qualified_refs for row in report.requirement_results)
+
+
+def test_incomplete_required_evidence_propagates_as_uncertain(bundle, manifest):
+    node = StoryNode.model_validate(bundle["nodes"][0])
+    node.requirements.append("farewell")
+    unknown = manifest.evidence[0].model_copy(deep=True)
+    unknown.id = uuid4()
+    unknown.requirement_keys = ["farewell"]
+    unknown.semantic_support = "unknown"
+    manifest.evidence.append(unknown)
+
+    report = evaluate_coverage(node, manifest, True)
+
+    assert report.coverage == "uncertain"
+    assert report.selection_complete is False
+    assert report.uncertainty_reasons == ["farewell:semantic_unknown"]
+    farewell = next(row for row in report.requirement_results if row.requirement_key == "farewell")
+    assert farewell.state == "uncertain"
+    assert farewell.candidate_refs == [unknown.id]
+
+
+def test_capture_verification_cannot_clear_unknown_requirement(bundle):
+    result = run_replay(bundle)
+    task = CaptureTask.model_validate(result["capture"]["after_upload"])
+    verification = CaptureVerification.model_validate(result["capture"]["verification"])
+    manifest = EvidenceManifest.model_validate(result["capture"]["verification_manifest"])
+    node = StoryNode.model_validate(bundle["nodes"][-1])
+    for evidence in manifest.evidence:
+        if "farewell" in evidence.requirement_keys:
+            evidence.semantic_support = "unknown"
+    verification.report = evaluate_coverage(node, manifest, True)
+
+    assert verification.report.coverage == "uncertain"
+    with pytest.raises(RuleError, match="not certainly covered"):
+        verify_capture(task, verification, manifest, node, set(verification.analysis_run_ids))
+
+
 def test_overlap_is_not_extra_duration(bundle, manifest):
     node = StoryNode.model_validate(bundle["nodes"][1])
     node.minimum_duration_ms = 7000

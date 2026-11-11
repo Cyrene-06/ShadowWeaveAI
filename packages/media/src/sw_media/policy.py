@@ -73,11 +73,16 @@ def predict_impact(base, targets, approved=None, new_keys=(), max_nodes=1000, sc
     if not targets or not set(targets) <= clips.keys():
         raise RuleError("INVALID_ARGUMENT", "unknown/empty edit target")
     found = set(targets)
-    causes = {k: ["explicit_target"] for k in targets}
-    queue = deque(sorted(targets))
+    causes = {key: ["explicit_target"] for key in sorted(set(targets))}
+    paths = {key: [key] for key in sorted(set(targets))}
+    queue = deque(sorted(set(targets)))
     while queue:
         key = queue.popleft()
         for child in sorted(dependents[key]):
+            candidate_path = paths[key] + [child]
+            current_path = paths.get(child)
+            if current_path is None or (len(candidate_path), candidate_path) < (len(current_path), current_path):
+                paths[child] = candidate_path
             causes.setdefault(child, []).append(f"depends_on:{key}")
             if child not in found:
                 found.add(child)
@@ -88,14 +93,36 @@ def predict_impact(base, targets, approved=None, new_keys=(), max_nodes=1000, sc
     allowed = predicted if approved is None else set(approved)
     if not allowed <= (clips.keys() | set(new_keys)) or not set(targets) <= allowed:
         raise RuleError("INVALID_ARGUMENT", "invalid approved scope")
+    locked = sorted(k for k in predicted if k in clips and clips[k]["locked"])
+    unapproved = sorted(predicted - allowed)
+    total_clip_count = len(clips) + len(set(new_keys))
+    ratio = len(predicted) / max(1, total_clip_count)
+    reasons = []
+    if locked:
+        reasons.append("locked_content_in_predicted_impact")
+    if unapproved:
+        reasons.append("predicted_impact_exceeds_approved_scope")
+    if ratio > 0.5:
+        reasons.append("broad_dependency_blast_radius")
+    severity = "blocked" if locked else "high" if unapproved else "medium" if ratio > 0.5 else "low"
     return ImpactReport(
         base_content_hash=content_hash(base),
         requested_target_keys=sorted(set(targets)),
         predicted_affected_keys=sorted(predicted),
         approved_affected_keys=sorted(allowed),
-        causes=causes,
+        causes={key: sorted(set(value)) for key, value in sorted(causes.items())},
+        propagation_paths={key: paths[key] for key in sorted(paths)},
+        risk_budget={
+            "total_clip_count": total_clip_count,
+            "affected_clip_count": len(predicted),
+            "affected_ratio": ratio,
+            "locked_conflict_count": len(locked),
+            "unapproved_affected_keys": unapproved,
+            "severity": severity,
+            "reasons": reasons,
+        },
         scope_approval_ref=scope_approval_ref or uuid4(),
-        lock_conflicts=sorted(k for k in predicted if k in clips and clips[k]["locked"]),
+        lock_conflicts=locked,
     )
 
 
@@ -178,7 +205,7 @@ def validate_edit(base, candidate, impact, manifest, unlock_keys=()):
         "hard_errors": errors,
         "locked_hash_comparison": locked,
         "outside_scope_comparison": sorted(outside),
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": diff,
     }
 

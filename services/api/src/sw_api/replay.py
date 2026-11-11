@@ -55,6 +55,17 @@ def run_replay(bundle):
         report=after,
     )
     fulfilled = verify_capture(submitted, verification, new_manifest, ending, {segment.analysis_run_id})
+    uncertain_manifest = new_manifest.model_copy(deep=True)
+    for evidence in uncertain_manifest.evidence:
+        if "farewell" in evidence.requirement_keys:
+            evidence.semantic_support = "unknown"
+    uncertain_report = evaluate_coverage(ending, uncertain_manifest, True)
+    uncertain_verification = verification.model_copy(deep=True, update={"report": uncertain_report})
+    try:
+        verify_capture(submitted, uncertain_verification, uncertain_manifest, ending, {segment.analysis_run_id})
+        uncertain_capture_blocked = False
+    except RuleError:
+        uncertain_capture_blocked = True
     base = EDL.model_validate(bundle["base_edl"])
     # Scope is established before inspecting or parsing any candidate.
     impact = predict_impact(
@@ -95,6 +106,24 @@ def run_replay(bundle):
         "verification_gate": fulfilled.state == expected["verified"],
         **{"edit/" + key: report["accepted"] == expected["edits"][key] for key, report in edits.items()},
         "contract_only": confirmed["valid"] and not confirmed["version_published"],
+        "coverage_explanation": all(
+            row.requirement_key in report.checked_requirements
+            for report in reports.values() for row in report.requirement_results
+        ),
+        "covered_nodes_have_sufficient_selection": all(
+            report.selection_complete
+            and report.usable_duration_ms >= report.minimum_duration_ms
+            for report in reports.values() if report.coverage == "covered"
+        ),
+        "uncertainty_blocks_capture_fulfillment": (
+            uncertain_report.coverage == "uncertain"
+            and bool(uncertain_report.uncertainty_reasons)
+            and uncertain_capture_blocked
+        ),
+        "impact_preflight_paths_and_risk": (
+            impact.propagation_paths.get("opening-title") == ["opening", "opening-title"]
+            and impact.risk_budget.affected_clip_count == len(impact.predicted_affected_keys)
+        ),
     }
     try:
         commit = subprocess.run(
@@ -133,7 +162,7 @@ def run_replay(bundle):
                 for p in source_files
             },
         },
-        "rules": {"coverage": "coverage-1", "editing": "policy-1", "impact": "impact-1"},
+        "rules": {"coverage": "coverage-2", "editing": "policy-2", "impact": "impact-2"},
         "environment": {"python": platform.python_version(), "platform": platform.platform()},
         "recorded_at": datetime.now(timezone.utc).isoformat(),
         "passed": all(checks.values()),
@@ -146,6 +175,8 @@ def run_replay(bundle):
             "after_verification": fulfilled.model_dump(mode="json"),
             "verification": verification.model_dump(mode="json"),
             "verification_manifest": new_manifest.model_dump(mode="json"),
+            "uncertainty_report": uncertain_report.model_dump(mode="json"),
+            "uncertainty_blocks_fulfillment": uncertain_capture_blocked,
         },
         "impact": impact.model_dump(mode="json"),
         "edits": edits,
@@ -153,6 +184,8 @@ def run_replay(bundle):
         "confirmation": confirmed,
         "limitations": [
             "Human-annotated synthetic metadata; no actual media understanding or quality measurement.",
+            "Evidence selection is deterministic greedy set-cover plus reverse pruning, not a globally minimum-cardinality solver.",
+            "Impact risk is a static pre-candidate blast-radius heuristic, not a production risk or cost estimate.",
             "No production version publication or async workflow.",
         ],
     }

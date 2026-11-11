@@ -236,6 +236,26 @@ AnalysisRun 固定媒体哈希、配置摘要、模型版本与产物；新分�
 
 每项事实要求记录 `supported / contradicted / unknown`、证据引用、核对来源（规则/模型/人工）和理由。规则能校验区间、清晰度阈值和时长，不能证明人物身份或复杂事件；语义支持由带引用的模型判断或人工确认给出，保留错误评估。证据引用不存在、超出源区间、属于他项目或不在 manifest 中，确定性拒绝。
 
+### 7.3.1 逐需求解释与最小充分证据选择
+
+第一阶段的规则输出不只保存节点级 `candidate_refs`。对每个 `requirement_key` 保存候选、合格候选、实际选择和理由，分别对应 `candidate_refs`、`qualified_refs`、`selected_refs` 与 `reason_codes`。这样可以回答“这一项要求由哪段证据支持、哪些候选被排除、为什么没有被选中”。
+
+选择采用可重放的确定性策略：先优先覆盖尚未满足的事实要求，再优先增加未被已选区间覆盖的源时长；完成后反向删除不再必要的证据。它是第一阶段的最小充分证据近似，不宣称求得全局最小证据集合。选中证据按 `selected_evidence_refs` 固定排序，并通过 `evaluated_manifest_hash` 绑定输入快照。
+
+`selection_complete` 只有在所有硬要求、最低可用时长和搜索完整性同时满足时为真。覆盖报告因此成为可审计的证明摘要，而不是不可解释的颜色标签。
+
+### 7.3.2 不确定性传播
+
+`uncertain` 不仅是覆盖函数的临时返回值。若检索未完成、语义支持为 `unknown` 或事实归属无法确认，报告必须写入 `uncertainty_reasons`，且 `selection_complete=false`。补拍验证只能接受 `coverage=covered`、无不确定原因且选择完整的报告；上传、用户略过或单纯重新提交不能清除不确定性。
+
+传播路径固定为：
+
+```text
+检索/语义不确定 → requirement_results.uncertain
+→ CoverageReport.uncertain → CaptureVerification 拒绝 fulfilled
+→ 等待补检索、人工核对或新修订
+```
+
 ### 7.3 覆盖状态判定顺序
 
 | 条件（按顺序判定） | coverage | reason_code / 动作 |
@@ -337,7 +357,9 @@ plan within allowed scope, then independently diff/validate the whole candidate
 
 可在预报阶段由服务端预分配新增片段稳定键；新增键也须列入授权，模型不能事后另造键绕过范围比较。
 
-`impact_report` 包含目标集合、预报集合、每条传播原因、锁定冲突、全局扩展原因、基准摘要和规则版本。`diff` 独立计算实际变化及 added/removed/updated 字段。ready 前满足：无硬错误、实际变化属于预报集合、预报中的新增范围已经用户授权、所有未解锁锁定项摘要相同。界面显示目标、连带变化、范围外保持和冲突；不能只给模型一句“其余未变”。
+`impact_report` 包含目标集合、预报集合、每条传播原因、从目标到受影响片段的 `propagation_paths`、静态 `risk_budget`、锁定冲突、范围授权、基准摘要和规则版本。风险预算保存总片段数、受影响片段数、影响比例、锁定冲突数、未批准集合、`low / medium / high / blocked` 等级和理由。它是候选生成前的影响半径提示，不是模型质量、运行成本或生产安全风险的估计。
+
+`diff` 独立计算实际变化及 added/removed/updated 字段。ready 前满足：无硬错误、实际变化属于预报集合、预报中的新增范围已经用户授权、所有未解锁锁定项摘要相同。界面显示目标、传播路径、风险等级、连带变化、范围外保持和冲突；不能只给模型一句“其余未变”。
 
 如果触及锁定内容，允许优先等长替换、压缩未锁片段或缩小目标；用户明确选择解锁时先生成新草案。ready 草案列明 `requested_unlock_clip_keys`，确认请求的 `unlock_clip_keys` 必须与其一致且受 payload_hash 保护。普通确认不得隐式解锁。
 

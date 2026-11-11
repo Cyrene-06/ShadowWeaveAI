@@ -41,8 +41,9 @@
 
 | 创新假设 | 解决的问题与重要性 | 第一阶段实施内容 | 本阶段可展示的证据 | 后续验证位置 |
 | --- | --- | --- | --- | --- |
-| 证据驱动的故事覆盖与补拍闭环 | 防止故事大纲超出已有素材，并让用户知道还缺什么 | Evidence、StoryNode、CoverageReport、CaptureTask 契约；固定事实输入下的四态规则和补拍验证门 | 证据定位；检索失败输出 uncertain；上传事件不能直接使任务 fulfilled | 阶段 2 接真实分析，阶段 3 完成补拍回写；D1/D1b 对照 |
-| 依赖感知的局部重规划 | 修改一个镜头时保护其他已确认内容，减少返工 | 稳定 clip_key、依赖边、ImpactReport、EditDraft、Version 契约；最小图传播探针与候选差异校验 | 等长替换开场通过；采访/结尾被改时拒绝；范围扩大必须重新授权 | 阶段 4 完成真实操作解析与依赖求解；D2 对照 |
+| 证据驱动的故事覆盖与补拍闭环 | 防止故事大纲超出已有素材，并让用户知道还缺什么 | Evidence、StoryNode、CoverageReport、CaptureTask 契约；逐需求解释、确定性最小充分证据选择、四态规则和补拍验证门 | 证据逐项可追溯；选择结果可重放；检索失败输出 uncertain；上传事件不能直接使任务 fulfilled | 阶段 2 接真实分析，阶段 3 完成补拍回写；D1/D1b 对照 |
+| 不确定性传播 | 防止未知信息被静默转换为缺失、通过或已完成 | CoverageReport 保存 uncertainty_reasons、selection_complete；不确定状态阻断 fulfilled | 未完成检索/未知语义可沿覆盖和补拍门传播；无法直接关闭补拍 | 阶段 2 接真实分析；D1b 对照 |
+| 依赖感知的局部重规划 | 修改一个镜头时保护其他已确认内容，减少返工 | 稳定 clip_key、依赖边、ImpactReport、传播路径、静态风险预算、EditDraft、Version 契约 | 等长替换开场通过；影响路径和风险等级可在候选前展示；采访/结尾被改时拒绝；范围扩大必须重新授权 | 阶段 4 完成真实操作解析与依赖求解；D2 对照 |
 | 受约束的 Agent 协作 | 使模型建议可检查、可确认并可追溯 | 定义角色输出进入规则层的接口、证据引用和权限边界 | 固定角色输出走与未来模型输出相同的校验入口；不能自行解锁或提交版本 | 阶段 5 接七角色、预算、中断和恢复；D3 对照 |
 
 七个角色、框架选型和数据表数量不单独构成创新证据。第一阶段能证明的是规则和接口在给定样例上可执行；不能由此推出真实素材识别准确率、创作质量或效率已经提升。
@@ -119,10 +120,10 @@ P0 为本阶段验收门槛。P1 应尽早探测高风险依赖，阻塞时登�
 | --- | --- |
 | Project / Intent / Asset / Segment | 项目作用域、确认意图、素材来源、分析批次、合法源区间；作为核心对象的基础引用 |
 | Evidence / EvidenceManifest | asset/segment/区间/分析版本引用、证据类型与来源、清单摘要；区分人工录入和工具分析 |
-| StoryNode / CoverageReport | 稳定节点键、用户要求、候选依据、covered / insufficient / uncertain / missing、判定理由与 search_complete |
+| StoryNode / CoverageReport | 稳定节点键、用户要求、逐需求候选/合格/选择引用、covered / insufficient / uncertain / missing、判定理由、不确定性与 search_complete |
 | CaptureTask | 关联节点、缺口、可行条件、用户处置、提交与验证依据；上传成功与 fulfilled 分离 |
 | EDL / Clip / Dependency | 源/目标区间、轨道、稳定 clip_key、锁定条件；clip_key depends_on depends_on_clip_key |
-| ImpactReport / EditDraft / Version | 目标/预报/批准/实际变化集合的区分，基准修订、差异、payload_hash、显式解锁键及不可变版本引用 |
+| ImpactReport / EditDraft / Version | 目标/预报/批准/实际变化集合、传播路径、影响比例、锁定冲突、风险等级的区分，基准修订、差异、payload_hash、显式解锁键及不可变版本引用 |
 | Job / Error / 角色信封 | 状态、错误结构、证据引用、任务与配置追踪；骨架不等于已实现工作流恢复 |
 
 计划产物：`packages/contracts/` 中的 Schema、正反例与校验入口；接口契约及跨端映射说明。对象名与持久化字段以现有设计为准，发现冲突时同步三份设计，不另造一套命名。

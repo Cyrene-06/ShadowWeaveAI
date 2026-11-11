@@ -378,7 +378,7 @@ confirmed/superseded 行及其节点、候选不允许更改，补拍更新或�
 | coverage | text | covered、insufficient、uncertain、missing |
 | resolution | text / unresolved | unresolved、accepted、reshoot、substitute、restructure、skipped |
 | resolution_evidence | jsonb / {} | 用户确认或候选证据，不用 skipped 冒充 covered |
-| coverage_report | jsonb | manifest_hash、逐项支持判定、reason_codes、候选引用、合法时长与搜索完整性 |
+| coverage_report | jsonb | manifest_hash、逐项候选/合格/选择引用、reason_codes、uncertainty_reasons、selection_complete、合法时长与搜索完整性 |
 
 节点时间预算汇总、必需节点略过与用户授权在故事板确认事务中校验。
 
@@ -829,10 +829,10 @@ Worker 将媒体上传到新对象键并校验；事务内验证租约与对象�
 | 字段 | 必需内容 | 额外验证 |
 | --- | --- | --- |
 | planning_context（故事板） | evidence_manifest_ref、manifest_hash、coverage_policy_version、ranking_config_ref、order_edges、global_validation | 同项目对象可读、摘要吻合；node_key 均属于故事板；顺序 DAG 无环 |
-| coverage_report | evaluated_manifest_hash、checked_requirements、candidate_refs、reason_codes、search_complete、usable_duration_ms | 状态与规则一致；unknown 不变成 supported；源区间并集不重复计时 |
+| coverage_report | evaluated_manifest_hash、checked_requirements、requirement_results、candidate_refs、selected_evidence_refs、selection_complete、uncertainty_reasons、reason_codes、search_complete、usable_duration_ms、minimum_duration_ms | 状态与规则一致；unknown 不变成 supported；不确定性可阻断补拍完成；源区间并集不重复计时 |
 | planning_context（补拍） | source_storyboard_id、source_node_key、source_coverage_hash、feasibility、priority_inputs、policy_version、alternatives | 补拍必须关联节点；事件是否可再拍由证据/用户确认；未知成本不可当作零 |
 | evidence（补拍验证引用） | report_ref、job_id、task_revision、evaluated_manifest_hash、result_storyboard_id、outcome | 新故事板和原 node_key 可追溯；fulfilled 有合格支持；晚到结果不得覆盖新修订 |
-| impact_report | base_content_hash、requested_target_keys、predicted_affected_keys、causes、scope_approval_ref、lock_conflicts、policy_version | 先有预报后有 diff；新增键/删除键都纳入；扩大范围必须重新授权 |
+| impact_report | base_content_hash、requested_target_keys、predicted_affected_keys、approved_affected_keys、causes、propagation_paths、risk_budget、scope_approval_ref、lock_conflicts、policy_version | 先有预报后有 diff；路径和静态风险预算可复核；新增键/删除键都纳入；扩大范围必须重新授权 |
 | validation_report | hard_errors、locked_hash_comparison、outside_scope_comparison、rules_version | 独立于模型输出复核整个 EDL；ready 要求硬错误为空 |
 
 嵌在 JSON 的 ID、稳定键和对象引用无法由普通外键自动覆盖，应用在确认事务中做项目域/所属修订/对象状态验证，并在物理清理时反查引用。高频过滤字段提取为显式列，当前不为这些大报告盲建 GIN；先按项目/故事板/任务索引定位后再读 JSON。

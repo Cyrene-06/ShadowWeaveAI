@@ -108,17 +108,32 @@ class StoryNode(Contract):
     required: StrictBool = True
 
 
+class RequirementCoverage(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    requirement_key: str
+    state: Literal["covered", "insufficient", "uncertain", "missing"]
+    candidate_refs: list[UUID]
+    qualified_refs: list[UUID]
+    selected_refs: list[UUID]
+    reason_codes: list[str]
+
+
 class CoverageReport(Contract):
     project_id: UUID
     node_key: str
     coverage: Literal["covered", "insufficient", "uncertain", "missing"]
     evaluated_manifest_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     checked_requirements: list[str]
+    requirement_results: list[RequirementCoverage]
     candidate_refs: list[UUID]
+    selected_evidence_refs: list[UUID]
+    selection_complete: StrictBool
+    uncertainty_reasons: list[str]
     reason_codes: list[str]
     search_complete: StrictBool
     usable_duration_ms: StrictInt = Field(ge=0)
-    policy_version: Literal["coverage-1"] = "coverage-1"
+    minimum_duration_ms: StrictInt = Field(gt=0)
+    policy_version: Literal["coverage-2"] = "coverage-2"
 
 
 class CaptureTask(Contract):
@@ -226,6 +241,17 @@ class EDL(Contract):
     tracks: list[Track] = Field(min_length=1)
 
 
+class EditRiskBudget(BaseModel):
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    total_clip_count: StrictInt = Field(ge=0)
+    affected_clip_count: StrictInt = Field(ge=0)
+    affected_ratio: float = Field(ge=0, le=1)
+    locked_conflict_count: StrictInt = Field(ge=0)
+    unapproved_affected_keys: tuple[str, ...]
+    severity: Literal["low", "medium", "high", "blocked"]
+    reasons: tuple[str, ...]
+
+
 class ImpactReport(Contract):
     model_config = ConfigDict(extra="forbid", frozen=True)
     base_content_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
@@ -233,9 +259,11 @@ class ImpactReport(Contract):
     predicted_affected_keys: tuple[str, ...]
     approved_affected_keys: tuple[str, ...]
     causes: dict[str, list[str]]
+    propagation_paths: dict[str, list[str]]
+    risk_budget: EditRiskBudget
     scope_approval_ref: UUID
     lock_conflicts: list[str] = Field(default_factory=list, json_schema_extra={"default": []})
-    policy_version: Literal["impact-1"] = "impact-1"
+    policy_version: Literal["impact-2"] = "impact-2"
 
 
 class EditDraft(Contract):

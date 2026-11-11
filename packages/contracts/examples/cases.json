@@ -452,42 +452,94 @@
       "id": "CoverageReport/valid",
       "input": {
         "candidate_refs": [
-          "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
-          "3b05a681-9837-5365-9b96-bed837bc5554"
+          "3b05a681-9837-5365-9b96-bed837bc5554",
+          "eea5d72f-2196-56c6-ab62-cfe85eefa70d"
         ],
         "checked_requirements": [
           "environment"
         ],
         "coverage": "covered",
         "evaluated_manifest_hash": "eda9e20cbe57cf80fc1ef1d30074291104b005b3bfb30be986342a3f978adea3",
+        "minimum_duration_ms": 4000,
         "node_key": "opening",
-        "policy_version": "coverage-1",
+        "policy_version": "coverage-2",
         "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
         "reason_codes": [
-          "qualified_evidence"
+          "minimum_sufficient_evidence_selected"
+        ],
+        "requirement_results": [
+          {
+            "candidate_refs": [
+              "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "qualified_refs": [
+              "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "reason_codes": [
+              "qualified_evidence"
+            ],
+            "requirement_key": "environment",
+            "selected_refs": [
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "state": "covered"
+          }
         ],
         "search_complete": true,
-        "usable_duration_ms": 12000
+        "selected_evidence_refs": [
+          "3b05a681-9837-5365-9b96-bed837bc5554"
+        ],
+        "selection_complete": true,
+        "uncertainty_reasons": [],
+        "usable_duration_ms": 6000
       },
       "model": "CoverageReport",
       "normalized": {
         "candidate_refs": [
-          "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
-          "3b05a681-9837-5365-9b96-bed837bc5554"
+          "3b05a681-9837-5365-9b96-bed837bc5554",
+          "eea5d72f-2196-56c6-ab62-cfe85eefa70d"
         ],
         "checked_requirements": [
           "environment"
         ],
         "coverage": "covered",
         "evaluated_manifest_hash": "eda9e20cbe57cf80fc1ef1d30074291104b005b3bfb30be986342a3f978adea3",
+        "minimum_duration_ms": 4000,
         "node_key": "opening",
-        "policy_version": "coverage-1",
+        "policy_version": "coverage-2",
         "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
         "reason_codes": [
-          "qualified_evidence"
+          "minimum_sufficient_evidence_selected"
+        ],
+        "requirement_results": [
+          {
+            "candidate_refs": [
+              "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "qualified_refs": [
+              "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "reason_codes": [
+              "qualified_evidence"
+            ],
+            "requirement_key": "environment",
+            "selected_refs": [
+              "3b05a681-9837-5365-9b96-bed837bc5554"
+            ],
+            "state": "covered"
+          }
         ],
         "search_complete": true,
-        "usable_duration_ms": 12000
+        "selected_evidence_refs": [
+          "3b05a681-9837-5365-9b96-bed837bc5554"
+        ],
+        "selection_complete": true,
+        "uncertainty_reasons": [],
+        "usable_duration_ms": 6000
       },
       "valid": true
     },
@@ -538,13 +590,37 @@
           ],
           "coverage": "covered",
           "evaluated_manifest_hash": "7d29912b36e97bed71efbabfaee4011211d1023f4a876ce5a6b8dc4904202363",
+          "minimum_duration_ms": 4000,
           "node_key": "ending",
-          "policy_version": "coverage-1",
+          "policy_version": "coverage-2",
           "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
           "reason_codes": [
-            "qualified_evidence"
+            "minimum_sufficient_evidence_selected"
+          ],
+          "requirement_results": [
+            {
+              "candidate_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "qualified_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "reason_codes": [
+                "qualified_evidence"
+              ],
+              "requirement_key": "farewell",
+              "selected_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "state": "covered"
+            }
           ],
           "search_complete": true,
+          "selected_evidence_refs": [
+            "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+          ],
+          "selection_complete": true,
+          "uncertainty_reasons": [],
           "usable_duration_ms": 6000
         },
         "report_ref": "0197f789-4ee2-5319-b607-949f3135b067",
@@ -570,13 +646,37 @@
           ],
           "coverage": "covered",
           "evaluated_manifest_hash": "7d29912b36e97bed71efbabfaee4011211d1023f4a876ce5a6b8dc4904202363",
+          "minimum_duration_ms": 4000,
           "node_key": "ending",
-          "policy_version": "coverage-1",
+          "policy_version": "coverage-2",
           "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
           "reason_codes": [
-            "qualified_evidence"
+            "minimum_sufficient_evidence_selected"
+          ],
+          "requirement_results": [
+            {
+              "candidate_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "qualified_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "reason_codes": [
+                "qualified_evidence"
+              ],
+              "requirement_key": "farewell",
+              "selected_refs": [
+                "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+              ],
+              "state": "covered"
+            }
           ],
           "search_complete": true,
+          "selected_evidence_refs": [
+            "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+          ],
+          "selection_complete": true,
+          "uncertainty_reasons": [],
           "usable_duration_ms": 6000
         },
         "report_ref": "0197f789-4ee2-5319-b607-949f3135b067",
@@ -1006,14 +1106,36 @@
           ]
         },
         "lock_conflicts": [],
-        "policy_version": "impact-1",
+        "policy_version": "impact-2",
         "predicted_affected_keys": [
           "opening",
           "opening-title"
         ],
+        "propagation_paths": {
+          "opening": [
+            "opening"
+          ],
+          "opening-title": [
+            "opening",
+            "opening-title"
+          ]
+        },
         "requested_target_keys": [
           "opening"
         ],
+        "risk_budget": {
+          "affected_clip_count": 2,
+          "affected_ratio": 0.4,
+          "locked_conflict_count": 0,
+          "reasons": [
+            "predicted_impact_exceeds_approved_scope"
+          ],
+          "severity": "high",
+          "total_clip_count": 5,
+          "unapproved_affected_keys": [
+            "opening-title"
+          ]
+        },
         "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
       },
       "model": "ImpactReport",
@@ -1031,14 +1153,36 @@
           ]
         },
         "lock_conflicts": [],
-        "policy_version": "impact-1",
+        "policy_version": "impact-2",
         "predicted_affected_keys": [
           "opening",
           "opening-title"
         ],
+        "propagation_paths": {
+          "opening": [
+            "opening"
+          ],
+          "opening-title": [
+            "opening",
+            "opening-title"
+          ]
+        },
         "requested_target_keys": [
           "opening"
         ],
+        "risk_budget": {
+          "affected_clip_count": 2,
+          "affected_ratio": 0.4,
+          "locked_conflict_count": 0,
+          "reasons": [
+            "predicted_impact_exceeds_approved_scope"
+          ],
+          "severity": "high",
+          "total_clip_count": 5,
+          "unapproved_affected_keys": [
+            "opening-title"
+          ]
+        },
         "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
       },
       "valid": true
@@ -1176,17 +1320,39 @@
             ]
           },
           "lock_conflicts": [],
-          "policy_version": "impact-1",
+          "policy_version": "impact-2",
           "predicted_affected_keys": [
             "opening",
             "opening-title"
           ],
+          "propagation_paths": {
+            "opening": [
+              "opening"
+            ],
+            "opening-title": [
+              "opening",
+              "opening-title"
+            ]
+          },
           "requested_target_keys": [
             "opening"
           ],
+          "risk_budget": {
+            "affected_clip_count": 2,
+            "affected_ratio": 0.4,
+            "locked_conflict_count": 0,
+            "reasons": [
+              "predicted_impact_exceeds_approved_scope"
+            ],
+            "severity": "high",
+            "total_clip_count": 5,
+            "unapproved_affected_keys": [
+              "opening-title"
+            ]
+          },
           "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
         },
-        "payload_hash": "8b5c44ca96ca6cbbb3a3aa83f483205fc71906ed6fc0af124a88c2d2ce559345",
+        "payload_hash": "ad6d9b7d44e0bfca55e1fdebfb18b0780d88045e4df587c9073cad1f2f78289d",
         "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
         "requested_unlock_clip_keys": [],
         "state": "ready",
@@ -1205,7 +1371,7 @@
             "interview": true
           },
           "outside_scope_comparison": [],
-          "rules_version": "policy-1"
+          "rules_version": "policy-2"
         }
       },
       "model": "EditDraft",
@@ -1340,17 +1506,39 @@
             ]
           },
           "lock_conflicts": [],
-          "policy_version": "impact-1",
+          "policy_version": "impact-2",
           "predicted_affected_keys": [
             "opening",
             "opening-title"
           ],
+          "propagation_paths": {
+            "opening": [
+              "opening"
+            ],
+            "opening-title": [
+              "opening",
+              "opening-title"
+            ]
+          },
           "requested_target_keys": [
             "opening"
           ],
+          "risk_budget": {
+            "affected_clip_count": 2,
+            "affected_ratio": 0.4,
+            "locked_conflict_count": 0,
+            "reasons": [
+              "predicted_impact_exceeds_approved_scope"
+            ],
+            "severity": "high",
+            "total_clip_count": 5,
+            "unapproved_affected_keys": [
+              "opening-title"
+            ]
+          },
           "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20"
         },
-        "payload_hash": "8b5c44ca96ca6cbbb3a3aa83f483205fc71906ed6fc0af124a88c2d2ce559345",
+        "payload_hash": "ad6d9b7d44e0bfca55e1fdebfb18b0780d88045e4df587c9073cad1f2f78289d",
         "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
         "requested_unlock_clip_keys": [],
         "state": "ready",
@@ -1369,7 +1557,7 @@
             "interview": true
           },
           "outside_scope_comparison": [],
-          "rules_version": "policy-1"
+          "rules_version": "policy-2"
         }
       },
       "valid": true

@@ -1,8 +1,8 @@
 {
-  "packaged_at": "2026-11-11T07:03:36.536964+00:00",
+  "packaged_at": "2026-11-11T12:01:30.509418+00:00",
   "kind": "local_advance_engineering_verification",
   "assembly_code": {
-    "commit": "db521e171bedb83cc4b05f8bbe723ce526412893",
+    "commit": "aaf8b467cfe3edf970a83e9ce4167eac04698d04",
     "dirty": true
   },
   "assembly_source_hashes": {
@@ -29,7 +29,7 @@
     "apps/mobile/android/gradle.properties": "7714698de712a7872e371f0dbae626c255fc83ac1c15e52e7cd9fcaa241b5092",
     "apps/mobile/android/gradle/wrapper/gradle-wrapper.properties": "594a00250ef7a36609a01f3263bf5ed63963afaf9ca9f82f2cd1de0f6f056383",
     "apps/mobile/android/settings.gradle.kts": "092ba880c8d4a07591aafc082f45deedc9afcf60c113a4bb3d13cbe1a1fce9de",
-    "apps/mobile/assets/contracts.json": "26bc39e9cad0eeeda69bb29ab818de4199d226bd90cac54b5877d880d36d9a09",
+    "apps/mobile/assets/contracts.json": "f4e9937a6805361c9de5ca20bc8e8846e4a588bd7e31634f6d3105276535c8f1",
     "apps/mobile/lib/api.dart": "e858971e68fdf034f99aa2673ebc42a96c288c34ff1a76f6df6557db36fb4c87",
     "apps/mobile/lib/contracts.dart": "ef96bea8f0fb2b2bf1db099cc5b957a4b145a8a5f6a8c5bef234896c7c5bbfd2",
     "apps/mobile/lib/main.dart": "ae8f7206c96848c6b4dcae7c70a595aea464b57407ca2cb1535c1ffd68fd78d9",
@@ -66,15 +66,15 @@
     "examples/phase-1/campus.json": "0f322ef1a8b13f17694d3b17b1736562a32a5c194ec8e9b245d5045137869f4a",
     "infra/compose.yaml": "2f5b676c748724a6f43bdd1a30a4157cba6401f1526b93c68eec3c7da61e54e0",
     "packages/ai/src/sw_ai/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "packages/ai/src/sw_ai/coverage.py": "3f259591a12fb99b35deee1c020262331ddee666f54d60b07812c8bdbf46fc01",
-    "packages/contracts/examples/cases.json": "0b3c419d445ce1694d3f7417010c635e1aef75cafb07312d4e23de55313d1d6e",
-    "packages/contracts/schema/catalog.json": "26bc39e9cad0eeeda69bb29ab818de4199d226bd90cac54b5877d880d36d9a09",
+    "packages/ai/src/sw_ai/coverage.py": "4558c48898442c4c407adad3fc715029794659c28cc40e32edbd348bab5b6164",
+    "packages/contracts/examples/cases.json": "e1281c2ab80264345ee52523efee419795b247bd4ed41c97c2bbe9aa89a8d9c5",
+    "packages/contracts/schema/catalog.json": "f4e9937a6805361c9de5ca20bc8e8846e4a588bd7e31634f6d3105276535c8f1",
     "packages/contracts/src/sw_contracts/__init__.py": "5f75499b527fa8ac86c6437f661d410ee165743a46c32d7c31ddad633494c180",
     "packages/contracts/src/sw_contracts/evaluation.py": "82ba9c3b9a5589cbd5e0ae28e81a8a969fbc0e020445035e3078f5fdd4bbfc4e",
-    "packages/contracts/src/sw_contracts/models.py": "62eb0cf70b32345d277bd50572e2c7eb3ba54d3be09a92654ac7b6a7eaae345b",
+    "packages/contracts/src/sw_contracts/models.py": "74cfad58de37a6a84bb7a74b6b0e79eaeaf37452806aaaebb275b189691b6c79",
     "packages/contracts/src/sw_contracts/validation.py": "3da00840c5a34a2494adaf84ebc439caff89a426ae6ff0a8ac09f6ba8e078d65",
     "packages/media/src/sw_media/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "packages/media/src/sw_media/policy.py": "e90a093c5f8ce424683f14eb7bbfb5d9d4c9905dad6faa4d8bfc425ef9e8e797",
+    "packages/media/src/sw_media/policy.py": "a829dfa8f26a135735f5e4074e6233ca308b74c17f2ab517d1b318c5078d564e",
     "packages/media/src/sw_media/tools.py": "4ac572e8433b48d8be14f925a7dde7cf919b8b711aa2d61b97c26c8fc4fa2f46",
     "pyproject.toml": "b6efe017382751fcabc34c046ebdb99266f74628eb7476e793c32a9760e5b599",
     "requirements.lock.txt": "2ad63714634904bb5b9c0de5bc8dc11068305ccab4397fe2063dd808913b9083",
@@ -94,37 +94,37 @@
     "services/api/src/sw_api/app.py": "c947bfedd7921911f8c5f08467445e7b24abf49a2c10cb267a2d5a73bcaad4aa",
     "services/api/src/sw_api/auth.py": "07a7fd81bbc6b460aa261df6eb30be26b864f819f1d97b1a2227cc8b90af847c",
     "services/api/src/sw_api/db.py": "0c5908793d3efcb6bd2cd8ce9b3d9baccdb35545c960bd66d6720a0df7497e77",
-    "services/api/src/sw_api/replay.py": "a96a945e06d3cdc41c42caca5db6f3f81f0bd7273dd430165faea5f7c5dd1fd9",
+    "services/api/src/sw_api/replay.py": "fabce152fada44d7f2226284b708a19468036bf11dbf6a22aeb1c937fbed674d",
     "services/worker/src/sw_worker/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "services/worker/src/sw_worker/state.py": "6ae808ba0e40aa0c071381f40c59ea6d358d26bf938da79b2c91bee6e870e120",
     "tests/conftest.py": "0fd023ad75d4fb5734212632bde886d104328d9c6353660b4edb0a626ebf53f7",
     "tests/test_api.py": "c6eb63f810d9d4df9960bf79054ffe89a9f9a1492c1b874ce92ae6e8a50f7b56",
     "tests/test_contracts.py": "fea9a0c60d0fa1130459733ca87c892961c97a09e0f725711a28ba6df8559a53",
-    "tests/test_coverage.py": "45f1c98eb15a01527e9c2b88c162610ce0640078dcd9a313c0b63bc5561ff5b9",
-    "tests/test_editing.py": "80aa93e58ebcff4d2c745d9feaf993584e58324c268af89c76778ff4f49f6572",
+    "tests/test_coverage.py": "d155bbd1242b1ec2d584308d1ff7df2feed8aab017f33f7f46745a2b10dd58c9",
+    "tests/test_editing.py": "6d1efbf521da0d1ed2e790b73db4c752c237f6d43b07a60f440c91a87f2479e9",
     "tests/test_evaluation_records.py": "50ed2fa5227ef2d417027d011cbf3f6dedb01eba06c7a76e584d67041869208f",
     "tests/test_media.py": "a6f70afffe1361fe05ed1bbfde8e3c2103b959e131655bc7437f8dae3bfb02df",
     "tests/test_model_probe.py": "8671220f7f3032e08c03f060d4bb2e06e20f3b238c8e1cfb7fd862936b65cb31",
     "tests/test_postgres.py": "07fe340f1df20663ee35699dbd990f657616dae79bf0fa0e4b5fe54e8b2dc1b9",
-    "tests/test_replay_worker.py": "7b59dd8deb3bfc71130f06497fa601dfc58e9251c9024d942798bbd7270b0269"
+    "tests/test_replay_worker.py": "2f1b3c97129b305cb91623075a1efab982f2b6f4285416f3fcc2faaf8b794e4e"
   },
   "assembly_note": "Source hashes identify files at packaging time; command-time provenance remains in replay.json.",
   "raw_artifacts": [
     {
       "path": "artifacts/phase-one/verification.json",
-      "sha256": "ef59ef835a81c2fd75560c29b1b57c68c29eb58ae122f4fa9f31c0a51fdccf93"
+      "sha256": "f3823b5fd6f59ce23df045ae6ed9451152ccb86195310179238f6b73d9bdfd8d"
     },
     {
       "path": "artifacts/phase-one/python-tests.xml",
-      "sha256": "722d4f260fa90dfca9489312af7c8ab1990dd67ef889f02ee58a896a32226339"
+      "sha256": "b2a67aeae7321c631b07da356e7b5216039cf432f2c06a12c8682b31d30abaf8"
     },
     {
       "path": "artifacts/phase-one/replay.json",
-      "sha256": "9f123e650aaf7e49bc0c36f74d60d64ba5bd75d52f46f6fce828c35b9484d0d7"
+      "sha256": "23d0820670ae2acf5d14bbaa12129168d8303fe67774d0a6b3b793bd5de864db"
     },
     {
       "path": "artifacts/phase-one/environment.json",
-      "sha256": "5b19471081a25cb527bc64f888105f66bb8136fb3fbce468fd0b6c601d803331"
+      "sha256": "8be58cfbda715ba839163418acbcf27afb12e31324bb74f98f86aa32b7d20de2"
     },
     {
       "path": "artifacts/phase-one/media/report.json",
@@ -136,13 +136,13 @@
     },
     {
       "path": "artifacts/phase-one/model-probe.json",
-      "sha256": "421e56b9e839edbb9bc95b49c7aa0ea05a4898eafdc8368ee9ca466c698da910"
+      "sha256": "edcf3ff73790428fac1cdb138fd2ba50a23ba24c624dc2936f625d45f3c4f488"
     }
   ],
   "packaged_files": [
     {
       "path": "replay.json",
-      "sha256": "9f123e650aaf7e49bc0c36f74d60d64ba5bd75d52f46f6fce828c35b9484d0d7"
+      "sha256": "23d0820670ae2acf5d14bbaa12129168d8303fe67774d0a6b3b793bd5de864db"
     },
     {
       "path": "media.json",
@@ -150,15 +150,15 @@
     },
     {
       "path": "environment.json",
-      "sha256": "5b19471081a25cb527bc64f888105f66bb8136fb3fbce468fd0b6c601d803331"
+      "sha256": "8be58cfbda715ba839163418acbcf27afb12e31324bb74f98f86aa32b7d20de2"
     },
     {
       "path": "verification-summary.json",
-      "sha256": "88e655a4fe7908440682162de94790c4ef00fa7b8519a485ebed94321ca4e141"
+      "sha256": "7f28534a36e21e6b962230db98039dc068142b242277ee094c3f14122969e34e"
     },
     {
       "path": "model-probe.json",
-      "sha256": "421e56b9e839edbb9bc95b49c7aa0ea05a4898eafdc8368ee9ca466c698da910"
+      "sha256": "edcf3ff73790428fac1cdb138fd2ba50a23ba24c624dc2936f625d45f3c4f488"
     }
   ],
   "requirements_sha256": "9e6712ad7473a2d99c2945403fa56b2226d8294635855e956082640e17b7507b",

@@ -186,13 +186,18 @@
               "title": "Evaluated Manifest Hash",
               "type": "string"
             },
+            "minimum_duration_ms": {
+              "exclusiveMinimum": 0,
+              "title": "Minimum Duration Ms",
+              "type": "integer"
+            },
             "node_key": {
               "title": "Node Key",
               "type": "string"
             },
             "policy_version": {
-              "const": "coverage-1",
-              "default": "coverage-1",
+              "const": "coverage-2",
+              "default": "coverage-2",
               "title": "Policy Version",
               "type": "string"
             },
@@ -208,9 +213,35 @@
               "title": "Reason Codes",
               "type": "array"
             },
+            "requirement_results": {
+              "items": {
+                "$ref": "#/$defs/RequirementCoverage"
+              },
+              "title": "Requirement Results",
+              "type": "array"
+            },
             "search_complete": {
               "title": "Search Complete",
               "type": "boolean"
+            },
+            "selected_evidence_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Selected Evidence Refs",
+              "type": "array"
+            },
+            "selection_complete": {
+              "title": "Selection Complete",
+              "type": "boolean"
+            },
+            "uncertainty_reasons": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Uncertainty Reasons",
+              "type": "array"
             },
             "usable_duration_ms": {
               "minimum": 0,
@@ -224,12 +255,77 @@
             "coverage",
             "evaluated_manifest_hash",
             "checked_requirements",
+            "requirement_results",
             "candidate_refs",
+            "selected_evidence_refs",
+            "selection_complete",
+            "uncertainty_reasons",
             "reason_codes",
             "search_complete",
-            "usable_duration_ms"
+            "usable_duration_ms",
+            "minimum_duration_ms"
           ],
           "title": "CoverageReport",
+          "type": "object"
+        },
+        "RequirementCoverage": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Candidate Refs",
+              "type": "array"
+            },
+            "qualified_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Qualified Refs",
+              "type": "array"
+            },
+            "reason_codes": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Reason Codes",
+              "type": "array"
+            },
+            "requirement_key": {
+              "title": "Requirement Key",
+              "type": "string"
+            },
+            "selected_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Selected Refs",
+              "type": "array"
+            },
+            "state": {
+              "enum": [
+                "covered",
+                "insufficient",
+                "uncertain",
+                "missing"
+              ],
+              "title": "State",
+              "type": "string"
+            }
+          },
+          "required": [
+            "requirement_key",
+            "state",
+            "candidate_refs",
+            "qualified_refs",
+            "selected_refs",
+            "reason_codes"
+          ],
+          "title": "RequirementCoverage",
           "type": "object"
         }
       },
@@ -425,6 +521,68 @@
       "type": "object"
     },
     "CoverageReport": {
+      "$defs": {
+        "RequirementCoverage": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Candidate Refs",
+              "type": "array"
+            },
+            "qualified_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Qualified Refs",
+              "type": "array"
+            },
+            "reason_codes": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Reason Codes",
+              "type": "array"
+            },
+            "requirement_key": {
+              "title": "Requirement Key",
+              "type": "string"
+            },
+            "selected_refs": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "title": "Selected Refs",
+              "type": "array"
+            },
+            "state": {
+              "enum": [
+                "covered",
+                "insufficient",
+                "uncertain",
+                "missing"
+              ],
+              "title": "State",
+              "type": "string"
+            }
+          },
+          "required": [
+            "requirement_key",
+            "state",
+            "candidate_refs",
+            "qualified_refs",
+            "selected_refs",
+            "reason_codes"
+          ],
+          "title": "RequirementCoverage",
+          "type": "object"
+        }
+      },
       "additionalProperties": false,
       "properties": {
         "candidate_refs": {
@@ -457,13 +615,18 @@
           "title": "Evaluated Manifest Hash",
           "type": "string"
         },
+        "minimum_duration_ms": {
+          "exclusiveMinimum": 0,
+          "title": "Minimum Duration Ms",
+          "type": "integer"
+        },
         "node_key": {
           "title": "Node Key",
           "type": "string"
         },
         "policy_version": {
-          "const": "coverage-1",
-          "default": "coverage-1",
+          "const": "coverage-2",
+          "default": "coverage-2",
           "title": "Policy Version",
           "type": "string"
         },
@@ -479,9 +642,35 @@
           "title": "Reason Codes",
           "type": "array"
         },
+        "requirement_results": {
+          "items": {
+            "$ref": "#/$defs/RequirementCoverage"
+          },
+          "title": "Requirement Results",
+          "type": "array"
+        },
         "search_complete": {
           "title": "Search Complete",
           "type": "boolean"
+        },
+        "selected_evidence_refs": {
+          "items": {
+            "format": "uuid",
+            "type": "string"
+          },
+          "title": "Selected Evidence Refs",
+          "type": "array"
+        },
+        "selection_complete": {
+          "title": "Selection Complete",
+          "type": "boolean"
+        },
+        "uncertainty_reasons": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncertainty Reasons",
+          "type": "array"
         },
         "usable_duration_ms": {
           "minimum": 0,
@@ -495,10 +684,15 @@
         "coverage",
         "evaluated_manifest_hash",
         "checked_requirements",
+        "requirement_results",
         "candidate_refs",
+        "selected_evidence_refs",
+        "selection_complete",
+        "uncertainty_reasons",
         "reason_codes",
         "search_complete",
-        "usable_duration_ms"
+        "usable_duration_ms",
+        "minimum_duration_ms"
       ],
       "title": "CoverageReport",
       "type": "object"
@@ -896,6 +1090,67 @@
           "title": "EDL",
           "type": "object"
         },
+        "EditRiskBudget": {
+          "additionalProperties": false,
+          "properties": {
+            "affected_clip_count": {
+              "minimum": 0,
+              "title": "Affected Clip Count",
+              "type": "integer"
+            },
+            "affected_ratio": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Affected Ratio",
+              "type": "number"
+            },
+            "locked_conflict_count": {
+              "minimum": 0,
+              "title": "Locked Conflict Count",
+              "type": "integer"
+            },
+            "reasons": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Reasons",
+              "type": "array"
+            },
+            "severity": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "blocked"
+              ],
+              "title": "Severity",
+              "type": "string"
+            },
+            "total_clip_count": {
+              "minimum": 0,
+              "title": "Total Clip Count",
+              "type": "integer"
+            },
+            "unapproved_affected_keys": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Unapproved Affected Keys",
+              "type": "array"
+            }
+          },
+          "required": [
+            "total_clip_count",
+            "affected_clip_count",
+            "affected_ratio",
+            "locked_conflict_count",
+            "unapproved_affected_keys",
+            "severity",
+            "reasons"
+          ],
+          "title": "EditRiskBudget",
+          "type": "object"
+        },
         "ImpactReport": {
           "additionalProperties": false,
           "properties": {
@@ -930,8 +1185,8 @@
               "type": "array"
             },
             "policy_version": {
-              "const": "impact-1",
-              "default": "impact-1",
+              "const": "impact-2",
+              "default": "impact-2",
               "title": "Policy Version",
               "type": "string"
             },
@@ -942,6 +1197,16 @@
               "title": "Predicted Affected Keys",
               "type": "array"
             },
+            "propagation_paths": {
+              "additionalProperties": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "title": "Propagation Paths",
+              "type": "object"
+            },
             "requested_target_keys": {
               "items": {
                 "type": "string"
@@ -949,6 +1214,9 @@
               "minItems": 1,
               "title": "Requested Target Keys",
               "type": "array"
+            },
+            "risk_budget": {
+              "$ref": "#/$defs/EditRiskBudget"
             },
             "scope_approval_ref": {
               "format": "uuid",
@@ -962,6 +1230,8 @@
             "predicted_affected_keys",
             "approved_affected_keys",
             "causes",
+            "propagation_paths",
+            "risk_budget",
             "scope_approval_ref"
           ],
           "title": "ImpactReport",
@@ -1536,6 +1806,69 @@
       "type": "object"
     },
     "ImpactReport": {
+      "$defs": {
+        "EditRiskBudget": {
+          "additionalProperties": false,
+          "properties": {
+            "affected_clip_count": {
+              "minimum": 0,
+              "title": "Affected Clip Count",
+              "type": "integer"
+            },
+            "affected_ratio": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Affected Ratio",
+              "type": "number"
+            },
+            "locked_conflict_count": {
+              "minimum": 0,
+              "title": "Locked Conflict Count",
+              "type": "integer"
+            },
+            "reasons": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Reasons",
+              "type": "array"
+            },
+            "severity": {
+              "enum": [
+                "low",
+                "medium",
+                "high",
+                "blocked"
+              ],
+              "title": "Severity",
+              "type": "string"
+            },
+            "total_clip_count": {
+              "minimum": 0,
+              "title": "Total Clip Count",
+              "type": "integer"
+            },
+            "unapproved_affected_keys": {
+              "items": {
+                "type": "string"
+              },
+              "title": "Unapproved Affected Keys",
+              "type": "array"
+            }
+          },
+          "required": [
+            "total_clip_count",
+            "affected_clip_count",
+            "affected_ratio",
+            "locked_conflict_count",
+            "unapproved_affected_keys",
+            "severity",
+            "reasons"
+          ],
+          "title": "EditRiskBudget",
+          "type": "object"
+        }
+      },
       "additionalProperties": false,
       "properties": {
         "approved_affected_keys": {
@@ -1569,8 +1902,8 @@
           "type": "array"
         },
         "policy_version": {
-          "const": "impact-1",
-          "default": "impact-1",
+          "const": "impact-2",
+          "default": "impact-2",
           "title": "Policy Version",
           "type": "string"
         },
@@ -1581,6 +1914,16 @@
           "title": "Predicted Affected Keys",
           "type": "array"
         },
+        "propagation_paths": {
+          "additionalProperties": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "title": "Propagation Paths",
+          "type": "object"
+        },
         "requested_target_keys": {
           "items": {
             "type": "string"
@@ -1588,6 +1931,9 @@
           "minItems": 1,
           "title": "Requested Target Keys",
           "type": "array"
+        },
+        "risk_budget": {
+          "$ref": "#/$defs/EditRiskBudget"
         },
         "scope_approval_ref": {
           "format": "uuid",
@@ -1601,6 +1947,8 @@
         "predicted_affected_keys",
         "approved_affected_keys",
         "causes",
+        "propagation_paths",
+        "risk_budget",
         "scope_approval_ref"
       ],
       "title": "ImpactReport",

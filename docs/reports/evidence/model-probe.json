@@ -1,5 +1,5 @@
 {
-  "recorded_at": "2026-11-11T07:03:36.261955+00:00",
+  "recorded_at": "2026-11-11T11:49:55.330746+00:00",
   "kind": "phase_one_model_protocol_probe",
   "source_kind": "synthetic_metadata",
   "status": "not_configured",
@@ -28,10 +28,10 @@
     "cost stays null: an optional flat-rate estimate is not an invoice or actual billed charge."
   ],
   "duration_seconds": 0.0,
-  "finished_at": "2026-11-11T07:03:36.261955+00:00",
+  "finished_at": "2026-11-11T11:49:55.330746+00:00",
   "code": {
-    "commit": "db521e171bedb83cc4b05f8bbe723ce526412893",
-    "dirty": false,
+    "commit": "aaf8b467cfe3edf970a83e9ce4167eac04698d04",
+    "dirty": true,
     "script_sha256": "2dffe86d92c215de92501cefc699cb759cc6cb5653fb75ffc4d203d2be97ee0e"
   }
 }

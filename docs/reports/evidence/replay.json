@@ -1392,26 +1392,26 @@
     "base_revision": 0
   },
   "code": {
-    "commit": "db521e171bedb83cc4b05f8bbe723ce526412893",
-    "dirty": false,
+    "commit": "aaf8b467cfe3edf970a83e9ce4167eac04698d04",
+    "dirty": true,
     "source_hashes": {
-      "packages/contracts/src/sw_contracts/models.py": "62eb0cf70b32345d277bd50572e2c7eb3ba54d3be09a92654ac7b6a7eaae345b",
+      "packages/contracts/src/sw_contracts/models.py": "74cfad58de37a6a84bb7a74b6b0e79eaeaf37452806aaaebb275b189691b6c79",
       "packages/contracts/src/sw_contracts/validation.py": "3da00840c5a34a2494adaf84ebc439caff89a426ae6ff0a8ac09f6ba8e078d65",
-      "packages/ai/src/sw_ai/coverage.py": "3f259591a12fb99b35deee1c020262331ddee666f54d60b07812c8bdbf46fc01",
-      "packages/media/src/sw_media/policy.py": "e90a093c5f8ce424683f14eb7bbfb5d9d4c9905dad6faa4d8bfc425ef9e8e797",
-      "services/api/src/sw_api/replay.py": "a96a945e06d3cdc41c42caca5db6f3f81f0bd7273dd430165faea5f7c5dd1fd9"
+      "packages/ai/src/sw_ai/coverage.py": "4558c48898442c4c407adad3fc715029794659c28cc40e32edbd348bab5b6164",
+      "packages/media/src/sw_media/policy.py": "a829dfa8f26a135735f5e4074e6233ca308b74c17f2ab517d1b318c5078d564e",
+      "services/api/src/sw_api/replay.py": "fabce152fada44d7f2226284b708a19468036bf11dbf6a22aeb1c937fbed674d"
     }
   },
   "rules": {
-    "coverage": "coverage-1",
-    "editing": "policy-1",
-    "impact": "impact-1"
+    "coverage": "coverage-2",
+    "editing": "policy-2",
+    "impact": "impact-2"
   },
   "environment": {
     "python": "3.12.7",
     "platform": "Windows-11-10.0.26200-SP0"
   },
-  "recorded_at": "2026-11-11T07:03:36.033054+00:00",
+  "recorded_at": "2026-11-11T11:50:00.707896+00:00",
   "passed": true,
   "checks": {
     "coverage/opening": true,
@@ -1431,7 +1431,11 @@
     "edit/outside_delete": true,
     "edit/dependency_change": true,
     "edit/cycle": true,
-    "contract_only": true
+    "contract_only": true,
+    "coverage_explanation": true,
+    "covered_nodes_have_sufficient_selection": true,
+    "uncertainty_blocks_capture_fulfillment": true,
+    "impact_preflight_paths_and_risk": true
   },
   "coverage": [
     {
@@ -1442,16 +1446,42 @@
       "checked_requirements": [
         "environment"
       ],
+      "requirement_results": [
+        {
+          "requirement_key": "environment",
+          "state": "covered",
+          "candidate_refs": [
+            "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+            "3b05a681-9837-5365-9b96-bed837bc5554"
+          ],
+          "qualified_refs": [
+            "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+            "3b05a681-9837-5365-9b96-bed837bc5554"
+          ],
+          "selected_refs": [
+            "3b05a681-9837-5365-9b96-bed837bc5554"
+          ],
+          "reason_codes": [
+            "qualified_evidence"
+          ]
+        }
+      ],
       "candidate_refs": [
-        "eea5d72f-2196-56c6-ab62-cfe85eefa70d",
+        "3b05a681-9837-5365-9b96-bed837bc5554",
+        "eea5d72f-2196-56c6-ab62-cfe85eefa70d"
+      ],
+      "selected_evidence_refs": [
         "3b05a681-9837-5365-9b96-bed837bc5554"
       ],
+      "selection_complete": true,
+      "uncertainty_reasons": [],
       "reason_codes": [
-        "qualified_evidence"
+        "minimum_sufficient_evidence_selected"
       ],
       "search_complete": true,
-      "usable_duration_ms": 12000,
-      "policy_version": "coverage-1"
+      "usable_duration_ms": 6000,
+      "minimum_duration_ms": 4000,
+      "policy_version": "coverage-2"
     },
     {
       "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
@@ -1461,15 +1491,39 @@
       "checked_requirements": [
         "activity"
       ],
+      "requirement_results": [
+        {
+          "requirement_key": "activity",
+          "state": "covered",
+          "candidate_refs": [
+            "cf11117b-de07-51c5-9498-e857fefde806"
+          ],
+          "qualified_refs": [
+            "cf11117b-de07-51c5-9498-e857fefde806"
+          ],
+          "selected_refs": [
+            "cf11117b-de07-51c5-9498-e857fefde806"
+          ],
+          "reason_codes": [
+            "qualified_evidence"
+          ]
+        }
+      ],
       "candidate_refs": [
         "cf11117b-de07-51c5-9498-e857fefde806"
       ],
+      "selected_evidence_refs": [
+        "cf11117b-de07-51c5-9498-e857fefde806"
+      ],
+      "selection_complete": true,
+      "uncertainty_reasons": [],
       "reason_codes": [
-        "qualified_evidence"
+        "minimum_sufficient_evidence_selected"
       ],
       "search_complete": true,
       "usable_duration_ms": 6000,
-      "policy_version": "coverage-1"
+      "minimum_duration_ms": 4000,
+      "policy_version": "coverage-2"
     },
     {
       "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
@@ -1479,15 +1533,33 @@
       "checked_requirements": [
         "feeling"
       ],
+      "requirement_results": [
+        {
+          "requirement_key": "feeling",
+          "state": "insufficient",
+          "candidate_refs": [
+            "0890eab2-fd19-56d0-96cb-27c2b100dbfd"
+          ],
+          "qualified_refs": [],
+          "selected_refs": [],
+          "reason_codes": [
+            "quality_unusable"
+          ]
+        }
+      ],
       "candidate_refs": [
         "0890eab2-fd19-56d0-96cb-27c2b100dbfd"
       ],
+      "selected_evidence_refs": [],
+      "selection_complete": false,
+      "uncertainty_reasons": [],
       "reason_codes": [
-        "quality_duration_or_requirement_shortfall"
+        "quality_or_duration_shortfall"
       ],
       "search_complete": true,
       "usable_duration_ms": 0,
-      "policy_version": "coverage-1"
+      "minimum_duration_ms": 4000,
+      "policy_version": "coverage-2"
     },
     {
       "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
@@ -1497,13 +1569,29 @@
       "checked_requirements": [
         "farewell"
       ],
+      "requirement_results": [
+        {
+          "requirement_key": "farewell",
+          "state": "missing",
+          "candidate_refs": [],
+          "qualified_refs": [],
+          "selected_refs": [],
+          "reason_codes": [
+            "no_supporting_evidence"
+          ]
+        }
+      ],
       "candidate_refs": [],
+      "selected_evidence_refs": [],
+      "selection_complete": false,
+      "uncertainty_reasons": [],
       "reason_codes": [
         "no_supporting_evidence"
       ],
       "search_complete": true,
       "usable_duration_ms": 0,
-      "policy_version": "coverage-1"
+      "minimum_duration_ms": 4000,
+      "policy_version": "coverage-2"
     }
   ],
   "incomplete_search": {
@@ -1514,13 +1602,32 @@
     "checked_requirements": [
       "farewell"
     ],
+    "requirement_results": [
+      {
+        "requirement_key": "farewell",
+        "state": "uncertain",
+        "candidate_refs": [],
+        "qualified_refs": [],
+        "selected_refs": [],
+        "reason_codes": [
+          "search_incomplete"
+        ]
+      }
+    ],
     "candidate_refs": [],
+    "selected_evidence_refs": [],
+    "selection_complete": false,
+    "uncertainty_reasons": [
+      "farewell:search_incomplete",
+      "node:search_incomplete"
+    ],
     "reason_codes": [
-      "search_incomplete_or_semantics_unknown"
+      "required_evidence_uncertain"
     ],
     "search_complete": false,
     "usable_duration_ms": 0,
-    "policy_version": "coverage-1"
+    "minimum_duration_ms": 4000,
+    "policy_version": "coverage-2"
   },
   "capture": {
     "initial": {
@@ -1582,15 +1689,39 @@
         "checked_requirements": [
           "farewell"
         ],
+        "requirement_results": [
+          {
+            "requirement_key": "farewell",
+            "state": "covered",
+            "candidate_refs": [
+              "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+            ],
+            "qualified_refs": [
+              "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+            ],
+            "selected_refs": [
+              "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+            ],
+            "reason_codes": [
+              "qualified_evidence"
+            ]
+          }
+        ],
         "candidate_refs": [
           "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
         ],
+        "selected_evidence_refs": [
+          "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+        ],
+        "selection_complete": true,
+        "uncertainty_reasons": [],
         "reason_codes": [
-          "qualified_evidence"
+          "minimum_sufficient_evidence_selected"
         ],
         "search_complete": true,
         "usable_duration_ms": 6000,
-        "policy_version": "coverage-1"
+        "minimum_duration_ms": 4000,
+        "policy_version": "coverage-2"
       }
     },
     "verification_manifest": {
@@ -1758,7 +1889,46 @@
           ]
         }
       ]
-    }
+    },
+    "uncertainty_report": {
+      "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+      "node_key": "ending",
+      "coverage": "uncertain",
+      "evaluated_manifest_hash": "98cebb54de16f931dac9ec5289da1a394654b9b3812407a3eeb4f6fdd8f823ab",
+      "checked_requirements": [
+        "farewell"
+      ],
+      "requirement_results": [
+        {
+          "requirement_key": "farewell",
+          "state": "uncertain",
+          "candidate_refs": [
+            "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+          ],
+          "qualified_refs": [],
+          "selected_refs": [],
+          "reason_codes": [
+            "semantic_unknown"
+          ]
+        }
+      ],
+      "candidate_refs": [
+        "94a93cbe-f75a-5287-8a05-79c4726a8a5e"
+      ],
+      "selected_evidence_refs": [],
+      "selection_complete": false,
+      "uncertainty_reasons": [
+        "farewell:semantic_unknown"
+      ],
+      "reason_codes": [
+        "required_evidence_uncertain"
+      ],
+      "search_complete": true,
+      "usable_duration_ms": 0,
+      "minimum_duration_ms": 4000,
+      "policy_version": "coverage-2"
+    },
+    "uncertainty_blocks_fulfillment": true
   },
   "impact": {
     "base_content_hash": "87111fb1b38b4777b024421a6b6d373676b857b059bead26bf55f920524263d3",
@@ -1780,9 +1950,31 @@
         "depends_on:opening"
       ]
     },
+    "propagation_paths": {
+      "opening": [
+        "opening"
+      ],
+      "opening-title": [
+        "opening",
+        "opening-title"
+      ]
+    },
+    "risk_budget": {
+      "total_clip_count": 5,
+      "affected_clip_count": 2,
+      "affected_ratio": 0.4,
+      "locked_conflict_count": 0,
+      "unapproved_affected_keys": [
+        "opening-title"
+      ],
+      "severity": "high",
+      "reasons": [
+        "predicted_impact_exceeds_approved_scope"
+      ]
+    },
     "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20",
     "lock_conflicts": [],
-    "policy_version": "impact-1"
+    "policy_version": "impact-2"
   },
   "edits": {
     "legal": {
@@ -1794,7 +1986,7 @@
           "ending": true
         },
         "outside_scope_comparison": [],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [],
@@ -1819,7 +2011,7 @@
         "outside_scope_comparison": [
           "interview"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [],
@@ -1845,7 +2037,7 @@
         "outside_scope_comparison": [
           "interview"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [
@@ -1873,7 +2065,7 @@
           "interview",
           "new-interview"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [
             "new-interview"
@@ -1902,7 +2094,7 @@
         "outside_scope_comparison": [
           "interview"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [],
@@ -1927,7 +2119,7 @@
         "outside_scope_comparison": [
           "process"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [],
@@ -1952,7 +2144,7 @@
         "outside_scope_comparison": [
           "extra-title"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [
             "extra-title"
@@ -1978,7 +2170,7 @@
         "outside_scope_comparison": [
           "opening-title"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [
@@ -2004,7 +2196,7 @@
         "outside_scope_comparison": [
           "opening-title"
         ],
-        "rules_version": "policy-1",
+        "rules_version": "policy-2",
         "diff": {
           "added": [],
           "removed": [],
@@ -2152,9 +2344,31 @@
           "depends_on:opening"
         ]
       },
+      "propagation_paths": {
+        "opening": [
+          "opening"
+        ],
+        "opening-title": [
+          "opening",
+          "opening-title"
+        ]
+      },
+      "risk_budget": {
+        "total_clip_count": 5,
+        "affected_clip_count": 2,
+        "affected_ratio": 0.4,
+        "locked_conflict_count": 0,
+        "unapproved_affected_keys": [
+          "opening-title"
+        ],
+        "severity": "high",
+        "reasons": [
+          "predicted_impact_exceeds_approved_scope"
+        ]
+      },
       "scope_approval_ref": "142ffbe9-8d27-5642-919b-022d3be51f20",
       "lock_conflicts": [],
-      "policy_version": "impact-1"
+      "policy_version": "impact-2"
     },
     "diff": {
       "added": [],
@@ -2171,7 +2385,7 @@
         "ending": true
       },
       "outside_scope_comparison": [],
-      "rules_version": "policy-1",
+      "rules_version": "policy-2",
       "diff": {
         "added": [],
         "removed": [],
@@ -2183,7 +2397,7 @@
     },
     "requested_unlock_clip_keys": [],
     "state": "ready",
-    "payload_hash": "8b5c44ca96ca6cbbb3a3aa83f483205fc71906ed6fc0af124a88c2d2ce559345"
+    "payload_hash": "ad6d9b7d44e0bfca55e1fdebfb18b0780d88045e4df587c9073cad1f2f78289d"
   },
   "confirmation": {
     "valid": true,
@@ -2192,6 +2406,8 @@
   },
   "limitations": [
     "Human-annotated synthetic metadata; no actual media understanding or quality measurement.",
+    "Evidence selection is deterministic greedy set-cover plus reverse pruning, not a globally minimum-cardinality solver.",
+    "Impact risk is a static pre-candidate blast-radius heuristic, not a production risk or cost estimate.",
     "No production version publication or async workflow."
   ]
 }

@@ -1,13 +1,13 @@
 {
-  "recorded_at": "2026-11-11T06:59:35.830011+00:00",
+  "recorded_at": "2026-11-11T11:50:04.729892+00:00",
   "passed": true,
-  "postgres_configured": true,
-  "flutter_included": true,
+  "postgres_configured": false,
+  "flutter_included": false,
   "python_junit_counts": {
-    "tests": 152,
+    "tests": 157,
     "failures": 0,
     "errors": 0,
-    "skipped": 0
+    "skipped": 4
   },
   "steps": [
     {
@@ -20,7 +20,7 @@
         "."
       ],
       "exit_code": 0,
-      "duration_seconds": 0.125
+      "duration_seconds": 0.078
     },
     {
       "name": "contracts",
@@ -30,7 +30,7 @@
         "--check"
       ],
       "exit_code": 0,
-      "duration_seconds": 1.094
+      "duration_seconds": 0.828
     },
     {
       "name": "evaluation_templates",
@@ -49,7 +49,7 @@
         "scripts/model_probe.py"
       ],
       "exit_code": 0,
-      "duration_seconds": 0.312
+      "duration_seconds": 0.219
     },
     {
       "name": "python",
@@ -61,7 +61,7 @@
         "--junitxml=artifacts/phase-one/python-tests.xml"
       ],
       "exit_code": 0,
-      "duration_seconds": 7.485
+      "duration_seconds": 4.906
     },
     {
       "name": "replay",
@@ -71,7 +71,7 @@
         "sw_api.replay"
       ],
       "exit_code": 0,
-      "duration_seconds": 0.593
+      "duration_seconds": 0.469
     },
     {
       "name": "media",
@@ -80,7 +80,7 @@
         "scripts/media_probe.py"
       ],
       "exit_code": 0,
-      "duration_seconds": 0.703
+      "duration_seconds": 0.531
     },
     {
       "name": "web_tests",
@@ -89,7 +89,7 @@
         "test"
       ],
       "exit_code": 0,
-      "duration_seconds": 1.344
+      "duration_seconds": 0.938
     },
     {
       "name": "web_build",
@@ -99,39 +99,7 @@
         "build"
       ],
       "exit_code": 0,
-      "duration_seconds": 3.031
-    },
-    {
-      "name": "flutter_analyze",
-      "command": [
-        "W:\\.cache\\flutter\\bin\\flutter.bat",
-        "analyze"
-      ],
-      "exit_code": 0,
-      "duration_seconds": 9.922
-    },
-    {
-      "name": "flutter_tests",
-      "command": [
-        "W:\\.cache\\flutter\\bin\\flutter.bat",
-        "test",
-        "--reporter",
-        "expanded"
-      ],
-      "exit_code": 0,
-      "duration_seconds": 4.891
-    },
-    {
-      "name": "flutter_build",
-      "command": [
-        "W:\\.cache\\flutter\\bin\\flutter.bat",
-        "build",
-        "web",
-        "--release",
-        "--dart-define=API_BASE_URL=http://127.0.0.1:8000/api/v1"
-      ],
-      "exit_code": 0,
-      "duration_seconds": 23.922
+      "duration_seconds": 2.484
     }
   ],
   "browser": {

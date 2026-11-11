@@ -14,6 +14,28 @@ from sw_media.policy import (
 )
 
 
+def test_impact_report_exposes_propagation_path_and_static_risk_budget(base):
+    report = predict_impact(base, ["opening"], approved=["opening"])
+
+    assert report.propagation_paths["opening"] == ["opening"]
+    assert report.propagation_paths["opening-title"] == ["opening", "opening-title"]
+    assert report.risk_budget.affected_clip_count == 2
+    assert report.risk_budget.affected_ratio == pytest.approx(2 / report.risk_budget.total_clip_count)
+    assert report.risk_budget.severity == "high"
+    assert report.risk_budget.unapproved_affected_keys == ("opening-title",)
+    assert "predicted_impact_exceeds_approved_scope" in report.risk_budget.reasons
+
+
+def test_locked_change_is_preflighted_as_blocked_risk(base):
+    report = predict_impact(base, ["interview"], approved=["interview"])
+
+    assert "interview" in report.risk_budget.unapproved_affected_keys or not report.risk_budget.unapproved_affected_keys
+    assert report.risk_budget.locked_conflict_count == len(report.lock_conflicts)
+    assert report.risk_budget.locked_conflict_count > 0
+    assert report.risk_budget.severity == "blocked"
+    assert "locked_content_in_predicted_impact" in report.risk_budget.reasons
+
+
 def test_direction_and_frozen_approval(base):
     report = predict_impact(base, ["opening"], approved=["opening"])
     assert set(report.predicted_affected_keys) == {"opening", "opening-title"}

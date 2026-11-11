@@ -7,7 +7,7 @@ import pytest
 def test_replay_records_actual_failures_and_versions(bundle):
     output = run_replay(bundle)
     assert output["passed"]
-    assert len(output["checks"]) == 18
+    assert len(output["checks"]) == 22
     assert output["code"]["source_hashes"]
     assert output["input"] == bundle
     assert not output["edits"]["locked_delete"]["accepted"]
