@@ -44,7 +44,13 @@ flowchart TB
 | Timeline / Clip | 轨道、来源区间、目标区间、转场、锁定与依赖 |
 | ReviewIssue / Version | 问题位置、依据、父版本、差异、预览和导出产物 |
 
-内部剪辑决策结构简称 EDL，是本项目的 JSON 数据约定，不承诺与外部编辑器格式兼容。第一版设计采用整数毫秒半开区间和 Schema 1.0，字段与约束见 [系统详细设计](design/detailed-design.md) 和 [数据契约](../packages/contracts/README.md)；尚未生成可执行 Schema。
+内部剪辑决策结构简称 EDL，是本项目的 JSON 数据约定，不承诺与外部编辑器格式兼容。当前设计采用整数毫秒半开区间和 Schema 1.0，字段与约束见 [系统详细设计](design/detailed-design.md) 和 [数据契约](../packages/contracts/README.md)；尚未生成可执行 Schema。
+
+## 创新机制与实现边界
+
+[执行方案创新性分析](innovation-analysis.md) 将两个机制置于技术选型之前：一是“真实证据→故事覆盖→缺口处置→补拍验证”，二是“操作目标→依赖影响预报→锁定/范围校验→确认版本”。模型提供候选与语义判断；CoverageEvaluator/GapPlanner/ImpactResolver 和 PolicyValidator 分别负责规则合成、可行性/排序、传播与硬校验，具体见详细设计第 7、8.3 节。
+
+七类角色复用这些工具，API 持有版本提交权限。队列、向量库、框架与版本存储是支撑组件，是否有创新收益由 [对照与消融](evaluation.md) 验证。
 
 ## 七类 Agent 的协作
 

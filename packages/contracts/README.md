@@ -4,7 +4,7 @@
 
 这里维护 Web、Flutter、API、Worker、AI 与媒体层之间需要一致理解的数据结构。首批对象包括 Project、Intent、Asset、Segment、StoryNode、ReshootTask、Job、Timeline、Clip、ReviewIssue 和 Version。
 
-## 已确定的第一版约定
+## 已确定的基础约定
 
 - UUID 标识、UTC 业务时间、整数毫秒、半开区间和 snake_case JSON 字段。
 - Schema 版本 1.0；自定义 EDL、六态 Job、项目角色和不可变版本。

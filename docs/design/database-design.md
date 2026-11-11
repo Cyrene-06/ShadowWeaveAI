@@ -2,11 +2,11 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 文档编号 | SWAI-DBD-R01 |
+| 文档编号 | SWAI-DBD-R02 |
 | 编制日期 | 2026-11-11 |
 | 需求基线 | YINGZHI-AI-V1.1.0-20261110-FULL-R01 / SRS-R01 |
 | 数据库方向 | PostgreSQL + pgvector；Redis 为队列/短缓存；媒体进对象存储 |
-| 文档状态 | 第一版逻辑与物理设计草案；尚无迁移脚本、已建表或运行验证 |
+| 文档状态 | 第二版逻辑与物理设计草案；尚无迁移脚本、已建表或运行验证 |
 | 配套文档 | [详细设计](detailed-design.md)、[Agent 设计](agent-design.md) |
 
 ## 1. 范围和存储边界
@@ -14,6 +14,21 @@
 PostgreSQL 保存身份与项目权限、上传记录、媒体元数据、分析证据、故事快照、任务状态、Agent 调用、用户确认、作品版本和审计。对象存储保存原片、代理、缩略图、转写大文件、生成音频、检查点大对象和导出文件。Redis 不承担唯一业务状态、版本或授权存储。
 
 业务表首版为 **36 张**，按下述字典设计；LangGraph 官方 PostgreSQL checkpointer 的内部表由选定适配器单独迁移，放在 `agent_checkpoints` schema，不计入 36 张业务表，也不手写模拟其表结构。默认业务 schema 为 `public`，后续可用独立 schema 隔离。
+
+### 1.1 核心机制需要保存的事实
+
+[创新性分析](../innovation-analysis.md) 不依靠表数量证明技术贡献。R02 保持 36 张业务表，通过明确字段和不可变引用支撑两个闭环。
+
+| 机制事实 | 表/字段 | 为什么需要持久化 |
+| --- | --- | --- |
+| 规划依据和证据边界 | storyboards.planning_context；analysis_runs、annotations | 可以复核判定使用哪批素材、人工标注、规则与顺序关系 |
+| 覆盖判定而非一个颜色标签 | story_nodes.coverage_report；node_candidates.evidence | 区分无素材、质量不足、语义未知和检索未完成 |
+| 补拍可行性和真实成效 | capture_tasks.planning_context / evidence | 上传、分析、覆盖验证和任务 fulfilled 分别有依据 |
+| 目标、传播理由与实际差异 | edit_drafts.impact_report / diff | 避免求解后才用扩大范围解释所有变化 |
+| 锁定及范围外保持 | timeline_clips、clip_dependencies；draft validation_report | 保留基准和候选规范化比较结果 |
+| 结果可复现 | workflow_runs、agent_runs + 离线评测 manifest | 数据、模型、预算、提交和原始指标可关联；不增加仅用于展示创新的表 |
+
+评测数据集和报告属于离线工件，格式见 [评测协议](../evaluation.md)；若将来产品化为在线评测服务，再单独设计评测表与迁移。
 
 ## 2. 命名、类型与共同字段
 
@@ -173,7 +188,7 @@ superseded 只标记状态，已确认内容仍不可改。全文“确认快照
 | --- | --- | --- |
 | project_id | uuid | 项目域 |
 | bucket / object_key | text / text | UNIQUE(bucket,object_key)，服务端生成 |
-| kind | text | original、proxy、thumbnail、transcript、generated_audio、render、checkpoint |
+| kind | text | original、proxy、thumbnail、transcript、generated_audio、render、checkpoint、planning_artifact、verification_report |
 | state | text / pending | pending、available、deleting、deleted、failed |
 | sha256 | char(64)，可空 | 上传校验前可空；available 时必须具备摘要 |
 | size_bytes | bigint，可空 | >=0；available 时非空 |
@@ -332,7 +347,8 @@ draft 可编辑，confirmed 后内容不可变；含 updated_at。
 | revision | integer | UNIQUE(project_id,revision) |
 | parent_id | uuid，可空 | 上一故事板修订 |
 | status | text / draft | draft、confirmed、superseded |
-| content_hash | char(64)，可空 | 确认时生成，包括节点、候选选择与处置 |
+| content_hash | char(64)，可空 | 确认时生成，包括 planning_context、节点、候选选择与处置 |
+| planning_context | jsonb | 固定 evidence_manifest_ref/hash、规则/排序配置版本、已确认顺序边与全局校验摘要 |
 | workflow_id | uuid，可空 | 同项目 workflow_runs |
 | confirmed_by / confirmed_at | uuid / timestamptz，可空 | 成对出现 |
 
@@ -354,6 +370,7 @@ confirmed/superseded 行及其节点、候选不允许更改，补拍更新或�
 | coverage | text | covered、insufficient、uncertain、missing |
 | resolution | text / unresolved | unresolved、accepted、reshoot、substitute、restructure、skipped |
 | resolution_evidence | jsonb / {} | 用户确认或候选证据，不用 skipped 冒充 covered |
+| coverage_report | jsonb | manifest_hash、逐项支持判定、reason_codes、候选引用、合法时长与搜索完整性 |
 
 节点时间预算汇总、必需节点略过与用户授权在故事板确认事务中校验。
 
@@ -386,9 +403,10 @@ confirmed/superseded 行及其节点、候选不允许更改，补拍更新或�
 | state | text / open | open、in_progress、submitted、fulfilled、unable、cancelled |
 | revision | integer / 1 | 客户端更新并发检查 |
 | user_choice | jsonb / {} | 无法补拍理由、替代选择、手工确认 |
-| evidence | jsonb / [] | 素材 ID、分析批次、覆盖验证依据 |
+| evidence | jsonb / [] | 当前有效验证报告引用、素材/分析/新故事板修订 ID 与摘要；历史报告由不可变 Job 工件追溯 |
+| planning_context | jsonb | 来源覆盖报告、可行性快照、优先级输入、排序规则版本和替代路径 |
 
-索引：(project_id,state,created_at)、(story_node_id)。上传会话关联任务，submitted 可含多份素材；fulfilled 需成功分析与验证结果，不能由客户端直接设定。
+索引：(project_id,state,created_at)、(story_node_id)。上传会话关联任务，submitted 可含多份素材；fulfilled 需成功分析与验证结果，不能由客户端直接设定。写回锁定任务并校验 revision、Job 租约及绑定的故事修订；旧验证不能覆盖用户更新。验证历史不无限追加到单行 JSON，存为可追溯 Job 产物。
 
 ### 4.19 workflow_runs — 创作工作流
 
@@ -486,7 +504,7 @@ confirmed/superseded 行及其节点、候选不允许更改，补拍更新或�
 | 字段 | 类型/默认 | 含义与约束 |
 | --- | --- | --- |
 | project_id / workflow_id / job_id | uuid / uuid / uuid | 发起等待的任务 |
-| kind | text | intent、storyboard、gap_resolution、conflict、budget |
+| kind | text | intent、storyboard、gap_resolution、conflict、budget、edit_scope；最终草案确认使用 edit_drafts |
 | payload | jsonb | 展示的候选、影响与可选动作 |
 | payload_hash | char(64) | 用户所见内容摘要 |
 | base_version_id / base_revision | uuid，可空 / integer | 并发基准 |
@@ -509,10 +527,11 @@ ready 后候选内容冻结，确认终态只更新状态；含 updated_at。
 | workflow_id / job_id | uuid，可空 | AI 草案来源；手工可空 |
 | intent_id / storyboard_id | uuid / uuid | 同项目确认快照 |
 | requested_operations | jsonb | 手工操作或自然语言意图 |
-| requested_unlock_clip_ids | jsonb / [] | 明确要求解锁的稳定 clip_key 集合，纳入 payload_hash |
+| requested_unlock_clip_keys | jsonb / [] | 明确要求解锁的稳定 clip_key 集合，纳入 payload_hash；不是数据库片段 UUID |
 | candidate_edl | jsonb，可空 | 达到 ready 必须非空 |
-| diff / validation_report | jsonb / jsonb | 差异、影响集合、硬错误和建议 |
-| payload_hash | char(64)，可空 | 包含 EDL、基准、差异、校验、解锁请求 |
+| impact_report | jsonb | 规划前目标/预报影响集合、传播原因、锁定冲突、范围授权及规则版本 |
+| diff / validation_report | jsonb / jsonb | 实际 added/removed/updated、逐字段差异、全量校验与范围外摘要 |
+| payload_hash | char(64)，可空 | 包含 EDL、基准、impact_report、差异、校验、解锁请求 |
 | state | text / building | building、ready、confirmed、rejected、expired、invalidated |
 | expires_at | timestamptz | 草案有效期 |
 | confirmed_by / confirmed_at | uuid / timestamptz，可空 | 最终确认者 |
@@ -585,7 +604,7 @@ ready 后候选内容冻结，确认终态只更新状态；含 updated_at。
 | kind | text | timing、subtitle、audio、narrative |
 | policy | jsonb | 锚定方式、偏移和传播范围 |
 
-CHECK 两端不同；(version_id,depends_on_clip_key) 索引用于反向影响分析。首版依赖必须为 DAG，提交时检测环。
+边方向是 clip_key 依赖 depends_on_clip_key；传播使用被依赖者→依赖者。CHECK 两端不同；(version_id,depends_on_clip_key) 索引用于反向影响分析。首版依赖必须为 DAG，提交时检测环。
 
 ### 4.30 review_reports — 审片报告
 
@@ -763,7 +782,7 @@ LIMIT :limit;
 1. 锁定 projects 行；验证成员、状态与 head_revision。
 2. 锁定 edit_drafts；验证 ready、未过期、基准与内容摘要一致。
 3. 对引用 assets 采用一致顺序读取锁，和删除事务使用相同锁顺序，验证可用且引用对象 available。
-4. 验证意图/故事板确认快照、时间范围、轨道、时长、依赖 DAG、锁定摘要和显式解锁。
+4. 验证意图/故事板确认快照、时间范围、轨道、时长、依赖 DAG、锁定摘要和显式 unlock_clip_keys；核对实际 diff 属于已授权影响集合，payload_hash 包含完整 impact_report。
 5. 分配 version_no，插入 Version、Tracks、Clips、Dependencies；计算规范化 content_hash。
 6. 更新项目 current_version_id 与 head_revision+1，草案置 confirmed；写审计、Outbox 和幂等响应，提交。
 
@@ -794,6 +813,23 @@ Worker 将媒体上传到新对象键并校验；事务内验证租约与对象�
 | 对象可读、媒体可解码、真实格式 | Worker 与对象校验，对账兜底 |
 
 为消除“jsonb 任意塞字段”的歧义，output_config、constraints、candidate_edl、Agent 输出分别维护 Schema。大对象、全量日志和无限历史数组禁止塞入单行 JSON。
+
+### 7.1 机制字段的 JSON 契约与大小边界
+
+以下是拟实现的子 Schema 要求，不是任意 JSON 容器。初始单份机制报告上限建议 256 KiB，实际阈值经容量探针确认；超限写项目域 `stored_objects` 的不可变 JSON 工件，行内仅存 object_id/hash/summary，禁止静默丢字段或截断证据。
+
+| 字段 | 必需内容 | 额外验证 |
+| --- | --- | --- |
+| planning_context（故事板） | evidence_manifest_ref、manifest_hash、coverage_policy_version、ranking_config_ref、order_edges、global_validation | 同项目对象可读、摘要吻合；node_key 均属于故事板；顺序 DAG 无环 |
+| coverage_report | evaluated_manifest_hash、checked_requirements、candidate_refs、reason_codes、search_complete、usable_duration_ms | 状态与规则一致；unknown 不变成 supported；源区间并集不重复计时 |
+| planning_context（补拍） | source_storyboard_id、source_node_key、source_coverage_hash、feasibility、priority_inputs、policy_version、alternatives | 补拍必须关联节点；事件是否可再拍由证据/用户确认；未知成本不可当作零 |
+| evidence（补拍验证引用） | report_ref、job_id、task_revision、evaluated_manifest_hash、result_storyboard_id、outcome | 新故事板和原 node_key 可追溯；fulfilled 有合格支持；晚到结果不得覆盖新修订 |
+| impact_report | base_content_hash、requested_target_keys、predicted_affected_keys、causes、scope_approval_ref、lock_conflicts、policy_version | 先有预报后有 diff；新增键/删除键都纳入；扩大范围必须重新授权 |
+| validation_report | hard_errors、locked_hash_comparison、outside_scope_comparison、rules_version | 独立于模型输出复核整个 EDL；ready 要求硬错误为空 |
+
+嵌在 JSON 的 ID、稳定键和对象引用无法由普通外键自动覆盖，应用在确认事务中做项目域/所属修订/对象状态验证，并在物理清理时反查引用。高频过滤字段提取为显式列，当前不为这些大报告盲建 GIN；先按项目/故事板/任务索引定位后再读 JSON。
+
+R02 将尚未发布的解锁字段由含糊的 `_ids` 命名改为 `_keys`；Schema 1.0 的正式发布前须把示例、生成代码和接口一并冻结。如之后已存在部署版本，再进行兼容迁移，不能认为改文档即可变更线上字段。
 
 ## 8. 数据生命周期与删除
 
@@ -836,6 +872,9 @@ Python 迁移工具拟采用 Alembic，实际选择随 ORM/驱动初始化冻结
 | 相同文件两个上传会话完成 | 同项目 Asset 去重且保留两份会话/补拍关联 |
 | 不同维度/同维度不同模型检索 | 固定空间比较，拒绝不一致输入 |
 | duplicate 消息与旧租约完成 | 不重复提交，旧 token 被拒绝 |
+| 缺口报告 search_complete=false 却报 missing | 应用 Schema/规则拒绝；不能当作确定无素材 |
+| 旧 task revision 的补拍验证回写 | 拒绝覆盖，保留 Job 结果供检查 |
+| 规划后擅自扩大影响集、锁定片段换键删除 | diff/锁定校验拒绝 ready 或确认 |
 | 图确认后 DB 成功、checkpointer 失败 | Outbox 可恢复且不重复决定 |
 | 数据恢复但存储对象缺失 | 对账识别并明确不可用 |
 

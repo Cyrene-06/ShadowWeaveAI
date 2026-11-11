@@ -2,11 +2,11 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 文档编号 | SWAI-AGD-R01 |
+| 文档编号 | SWAI-AGD-R02 |
 | 编制日期 | 2026-11-11 |
 | 对应需求 | FR-AGT-001—008 及摄影、素材、故事、剪辑、审片相关需求 |
 | 技术方向 | LangGraph + 可替换模型适配器 + 类型化工具 + PostgreSQL 检查点 |
-| 文档状态 | 第一版实施设计草案；尚无实际角色、工作流或效果测试 |
+| 文档状态 | 第二版实施设计草案；以核心闭环组织协作，尚无运行验证 |
 | 配套文档 | [详细设计](detailed-design.md)、[数据库设计](database-design.md) |
 
 ## 1. 目标与职责边界
@@ -17,6 +17,21 @@
 
 Agent 设计目标是把“有素材但缺少故事”“故事缺口不知道补拍什么”“改一个镜头影响全部内容”转化为可解释、可确认和可恢复的操作流程。
 
+### 1.1 核心闭环中的角色分工
+
+[创新性分析](../innovation-analysis.md) 将证据覆盖和局部重规划列为创新假设，七角色是实现这些机制的职责接口。模型提出语义判断和候选，确定性组件控制合法性、传播、预算和写入。
+
+| 闭环步骤 | 角色提出的业务建议 | 确定性组件负责 | 必留产物 |
+| --- | --- | --- | --- |
+| 意图→故事要求 | 导演/编剧提出节点、预算和顺序 | 用户确认、无环、时长与冲突检查 | Storyboard planning_context |
+| 素材→覆盖判定 | 视觉给出带引用的事实支持与 unknown | EvidenceResolver 校验引用；CoverageEvaluator 按规则合成状态 | coverage_report、candidate refs |
+| 缺口→行动 | 摄影给出动作、可行性条件和替代 | GapPlanner 可行性门/稳定排序，用户选择 | capture_task planning_context |
+| 回传→验证 | 视觉复核新证据，导演建议更新故事 | 绑定 manifest/task revision 的验证 Job | verification_report、新故事修订 |
+| 修改→局部方案 | 导演解析目标；剪辑/声音生成受限候选 | ImpactResolver 预报闭包，PolicyValidator 检查全量 diff/锁定 | impact_report、validation_report |
+| 方案→版本→审片 | 审片提供问题和建议 | 人工门、API 事务、版本/导出分离 | EditDraft、Version、ReviewReport |
+
+CoverageEvaluator、GapPlanner、ImpactResolver 是拟自研的规则/约束组件，可以作为注册工具调用；它们不再新增第八类 Agent。算法、边方向和状态表以 [详细设计第 7、8.3 节](detailed-design.md) 为准。
+
 ## 2. 运行时组件
 
 | 组件 | 职责 | 持久化依据 |
@@ -26,7 +41,9 @@ Agent 设计目标是把“有素材但缺少故事”“故事缺口不知道�
 | RoleRunner | 构建受限上下文、模型调用、解析、校验与修复 | agent_runs |
 | ToolGateway | 参数 Schema、允许工具、项目域与成本校验 | job_events / audit_logs |
 | EvidenceResolver | 获取当前可用素材、区间、转写和来源 | assets、segments、annotations |
-| PolicyValidator | 必留/禁用/锁定/时间范围/轨道/预算硬规则 | 版本快照、规范化报告 |
+| CoverageEvaluator / GapPlanner | 证据有效性、覆盖状态、缺口分类、可行性与任务排序 | coverage_report、capture_tasks.planning_context |
+| ImpactResolver | 目标定位后的反向依赖闭包、约束扩展和原因报告 | edit_drafts.impact_report |
+| PolicyValidator | 必留/禁用/锁定/时间范围/轨道/预算硬规则及独立全量 diff | 版本快照、规范化报告 |
 | ApprovalService | 创建确认、校验决定、单次恢复 | approval_requests、Outbox |
 | ModelProvider | 文本、视觉、转写、嵌入能力适配 | model_profiles 不可变修订 |
 
@@ -263,20 +280,28 @@ flowchart TD
 
 Flutter 本地轻量分析 → 条件变化/用户请求 → 服务端摄影建议 → 简短提示或任务卡。云端调用有冷却和帧预算，相同场景摘要复用结果，用户可关闭提示；每帧画面不写入数据库。云端断开后保留端侧能力与待上传任务。
 
-### 8.2 补拍更新
+### 8.2 补拍更新：证据闭环
 
-已完成上传关联 capture_task_id → 新 Asset 分析成功 → 定位原 node_key → 创建故事板新 revision → 更新候选和覆盖 → 用户确认。旧故事板保持不可变，已有成片不自动替换素材；用户需要把更新应用到新的 EditDraft。
+1. 视觉角色输出每项故事要求的 supported/contradicted/unknown 与片段/帧/转写引用；不得只给一个置信度数字。
+2. CoverageEvaluator 先检查 manifest、搜索完整性和引用，再按详细设计的有序规则计算状态；检索失败或预算截断返回 uncertain，不报 missing。
+3. 摄影角色接收真实缺口及用户条件，提出拍摄动作、理由、时长、可执行条件与替代。GapPlanner 先排除不可执行任务，再按固定策略排序；导演不能把已结束活动改写为可再发生。
+4. 用户确认任务后 Flutter 采集/上传；上传只得到 submitted。新 Asset 分析成功后定位原 node_key，创建新故事修订并执行验证 Job。
+5. 写回检查 task revision 与租约。验证报告引用新 manifest、候选和故事修订；合格支持才 fulfilled。已有成片不自动替换，需新的 EditDraft 和版本确认。
 
-### 8.3 局部修改
+结构冲突回到约束确认；事实未知回到证据核对。两者均不能只因故事“缺一段”就强制用户补拍。用户 unable 或略过保留决定，不标为 covered。
 
-1. 绑定 base_version_id、base_revision、用户目标和当前锁定集。
-2. 解析目标，无法唯一定位时请求用户确认，不默认选中同名镜头。
-3. 基于 clip_dependencies、时间重叠、顺延和节点约束计算影响闭包。
-4. 限制编辑/声音角色只修改允许集合；范围外内容按稳定键逐项比对。
-5. 校验源范围、时长、依赖、必留/禁用和锁定 hash。
-6. 保存 ready 草案、差异、受影响轨道和冲突；用户确认后由 API 原子创建版本。
+### 8.3 局部修改：先预报影响再生成候选
 
-锁定包括目标位置。用户要求延长开场但结尾不能移动时，系统应提出压缩其他未锁片段、缩小修改或显式解锁方案；不能悄悄把结尾后移。局部规划目标 20 秒不包含最终导出。
+1. 绑定 base_version_id、base_revision、基准内容哈希、目标与锁定集；目标同名或“更温暖”等范围不明时等待确认。
+2. 导演只解析操作目标与约束，不能自行批准扩大范围或解锁。ImpactResolver 用 prerequisite→dependent 方向传播，叠加重叠、顺延、节点预算与全局条件，形成 predicted_affected_keys 及原因链。
+3. 将目标与连带变化展示给用户；超出原授权的范围或全片扩展要先确认，锁定冲突返回替代方案。该批准只授权范围，不替代最终草案确认。
+4. 剪辑/声音角色仅接收已批准影响子图及边界条件。边界外片段保持基准快照；不能通过生成新键删除旧锁定片段。
+5. 独立校验器比较整个候选 EDL：源范围、时长、依赖、必留/禁用、锁定 hash，actual_changed_keys 必须属于已授权预报集合。扩大范围则返回新的影响报告再确认，不原地补写已批准报告。
+6. 无硬错误才保存 ready 草案、impact_report、实际 diff、requested_unlock_clip_keys 与 payload_hash。最终确认的 unlock_clip_keys 必须一致；API 事务创建 Version。
+
+范围授权和最终草案确认是不同目的的确认：前者使用 approval_requests.kind=edit_scope，后者使用 edit_drafts 的确认事务，不额外创建可直接发布版本的 Agent approval。两个门均绑定基准与摘要、检查过期，恢复步骤须可重入。范围没有扩大时无需制造额外确认，用户原始明确目标可作为范围授权依据。
+
+先验收等长开场替换、字幕锚定与边界转场，再加入声音与全局时长约束。全片依赖可能使影响集合覆盖全部内容，应明确报告；20 秒目标针对索引已完成的等长开场替换，不含最终视频编码。
 
 ### 8.4 审片修复
 
@@ -389,11 +414,11 @@ agent_runs 与 Job/Workflow/Version 关联，关键用户选择写 audit_logs。
 
 ## 15. 评测数据与验收
 
-### 15.1 数据集与基线
+### 15.1 数据集、机制与角色分离验证
 
-沿用五类场景、每类 3 个任务、每任务至少 20 段素材的初步建设目标，即 15 组任务、至少 300 段素材；当前尚无已收集数据集。每组记录输入授权、期望故事节点、缺口、可用补拍、锁定和可接受修改。
+五类场景每类 3 个任务、每任务至少 20 段素材，即 15 组、至少 300 段，是待建设目标。按来源计划每场景 1 组开发、2 组冻结测试；同一事件的原片、裁剪和近重复不跨集合。尚无数据采集或实验结果。
 
-基线对照包括：无 Agent 的手工故事/规则时间轴；单角色规划；七角色受约束流程。消融比较覆盖检查、来源约束和依赖传播的作用，不将角色数量当效果指标。人工审美评审与客观范围/时长校验分别报告。
+[评测协议](../evaluation.md) 统一基线、消融、指标分母和失败记录。机制比较保持角色布局一致；角色比较保持证据覆盖、局部传播、校验和人工门一致。两侧使用相同基础模型与预算上限，报告实际用量与超预算失败，不能以七角色允许更多调用来证明分工有效。
 
 ### 15.2 角色与流程验收表
 
@@ -422,7 +447,7 @@ agent_runs 与 Job/Workflow/Version 关联，关键用户选择写 audit_logs。
 2. 建立 PostgreSQL checkpointer、thread_id、Job/Outbox、人工中断及故障恢复。
 3. 接入一个验证过的模型，完成导演、编剧、视觉的最小故事证据链。
 4. 接入摄影补拍、剪辑 EDL、声音资源与审片，形成七角色完整证据。
-5. 增加局部依赖传播、真实预算、缓存、真机与场景评测。
+5. 完善真实预算、缓存、真机与场景评测；局部依赖传播和锁定内核在第 1 批即用固定样例验证，不等到所有角色接入才评估可行性。
 
 仍需验证：LangGraph/checkpointer 具体版本、图状态迁移策略、模型对 Schema 与视觉/转写的真实能力、向量空间、收费配置和端侧性能。完成验证后增加修订号并更新 model_profiles 与开发文档。
 

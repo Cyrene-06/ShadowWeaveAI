@@ -2,11 +2,11 @@
 
 | 项目 | 内容 |
 | --- | --- |
-| 文档编号 | SWAI-SDD-R01 |
+| 文档编号 | SWAI-SDD-R02 |
 | 编制日期 | 2026-11-11 |
 | 对应需求 | YINGZHI-AI-V1.1.0-20261110-FULL-R01 / SRS-R01 |
 | 设计范围 | Flutter、Web、API、Worker、AI、媒体、存储与部署 |
-| 文档状态 | 第一版实施设计草案；所有接口与流程尚待编码验证 |
+| 文档状态 | 第二版实施设计草案；核心机制细化，尚待编码验证 |
 | 配套文档 | [数据库设计](database-design.md)、[Agent 设计](agent-design.md) |
 
 ## 1. 目标、范围与设计原则
@@ -16,6 +16,18 @@
 设计遵循：项目数据可追溯；耗时任务异步；模型只提出受约束的业务建议；确认动作由业务服务执行；已有版本不被失败任务覆盖；缓存与队列不能作为唯一事实来源。
 
 内部首版以单套 PostgreSQL、对象存储、Redis 和少量 Worker 为部署起点。七类 Agent 是职责接口，不要求七个独立模型或微服务。模型型号、依赖版本和容量值须在原型验证后锁定。
+
+### 1.1 由创新假设驱动的设计地图
+
+[创新性分析](../innovation-analysis.md) 定义两项待验证机制；[评测协议](../evaluation.md) 负责证据口径。基础设施为机制提供执行条件。
+
+| 机制 | 输入 → 输出 | 确定性边界 | 主要实现与数据 |
+| --- | --- | --- | --- |
+| 证据驱动故事覆盖 | 确认意图 + 证据 manifest → 节点覆盖报告 + 缺口处置 | 源区间/证据可追溯；检索未完成不报 missing | 本文第 7 节；stories、EvidenceResolver；storyboards/story_nodes/capture_tasks |
+| 约束下局部重规划 | 基准版本 + 修改目标 → 影响报告 + 版本差异 | 锁定摘要、范围外保持、版本并发必须通过 | 本文第 8.3、9 节；drafts、PolicyValidator；edit_drafts/versions/clip_dependencies |
+| 协作执行支撑 | 结构化建议 + 用户决定 → 可恢复任务与结果 | Agent 无权直接提交版本或自行解锁 | Agent 设计；workflow_runs/approval_requests/jobs/Outbox |
+
+R02 细化尚未发布的 Schema 1.0；没有已部署接口迁移。本次将混用 UUID 与稳定键的解锁字段统一为 `requested_unlock_clip_keys` / `unlock_clip_keys`。已提交原始需求保持不变。
 
 ## 2. 系统组成与代码布局
 
@@ -153,7 +165,7 @@ Pinia 按项目、上传、任务、编辑会话拆分；服务端确认数据�
 | PATCH `/projects/{p}/capture-tasks/{t}` | if_revision、choice、reason | 用户领取/无法补拍/重新打开等明确操作 |
 | POST `/projects/{p}/edit-drafts` | base_version_id、base_revision、target、operations | 手工草案，或异步 AI 草案 Job |
 | GET `/projects/{p}/edit-drafts/{d}` | 无 | 候选 EDL、差异、影响与校验报告 |
-| POST `/projects/{p}/edit-drafts/{d}/confirm` | payload_hash、base_revision、unlock_clip_ids | 不可变 Version 与新 head_revision |
+| POST `/projects/{p}/edit-drafts/{d}/confirm` | payload_hash、base_revision、unlock_clip_keys | 不可变 Version 与新 head_revision |
 | GET `/projects/{p}/versions`、`/{v}` | 游标/版本 | 历史/完整快照 |
 | POST `/projects/{p}/versions/restore` | target_version_id、base_revision | 创建复制目标内容的新版本，保留历史链 |
 | POST `/projects/{p}/versions/compare` | left_version_id、right_version_id | 镜头、字幕、声音及约束差异 |
@@ -208,15 +220,59 @@ AnalysisRun 固定媒体哈希、配置摘要、模型版本与产物；新分�
 
 文本向量与图文对齐向量使用不同 `embedding_space_id`；维度相同也不能直接混搜。首版小样本优先精确检索，验证召回后再使用索引。候选不足时回退关键词或扩大受限检索，并在响应说明策略。
 
-## 7. 意图、故事板与补拍
+## 7. 证据驱动的故事覆盖与补拍闭环
 
-意图由原文/转写生成草案，用户确认主题、时长、画幅、情绪、必留、禁用及重点人物。冲突字段不进入默认推断，置为待确认。任何修改生成新 intent revision；任务始终绑定确认过的 intent_id。
+### 7.1 叙事约束图与输入快照
 
-故事板以 revision 管理：draft 可编辑，confirmed 不可改。节点包含目标、镜头要求、情绪、顺序、预算和候选证据；覆盖分为 `covered`、`insufficient`、`uncertain`、`missing`，用户略过使用独立 resolution 字段，避免把“略过”写成“已覆盖”。
+输入为已确认 Intent、固定 evidence manifest、有效人工标注及政策配置。manifest 记录素材哈希、analysis_run_id、标注修订、不可变产物引用与摘要；规划过程中不能悄悄换成新分析。故事板 `planning_context` 固定 manifest 引用、覆盖规则版本、候选排序配置和用户确认的顺序边。
 
-用户确认时校验节点顺序、总时长预算、必留条件与未解决缺口。略过必需节点或改变主题需要新的明确确认。照片替代、环境音或结构调整均由用户选择。
+节点包含稳定 node_key、表达目的、required、预算，以及 `requirements` 中的事实要求、镜头质量、期望时长范围和软偏好。只把用户明确要求的事件作为覆盖要求，生成的叙事想法不得自动变成真实事件。顺序图必须无环，因果和呼应关系先作为解释性关系；只有用户确认并能表达为可校验约束的关系进入求解器。
 
-补拍任务状态为 `open → in_progress → submitted → fulfilled`；`submitted` 代表收到已完成上传的素材，只有更新后的分析和覆盖验证能进入 fulfilled。`unable`、`cancelled` 表示无法执行或取消，不代表覆盖成功。新素材导致新故事板 revision，旧确认快照保持不变。
+### 7.2 候选与证据充分性
+
+先检索，再核对片段合法性与事实要求，最后排序。候选分为 `eligible / rejected / needs_confirmation`；分数不承担合法性和真实性判定。检索分数或模型自报 confidence 不能解释为事实概率。
+
+初版拟采用 `rank = w_semantic * semantic + w_quality * quality + w_speech * speech - w_duplicate * duplicate_penalty`。各分项归一化方法、缺失处理和权重只在开发集确定并固定；未知语音一致性保留 unknown，不能默认为满分。排序只用于满足硬要求的候选之间挑选，不把“相似但无证据”排成已覆盖。
+
+每项事实要求记录 `supported / contradicted / unknown`、证据引用、核对来源（规则/模型/人工）和理由。规则能校验区间、清晰度阈值和时长，不能证明人物身份或复杂事件；语义支持由带引用的模型判断或人工确认给出，保留错误评估。证据引用不存在、超出源区间、属于他项目或不在 manifest 中，确定性拒绝。
+
+### 7.3 覆盖状态判定顺序
+
+| 条件（按顺序判定） | coverage | reason_code / 动作 |
+| --- | --- | --- |
+| manifest 不完整、分析/检索失败、预算截断或事实归属无法确认 | uncertain | analysis_incomplete / search_incomplete / semantic_unverified；补检索或人工核对 |
+| 有合法、质量合格、事实要求受支持且满足节点时间预算的非重复候选组合 | covered | evidence_sufficient；保留候选、组合和依据 |
+| 有相关证据，但合格时长不足、画质/音频不可用或组合不能满足硬要求 | insufficient | duration_shortfall / unusable_quality / constraint_conflict |
+| 对完整限定搜索范围检查后，没有支持该节点的证据 | missing | no_supporting_evidence；展示已查范围及限制 |
+
+covered 仅指当前 manifest 对当前节点要求的支持，不是全知事实结论。多个源区间有重叠时合格时长按源区间并集计算；同一采访重复三次不能当作三份独立覆盖。节点级结果还需通过跨节点素材复用、总时长和顺序检查；节点各自 covered 不保证全片可行。全局冲突写入故事板校验报告，不改写成缺少拍摄事实。
+
+`resolution` 独立于 coverage。用户 skipped、接受低质量或调整时长均记录显式决定；略过不会把 missing 改成 covered。已确认故事板不可改，补拍与纠错创建下一修订；只有确认后的新修订供后续作品版本引用。
+
+### 7.4 缺口分类与可执行行动
+
+先做可行性门，再做排序：用户能否再次到场、事件是否仍可发生、设备/时间/授权是否具备。无法确认条件则询问或待确认；已结束事件不可建议重演后冒充原始记录。普通摄影任务可以不关联故事节点，补拍必须关联原节点与稳定 node_key。
+
+| 缺口 | 默认处置候选 | 验证方式 |
+| --- | --- | --- |
+| 无支持素材 | 补拍、已有授权照片/音频、改写结构、用户略过 | 新素材实际支持节点要求 |
+| 质量/时长不足 | 重拍、裁剪其他区间、缩短节点、照片替代 | 合格区间与时长重新检查 |
+| 语义未知 | 定向检索/采样、原片定位、用户核对 | 新证据或有来源的人工标注 |
+| 全局约束冲突 | 等长替换、压缩未锁片段、调整时长、明确解锁 | 完整规则检查；不直接发补拍任务 |
+
+在通过可行性门的任务间，初版用稳定字典序排序：用户指定优先级、必需节点优先、缺口严重度、预计新增覆盖时长降序、预计行动成本升序、node_key。无法估算的成本保留 unknown，不当作零；同级 unknown 排在已知可执行任务后并请求确认。此为待验证启发式，不声称最优。与“故事顺序”“只按缺口严重度”排序对照，检验是否减少无效补拍。
+
+补拍卡保存触发 coverage_report、目标节点、拍摄动作/原因、建议源时长、输出使用时长、地点/时机条件、可替代方案和无法执行入口。建议拍 8 秒供最终 6 秒使用是示例预算，不是固定通用参数。
+
+### 7.5 回传验证和终态
+
+上传只使 capture_task 进入 submitted。分析成功后创建验证 Job，绑定 task_id、task revision、原故事板修订与新 manifest；重新计算相关节点并生成 verification_report。成功判据为目标要求获得合格支持且节点/全局约束可行，用户选择替代则按确认后的新节点要求验证。
+
+写回时检查 Job 租约、任务修订和项目权限；迟到结果记录但不覆盖用户更新。fulfilled 必须引用新故事板修订和验证报告，新素材与原缺口之间可追溯。补拍仍不合格则保留 submitted 和验证失败原因，允许重交或 unable；不以“上传成功”统计补拍成功。重复文件仍保留任务关系，但没有新有效覆盖就没有覆盖提升。
+
+### 7.6 最小可证伪样例
+
+确认的校园故事含开场、过程、采访、收尾四节点，收尾要求只是活动结束的可确认画面。已有素材仅支持前三个；检索完整但没有收尾，报告 missing。系统不能从“校园空镜”推断“散场”；用户核对或采集真实散场镜头后，生成新分析与节点覆盖报告。提交了仍模糊的素材，预期不足而非 fulfilled；活动结束无法补拍，允许新故事修订选择照片替代或略过并保留原因。
 
 ## 8. EDL 与时间轴规则
 
@@ -255,11 +311,37 @@ EDL 是版本内容的规范化序列化，不是数据库之外另一份可独�
 - 字幕的相对位置、依赖音频和锚定片段变化需纳入依赖传播；删除一个片段不能留下悬空依赖。
 - 输出参数只能来自允许的预设与白名单，路径、滤镜和执行命令不由模型直接指定。
 
-### 8.3 锁定和变更影响
+### 8.3 锁定保护、依赖图与影响闭包
 
-首版 `locked=true` 表示整片段锁定：源、入出点、目标区间、速率、config 和依赖均保持不变。锁定内容向后移动也算变更。排除数据库 ID 与版本 ID，按稳定键与规范化内容计算锁定摘要。
+首版 `locked=true` 冻结整片段：clip_key、track_key、故事节点引用、源对象/入出点、目标区间、速率、config 和依赖。规范化时排除数据库行 ID、version_id 和时间戳；保留所有影响媒体内容和位置的字段。相同 clip_key 在新版本必须存在且规范化摘要相同。删除、移动、改变依赖或以新键替换后删除旧键均算违规。
 
-局部重规划从目标片段沿依赖边计算影响集合，并加入目标时间段重叠、后续顺延和节点预算约束。若触及锁定内容，返回冲突；用户明确提交 unlock_clip_ids 后才能形成解锁后的新版本。普通“确认修改”不能隐式解锁。ready 草案应事先列明 requested_unlock_clip_ids；确认提交的 unlock_clip_ids 必须与该受 payload_hash 保护的集合一致。新增解锁目标需生成新草案，不能在确认请求中临时扩大修改范围。
+依赖边在存储中采用 **“dependent 依赖 prerequisite”**；影响传播遍历 prerequisite → dependent 的反向索引。例如字幕依赖采访音频、转场依赖相邻两个画面。`clip_dependencies` 存静态媒体边，重叠、顺延、节点预算和全局时长是求解时计算的约束边。依赖本身不意味着共享项目的所有片段均应重算。
+
+规划前区分三个集合：`requested_target_keys`（用户授权目标）、`predicted_affected_keys`（算法预报的影响范围）、`actual_changed_keys`（基准与候选规范化 diff）。新增键也必须进入实际变化集合，删除键仍按旧键比较；集合使用稳定键而非跨版本变化的 UUID。
+
+```text
+input: immutable base, normalized operation, confirmed constraints
+I := explicit target clip/node members
+repeat until no new members:
+    add dependents of I (subtitle, voiceover, transition, audio anchors)
+    simulate durations/positions under requested operation
+    add clips whose interval/overlap/ripple/node budget must change
+    add global-budget participants only if global constraint is violated
+    record each added key, causal edge and reason
+if fixed point exceeds configured work budget: require broader scope decision
+if any changed locked key: return conflict and alternatives, not ready draft
+plan within allowed scope, then independently diff/validate the whole candidate
+```
+
+图有限且只增加节点，因此闭包最多加入图中全部片段；实际运行设置节点数/用时预算，超限返回 full_replan_required 和原因，不截断后冒称局部正确。全局音乐、总时长或速度变化可以扩大至全片；此时不承诺局部性能优势。先形成预报，再求解；求解扩大范围则更新报告并重新提示，不事后把所有实际变化追认为已授权。
+
+可在预报阶段由服务端预分配新增片段稳定键；新增键也须列入授权，模型不能事后另造键绕过范围比较。
+
+`impact_report` 包含目标集合、预报集合、每条传播原因、锁定冲突、全局扩展原因、基准摘要和规则版本。`diff` 独立计算实际变化及 added/removed/updated 字段。ready 前满足：无硬错误、实际变化属于预报集合、预报中的新增范围已经用户授权、所有未解锁锁定项摘要相同。界面显示目标、连带变化、范围外保持和冲突；不能只给模型一句“其余未变”。
+
+如果触及锁定内容，允许优先等长替换、压缩未锁片段或缩小目标；用户明确选择解锁时先生成新草案。ready 草案列明 `requested_unlock_clip_keys`，确认请求的 `unlock_clip_keys` 必须与其一致且受 payload_hash 保护。普通确认不得隐式解锁。
+
+**算例**：开场 [0,6000)、采访 [6000,18000)、过程 [18000,54000)、结尾 [54000,60000)，采访和结尾锁定。替换 6 秒开场应只改开场及其字幕/转场；拟改成 8 秒又整体顺延会移动锁定采访，必须拒绝。若把开场位置保持 6 秒并选另一源区间，则可生成合法草案。局部重规划不等于局部 MP4 编码；完整输出可以继续全片渲染，计时分开。
 
 ## 9. 修改、确认与版本事务
 
@@ -329,7 +411,7 @@ Worker 以 `lease_token` 和 `lease_expires_at` 领取执行，心跳续租；�
 
 已有 `.env.example` 只是配置草案。实际初始化时增加鉴权密钥引用、允许源、上传上限、超时、队列并发、模型预算、对象保留和检查点配置，同时更新环境文档；密钥不写 model_profiles。
 
-实施批次：身份与项目/迁移 → 上传与 AnalysisRun → Jobs/Outbox/租约 → 首个合法 EDL 与版本 → Web/移动端闭环 → 故事与七角色 → 审片、补拍、局部修改 → 故障与效果验证。每个批次补齐对应启动与检查命令。
+实施批次改为：核心契约/纯函数样例 + 最小身份与项目 → 上传与证据 manifest → 覆盖/补拍验证 → 合法 EDL/局部影响/版本 → 七角色门控与可靠恢复 → 双端摄影、多轨审片与五场景扩展 → 冻结对照与交付。双端、队列和媒体探针从第一批并行验证；生产持久化、租约和权限须在真实闭环发布前补齐。具体窗口与资源风险见 [路线图](../roadmap.md)，不能把此顺序视为 60 日可行性已经得到证明。
 
 ## 15. 需求追踪与验收用例
 
@@ -356,7 +438,7 @@ Worker 以 `lease_token` 和 `lease_expires_at` 领取执行，心跳续租；�
 7. 删除在用素材有影响提示，强制删除后检索隐藏且恢复/渲染明确失败。
 8. 同维度不同模型向量不混搜，图文能力与文本检索分别报告。
 
-这些是拟验收用例，当前没有执行记录。
+这些是拟验收用例，当前没有执行记录。效果实验、分组和分母统一遵循 [评测与证据协议](../evaluation.md)，不能由各组件各自选择更有利的测试口径。
 
 ## 16. 设计决策与待验证项
 
