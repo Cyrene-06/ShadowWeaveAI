@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import os
 import platform
 import subprocess
 import sys
@@ -18,7 +19,7 @@ from sw_ai.coverage import evaluate_coverage
 from sw_api.app import create_app
 from sw_api.materials import keyword_rank
 from sw_contracts import EvidenceManifest, StoryNode, digest
-from sw_media.analysis import MAX_BYTES, ffmpeg, sha_file
+from sw_media.analysis import MAX_BYTES, ffmpeg, sha_file, tool_versions
 from sw_worker.media_jobs import claim, clock, LEASE_MS, process_one, update_owned
 from sw_api.db import session
 
@@ -104,13 +105,49 @@ def compare(client, base, rows, registry, project_id):
     return records, stats, matching_refs
 
 
+def reproduce_worker_restart(database_url, case, analysis_id, read_state):
+    # The verifier starts from a drained, disposable catalog and queues only the silent fixture.
+    child_env = {**os.environ, "DATABASE_URL": database_url, "ARTIFACT_DIR": str(case)}
+    child_env.pop("SW_MEDIA_ASR_MODEL", None)
+    lose_worker = """
+import os
+import sys
+from sw_api.db import get_engine
+from sw_worker.media_jobs import claim, clock, LEASE_MS
+
+job = claim(get_engine(), at_ms=clock() - LEASE_MS - 1)
+if not job or job.get("id") != sys.argv[1] or job.get("attempts") != 1:
+    sys.exit(2)
+os._exit(23)  # lease is committed; skip ordinary shutdown
+"""
+    child = subprocess.run([sys.executable, "-c", lose_worker, analysis_id],
+                           cwd=ROOT, env=child_env, timeout=30)
+    assert child.returncode == 23, "Worker did not commit the target lease and exit as expected"
+    before, no_refs = read_state()
+    assert before["analysis_run_id"] == analysis_id and before["stage"] == "probe" and before["attempts"] == 1
+    assert not no_refs, "Unpublished analysis must not appear in search"
+    worker = [sys.executable, "-m", "sw_worker.media_jobs", "--once"]
+    subprocess.run(worker, cwd=ROOT, env=child_env, timeout=180, check=True)
+    after, refs = read_state()
+    assert after["analysis_run_id"] == analysis_id and after["stage"] == "succeeded" and after["attempts"] == 2
+    assert refs and len(refs) == after["result"]["segment_count"]
+    assert len({row["id"] for row in refs}) == len(refs)
+    assert all(row["analysis_run_id"] == analysis_id for row in refs)
+    subprocess.run(worker, cwd=ROOT, env=child_env, timeout=180, check=True)
+    assert read_state() == (after, refs), "Second restart changed the published run or candidate references"
+    return {"analysis_run_id": analysis_id, "injected_child_exit_code": child.returncode,
+            "final_attempts": after["attempts"], "published_segments": len(refs),
+            "second_restart_unchanged": True, "scope": "isolated no-audio fixture; expired lease fault injection"}
+
+
 def run(args):
     registry = json.loads(CATALOG.read_text(encoding="utf-8"))
     files = list(data_input(args.inputs, registry, args.download))
     case = args.artifacts.resolve() / uuid4().hex
     case.mkdir(parents=True)
     cfg = Config(str(ROOT / "alembic.ini"))
-    app = create_app("sqlite:///" + (case / "catalog.sqlite3").as_posix(), case, False)
+    database_url = "sqlite:///" + (case / "catalog.sqlite3").as_posix()
+    app = create_app(database_url, case, False)
     env = app.state.engine, case
     with app.state.engine.begin() as conn:
         cfg.attributes["connection"] = conn
@@ -164,7 +201,8 @@ def run(args):
         spoken = [latest(p.name) for p in files]
         for row in spoken:
             assert row["latest"]["result"]["speech"]["utterance_count"] > 0, row
-        assert latest(silent.name)["latest"]["result"]["speech"]["status"] == "not_applicable"
+        silent_baseline = latest(silent.name)
+        assert silent_baseline["latest"]["result"]["speech"]["status"] == "not_applicable"
         assert latest("broken.mp4")["latest"]["error_code"] == "INVALID_MEDIA"
         rows = content(client.get(base + "/search", params={"limit": 50}))["candidates"]
         records, metrics, matches = compare(client, base, rows, registry, project["id"])
@@ -201,17 +239,34 @@ def run(args):
         assert process_one(*env, str(args.model.resolve()), "en")
         active = latest(selected["name"])
         assert active["active_analysis_id"] == new["analysis_run_id"] != old
-        assert all(r["analysis_run_id"] == active["active_analysis_id"] for r in content(client.get(
-            base + "/search", params={"asset_id": selected["asset_id"], "limit": 50}))["candidates"])
+        current = content(client.get(base + "/search", params={"asset_id": selected["asset_id"],
+                                                                 "limit": 50}))["candidates"]
+        assert current and all(r["analysis_run_id"] == active["active_analysis_id"] for r in current)
         assert export(bindings) == manifest_json
         assert client.get(preview_path, headers={"Range": "bytes=0-255"}).status_code == 206
         assert not process_one(*env)
+        silent_id = silent_baseline["asset_id"]
+        replacement = reanalyze(silent_id, "process-restart-probe")["analysis_run_id"]
+
+        def silent_restart_state():
+            asset = latest(silent.name)
+            state = asset["latest"]
+            active_id = replacement if state["stage"] == "succeeded" else silent_baseline["active_analysis_id"]
+            assert asset["active_analysis_id"] == active_id
+            candidates = content(client.get(base + "/search", params={"asset_id": silent_id,
+                                                                       "limit": 50}))["candidates"]
+            assert candidates and all(r["analysis_run_id"] == active_id for r in candidates)
+            return state, candidate_refs(candidates) if active_id == replacement else []
+
+        restart = reproduce_worker_restart(database_url, case, replacement, silent_restart_state)
         coverage_counts = {"human_confirmed_reqs": None, "matched_dev_anchors": len(matches),
                            "required_facts": sum(bool(q["asset"]) for q in registry["queries"])}
-        out = {"dataset_version": registry["version"], "environment": {"os": platform.platform(), "python": sys.version.split()[0]},
+        out = {"dataset_version": registry["version"], "environment": {"os": platform.platform(),
+                                                                     "python": sys.version.split()[0],
+                                                                     **tool_versions()},
                "asset_inputs": [{"name": f.name, "sha256": sha_file(f)} for f in files],
                "actual_runs": spoken, "upload_request_ms": uploads_ms,
-               "silent_fixture": latest(silent.name), "broken_fixture": latest("broken.mp4"),
+               "silent_fixture": silent_baseline, "broken_fixture": latest("broken.mp4"), "worker_restart": restart,
                "query_records": records, "diagnostic_metrics": {**metrics, **coverage_counts},
                "partition": "development-only, one source event", "coverage_handoff": {
                    "review_provenance": "scripted API review submission using development anchors; not a human annotation",
@@ -236,11 +291,15 @@ def main():
     args = parser.parse_args()
     git = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT, capture_output=True, text=True, check=True)
     dirty = subprocess.run(["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, check=True)
+    if args.output.exists():
+        parser.error("--output must be a new file; choose another path to preserve the previous record")
     result = run(args)
     result["tested_source_base"] = git.stdout.strip()
     result["working_tree_had_changes"] = bool(dirty.stdout.strip())
     args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8")
+    with args.output.open("x", encoding="utf-8") as output:
+        json.dump(result, output, ensure_ascii=False, sort_keys=True, indent=2)
+        output.write("\n")
     print(json.dumps(result["diagnostic_metrics"], ensure_ascii=False))
     print(f"Wrote {args.output}")
 

@@ -146,7 +146,7 @@ $env:ARTIFACT_DIR = Join-Path (Get-Location) 'artifacts/phase-two'
 .venv/Scripts/python.exe scripts/verify_phase_two.py --download --model $env:SW_MEDIA_ASR_MODEL --output artifacts/phase-two-repro/evidence.json
 ```
 
-脚本使用一次性 SQLite 目录，走同一套 API、迁移和 Worker 逻辑，不依赖已启动的服务。`--download` 只补齐素材登记中缺失的 NASA 文件并对照 SHA-256；可以预放文件后省略。报告会绑定 Git 版本、工作树状态和实测工具。它测试提交“人工复核”表单的协议，不替代真人判断。
+脚本使用一次性 SQLite 目录，走同一套 API、迁移和 Worker 逻辑，不依赖已启动的服务。`--download` 只补齐素材登记中缺失的 NASA 文件并对照 SHA-256；可以预放文件后省略。报告记录 Git 版本、工作树状态、FFmpeg/ffprobe 版本和 ASR 快照。脚本会对无音轨夹具启动独立进程，注入过期租约后退出，再启动真实 Worker 校验重领发布与二次重启不重复发布；不需等待自然超时或手工杀进程。在 `worker_restart` 检查实际退出码、尝试次数和片段数。每次给 `--output` 传入新文件名，不覆盖旧记录。脚本测试提交“人工复核”表单的协议，不替代真人判断。
 
 在真实 API、Worker、Web 均运行后，从仓库根目录设置浏览器用例输入：
 

@@ -30,6 +30,7 @@ Windows 11、Python 3.12.7、SQLite；FFmpeg 9.0.2 essentials build，FFprobe `2
 
 - 派生无音轨视频成功，转写 `not_applicable`；合成坏文件失败为 `INVALID_MEDIA`。无答案查询返回空，没有伪造候选。
 - 同项目重复上传返回同一资产且不追加任务。过期租约被重新领取，旧令牌写入被拒。另以无音轨衍生片验证进程重启：子进程领取并注入已过期租约后以状态 23 直接退出；首次启动 `sw_worker.media_jobs --once` 重领并发布 1 个片段，尝试计数为 2；第二次启动后结果及片段数不变。
+- 以上进程重启检查现已并入 `verify_phase_two.py`。本机使用两段登记素材和本地模型复跑，新生成的 `worker_restart` 记录子进程退出码 `23`、两次尝试、发布 1 个片段，且第二次启动不更改分析结果或候选引用。该记录仍是开发复跑，不计成员独立签署。
 - 对有音轨素材取消 ASR 配置后重分析，返回 `TRANSCRIPTION_NOT_CONFIGURED`，仍可检索上一成功版本；恢复模型后成功切换，新搜索只读活动版本，旧 `EvidenceManifest` 内容不变、旧代理仍可回看。
 - 不同项目读取代理被拒，提交越界或错误版本被拒。自动测试还覆盖同资产混用新旧版本被拒、人工标签作用于搜索、延迟音轨时间对齐和迁移一致性。
 
@@ -61,7 +62,7 @@ B 返回区间分别为 `one-small-step [40,48)s`（`giant leap`）、`one-small
 | Flutter | `pub get`、分析、51 项测试、Web release 构建通过；Windows 中文路径工具错误通过英文盘符映射绕过。未验证 Android 真机 |
 | GitHub Actions | 首次运行 [`44722749721`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44722749721) 的 core 在真实 PostgreSQL 并发上传处超时，已复现并修复；复验 [`44725427056`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44725427056) 在 PostgreSQL 17 上 core 通过（Python **171 通过、0 跳过**），Flutter 通过；[`44724530750`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44724530750) 已验证 Android APK 构建，不等于真机验收 |
 
-交接工具补充后的本机回归：Python **174 通过、5 跳过**（本次未配置 PostgreSQL；上表保留此前真实数据库结果），Web 契约 **49 通过**、浏览器 **4 通过**，Flutter **51 通过**，Web 与 Flutter Web 构建均通过。
+交接工具补充后的本机回归：Python **174 通过、5 跳过**（本次未配置 PostgreSQL；上表保留此前真实数据库结果），Web 契约 **49 通过**、浏览器 **4 通过**，Flutter **51 通过**，Web 与 Flutter Web 构建均通过。 交接工具提交 `e1c62d2` 对应的 [GitHub Actions `44726936845`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44726936845) 的 core、Flutter 和 Android APK 构建均成功。
 
 - **G1 真实闭环**：通过本机授权实拍、真实 ASR 和 Web 冒烟验证。
 - **G2 引用正确性**：本次候选 3/3 可核对，越权、越界和跨版本拒绝用例通过。
