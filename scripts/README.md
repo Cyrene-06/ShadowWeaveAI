@@ -14,7 +14,8 @@
 | `python scripts/environment_probe.py` | 工具、设备与模型配置可用性记录 | `artifacts/phase-one/environment.json` |
 | `python scripts/package_evidence.py` | 整理白名单证据与原始工件摘要；缺失记录会失败 | `docs/reports/evidence/` |
 | `python scripts/verify_phase_two.py --model PATH --output PATH [--download]` | 复跑真实档案、检索对照、语义未知、超限/超时和 Worker 进程重启；开发锚点不计独立人工验收 | 新的脱敏运行记录，见[开发指南](../docs/development.md#7-第二阶段素材证据链) |
-| `python scripts/phase_two_timing.py REPLAY --case PATH --output PATH` | 使用同一批哈希核对的代理生成互换分组、独立参与者页面和观察员表 | `artifacts/` 内计时包；浏览器记录不裁决正确性、不签署 G4 |
+| `python scripts/phase_two_timing.py REPLAY --case PATH --output PATH [--targets PATH]` | 使用同一批哈希核对的代理生成互换分组、独立参与者页面和观察员表 | `artifacts/` 内计时包；未冻结独立区间仅能预演，不签署 G4 |
+| `python -m scripts.phase_two_score REPLAY OBSERVER P1 P2 --output PATH` | 校验同一轮冻结区间、分组和完整记录，汇总首个匹配定位和失败，单列无答案弃答 | 对照回执；观察员确认回看、计时和人员独立性，见[独立验收表](../docs/reports/phase-2-acceptance.md#3-ab-定位计时) |
 | `python scripts/phase_two_handoff.py MANIFEST... --output PATH [--search-complete]` | 合并同项目的 NASA 实拍素材 Web 复核清单，运行第一阶段覆盖规则；默认不视为检索已完成 | 本地覆盖回执，不签署 G4；见[独立验收表](../docs/reports/phase-2-acceptance.md#2-回看事实并交接) |
 | `python scripts/verify.py [--flutter]` | 检查 Python/Web 并保存真实命令结果 | `artifacts/phase-one/verification.json` |
 

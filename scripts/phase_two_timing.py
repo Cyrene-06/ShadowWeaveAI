@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import secrets
 import shutil
 from pathlib import Path
 from uuid import UUID
@@ -13,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "examples/phase-2/nasa-demo.json"
 TEMPLATE = Path(__file__).with_name("phase_two_timing.html")
 LIMIT_MS = 60_000
+PROTOCOL = "phase-two-nasa-timing-2"
 
 
 def frozen_trials(report, registry):
@@ -73,6 +75,55 @@ def packets(trials):
         yield {"participant": f"P{i + 1}", "limit_ms": LIMIT_MS, "trials": rows}
 
 
+def validate_targets(targets, registry, runs):
+    queries = {q["id"]: q for q in registry["queries"]}
+    if not isinstance(targets, dict) or set(targets) != set(queries):
+        raise ValueError("Freeze one target per registered query")
+    for key, target in targets.items():
+        if not queries[key]["asset"]:
+            if target != {"kind": "no_answer"}:
+                raise ValueError(f"Expected an explicit no-answer target for {key}")
+            continue
+        if not isinstance(target, dict) or set(target) != {"kind", "asset", "in_ms", "out_ms", "tolerance_ms"}:
+            raise ValueError(f"Expected an independently marked interval for {key}")
+        if target["kind"] != "interval" or target["asset"] not in runs:
+            raise ValueError(f"Target must reference a registered source for {key}")
+        start, end, tolerance = (target[k] for k in ("in_ms", "out_ms", "tolerance_ms"))
+        if any(type(v) is not int for v in (start, end, tolerance)):
+            raise ValueError(f"Use integer milliseconds for {key}")
+        duration = runs[target["asset"]]["latest"]["result"]["duration_ms"]
+        if not 0 <= start < end <= duration or not 0 <= tolerance <= 1000:
+            raise ValueError(f"Invalid source interval or tolerance for {key}")
+
+
+def commitment(replay_hash, targets, nonce):
+    value = json.dumps([PROTOCOL, replay_hash, targets, nonce], sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
+def observer_plan(raw, registry, targets=None, nonce=None):
+    trials, clips, runs = frozen_trials(json.loads(raw), registry)
+    report_hash = hashlib.sha256(raw).hexdigest()
+    if targets is not None:
+        validate_targets(targets, registry, runs)
+        if nonce is None:
+            nonce = secrets.token_hex(16)
+    else:
+        targets = {row["id"]: None for row in trials}
+    seal = commitment(report_hash, targets, nonce) if nonce is not None else None
+    assigned = list(packets(trials))
+    for packet in assigned:
+        packet.update(replay_sha256=report_hash, study_commitment=seal)
+    plan = {"protocol": PROTOCOL, "dataset_version": registry["version"],
+            "replay_sha256": report_hash, "study_commitment": seal, "observer_nonce": nonce,
+            "limit_ms": LIMIT_MS, "participants": assigned,
+            "query_keys": {f"T{i}": row["id"] for i, row in enumerate(trials, start=1)},
+            "clip_sources": {clip: name for name, clip in clips.items()},
+            "clip_sha256": {clips[name]: run["latest"]["result"]["preview_sha256"] for name, run in runs.items()},
+            "targets": targets}
+    return plan, runs
+
+
 def get_proxy(case, latest):
     run_id = str(UUID(latest["analysis_run_id"]))
     proxy_hash = latest["result"]["preview_sha256"]
@@ -83,19 +134,14 @@ def get_proxy(case, latest):
     return matches[0]
 
 
-def write_packets(report_path, case, output):
+def write_packets(report_path, case, output, targets=None):
     raw = report_path.read_bytes()
-    report = json.loads(raw)
     registry = json.loads(CATALOG.read_text(encoding="utf-8"))
-    trials, clips, runs = frozen_trials(report, registry)
-    proxies = {clips[name]: get_proxy(case, runs[name]["latest"]) for name in clips}
+    observer, runs = observer_plan(raw, registry, targets)
+    proxies = {clip: get_proxy(case, runs[name]["latest"]) for clip, name in observer["clip_sources"].items()}
     template = TEMPLATE.read_text(encoding="utf-8")
-    packets_to_write = list(packets(trials))
-    report_hash = hashlib.sha256(raw).hexdigest()
-    for packet in packets_to_write:
-        packet["replay_sha256"] = report_hash
     output.mkdir(parents=True, exist_ok=False)
-    for packet in packets_to_write:
+    for packet in observer["participants"]:
         folder = output / packet["participant"]
         folder.mkdir()
         data = json.dumps(packet, ensure_ascii=True).replace("<", "\\u003c")
@@ -103,14 +149,6 @@ def write_packets(report_path, case, output):
         used = {c["clip"] for row in packet["trials"] for c in row["candidates"]}
         for clip in sorted(used):
             shutil.copyfile(proxies[clip], folder / f"{clip}.mp4")
-    query_keys = {f"T{i}": row["id"] for i, row in enumerate(trials, start=1)}
-    observer = {"protocol": "phase-two-nasa-timing-1", "dataset_version": registry["version"],
-                "replay_sha256": report_hash, "limit_ms": LIMIT_MS, "participants": packets_to_write,
-                "query_keys": query_keys,
-                "clip_sources": {clip: name for name, clip in clips.items()},
-                "clip_sha256": {clips[name]: run["latest"]["result"]["preview_sha256"] for name, run in runs.items()},
-                "targets": {row["id"]: None for row in trials},
-                "targets_note": "Observer freezes independent source intervals/rejection rules before any trials."}
     (output / "observer.json").write_text(json.dumps(observer, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
@@ -119,15 +157,21 @@ def main():
     parser.add_argument("report", type=Path, help="Local verify_phase_two.py evidence JSON")
     parser.add_argument("--case", type=Path, required=True, help="Disposable replay case directory with its proxies")
     parser.add_argument("--output", type=Path, required=True, help="New directory under repository artifacts/")
+    parser.add_argument("--targets", type=Path, help="Independently frozen targets; omit only for an unscorable pilot")
     args = parser.parse_args()
     try:
         output = args.output.resolve()
         artifacts = (ROOT / "artifacts").resolve()
         if output == artifacts or not output.is_relative_to(artifacts):
             raise ValueError("Keep video copies under the ignored artifacts directory")
-        write_packets(args.report, args.case, output)
+        targets = json.loads(args.targets.read_bytes()) if args.targets else None
+        if args.targets and not isinstance(targets, dict):
+            raise ValueError("Targets file must be a JSON object")
+        write_packets(args.report, args.case, output, targets)
     except (OSError, KeyError, TypeError, ValueError) as exc:
         parser.exit(1, f"Timing preparation failed: {exc}\n")
+    if not args.targets:
+        print("Pilot only: no frozen targets; records cannot be scored.")
     print(f"Prepared {output / 'P1'} and {output / 'P2'}; keep observer.json private until scoring")
 
 

@@ -137,6 +137,7 @@
   $("abstain").onclick = () => { if (live()) terminal("abstained"); };
   $("download").onclick = () => {
     const data = { participant: session.participant, replay_sha256: session.replay_sha256,
+      study_commitment: session.study_commitment,
       limit_ms: session.limit_ms, trials: records, provenance: "Browser interaction; observer must verify correctness and independence" };
     const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" }));
     const link = document.createElement("a");

@@ -12,6 +12,9 @@ test("matched proxy sessions record positions, not human verdicts", async ({
     !fixture,
     "Generate a real timing packet and set PHASE_TWO_TIMING_PACKET",
   );
+  const observer = JSON.parse(
+    await readFile(path.join(fixture!, "observer.json"), "utf8"),
+  );
   await page.addInitScript(() => {
     const monotonicNow = performance.now.bind(performance);
     const mockClock = Performance.prototype as Performance & {
@@ -64,7 +67,8 @@ test("matched proxy sessions record positions, not human verdicts", async ({
     await (await download).saveAs(saved);
     const record = JSON.parse(await readFile(saved, "utf8"));
     expect(record.participant).toBe(participant);
-    expect(record.replay_sha256).toMatch(/^[a-f0-9]{64}$/);
+    expect(record.replay_sha256).toBe(observer.replay_sha256);
+    expect(record.study_commitment).toBe(observer.study_commitment);
     expect(record.trials).toHaveLength(4);
     expect(record.trials[0]).toMatchObject({
       arm,
