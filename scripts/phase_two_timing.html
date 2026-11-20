@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>素材定位计时</title>
+<style>
+  body { background: #121722; color: #edf2ff; font: 1rem/1.6 system-ui,sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; }
+  button { font: inherit; padding: .45rem .8rem; margin: .25rem; }
+  video { display: block; width: min(100%,44rem); max-height: 55vh; margin: 1rem 0; background: #060910; }
+  video[hidden] { display: none; }
+  output { font-variant-numeric: tabular-nums; }
+</style>
+<main>
+  <h1>素材定位计时</h1>
+  <p id="progress"></p>
+  <p>点击开始后显示查询与候选。听到目标短语时，将播放器停在对应时间，点击「记录当前位置」；允许修正，观察员会确认首次正确记录。每题最多 60 秒。无可用结果时选择弃答。</p>
+  <button id="start" type="button">开始本题</button>
+  <section id="trial" hidden>
+    <h2 id="query"></h2>
+    <p>剩余 <output id="time">60.0</output> 秒</p>
+    <div id="candidates" aria-label="候选列表"></div>
+    <video id="player" controls playsinline hidden></video>
+    <button id="record" type="button" disabled>记录当前位置</button>
+    <button id="finish" type="button" disabled>结束本题</button>
+    <button id="abstain" type="button">弃答（未找到）</button>
+  </section>
+  <p id="status" role="status"></p>
+  <button id="download" type="button" hidden>下载本场记录</button>
+</main>
+<script>
+  const session = __PHASE_TWO_SESSION__;
+  const $ = (id) => document.getElementById(id);
+  const player = $("player");
+  const records = [];
+  let row = null, startMs, timer, clip, attempts, playerErrors, opening = 0;
+
+  function resetPlayer() {
+    opening++;
+    player.pause();
+    player.removeAttribute("src");
+    player.load();
+    player.hidden = true;
+    clip = null;
+    $("record").disabled = true;
+  }
+
+  function showProgress() {
+    const complete = records.length === session.trials.length;
+    $("progress").textContent = `${session.participant} · 已完成 ${records.length}/${session.trials.length} 题`;
+    $("start").hidden = complete;
+    $("download").hidden = !complete;
+  }
+
+  const elapsed = () => Math.max(0, Math.min(session.limit_ms, Math.round(performance.now() - startMs)));
+  function terminal(state) {
+    clearInterval(timer);
+    records.push({ trial_id: row.trial_id, arm: row.arm, order: records.length + 1, outcome: state,
+      elapsed_ms: elapsed(), submissions: attempts, playback_errors: playerErrors });
+    row = null;
+    resetPlayer();
+    $("trial").hidden = true;
+    $("status").textContent = state === "timeout" ? "本题超时，已保留提交记录。" : "本题已记录。";
+    showProgress();
+  }
+
+  function live() {
+    if (!row) return false;
+    if (performance.now() - startMs >= session.limit_ms) {
+      terminal("timeout");
+      return false;
+    }
+    return true;
+  }
+
+  function openCandidate(candidate) {
+    if (!live()) return;
+    resetPlayer();
+    const target = (candidate.in_ms ?? 0) / 1000;
+    const turn = opening;
+    $("status").textContent = "正在加载候选…";
+    player.onloadedmetadata = () => {
+      if (turn !== opening || !live()) return;
+      player.currentTime = target;
+    };
+    const ready = () => {
+      if (turn !== opening || !live() || player.seeking || player.readyState < 2) return;
+      clip = candidate.clip;
+      player.hidden = false;
+      $("record").disabled = false;
+      $("status").textContent = `已打开 ${clip}，请播放核对。`;
+    };
+    player.onloadeddata = ready;
+    player.onseeked = ready;
+    player.onerror = () => {
+      if (turn !== opening || !live()) return;
+      playerErrors++;
+      $("status").textContent = "播放失败。请重试，或弃答并向观察员说明。";
+    };
+    player.src = `${candidate.clip}.mp4`;
+    player.load();
+  }
+
+  $("start").onclick = () => {
+    row = session.trials[records.length];
+    attempts = [];
+    playerErrors = 0;
+    $("status").textContent = "";
+    $("finish").disabled = true;
+    $("query").textContent = `定位：${row.query}`;
+    $("candidates").replaceChildren(...row.candidates.map((candidate) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      const s = (ms) => (ms / 1000).toFixed(2);
+      button.textContent = candidate.in_ms === undefined ? `打开 ${candidate.clip}`
+        : `跳转 ${candidate.clip} · ${s(candidate.in_ms)}–${s(candidate.out_ms)} 秒`;
+      button.onclick = () => openCandidate(candidate);
+      return button;
+    }));
+    if (!row.candidates.length) $("candidates").textContent = "无候选";
+    $("time").value = (session.limit_ms / 1000).toFixed(1);
+    $("start").hidden = true;
+    $("trial").hidden = false;
+    startMs = performance.now();
+    timer = setInterval(() => {
+      if (live()) $("time").value = ((session.limit_ms - elapsed()) / 1000).toFixed(1);
+    }, 100);
+  };
+  $("record").onclick = () => {
+    if (!live() || !clip || player.seeking || !Number.isFinite(player.currentTime)) return;
+    player.pause();
+    const point = Math.round(player.currentTime * 1000);
+    attempts.push({ clip, point_ms: point, elapsed_ms: elapsed() });
+    $("status").textContent = `已记录 ${clip} · ${(point / 1000).toFixed(2)} 秒`;
+    $("finish").disabled = false;
+  };
+  $("finish").onclick = () => { if (live()) terminal("submitted"); };
+  $("abstain").onclick = () => { if (live()) terminal("abstained"); };
+  $("download").onclick = () => {
+    const data = { participant: session.participant, replay_sha256: session.replay_sha256,
+      limit_ms: session.limit_ms, trials: records, provenance: "Browser interaction; observer must verify correctness and independence" };
+    const url = URL.createObjectURL(new Blob([JSON.stringify(data, null, 2) + "\n"], { type: "application/json" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `phase-two-timing-${session.participant}.json`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+  showProgress();
+</script>
