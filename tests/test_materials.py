@@ -1,3 +1,4 @@
+import json
 from io import StringIO
 from uuid import uuid4
 
@@ -9,11 +10,16 @@ from alembic.migration import MigrationContext
 from fastapi.testclient import TestClient
 from sqlalchemy import select
 
+from scripts.verify_phase_two import (
+    CATALOG, candidate_refs, check_processing_budgets, check_processing_timeouts, check_upload_budget,
+    semantic_unknown_probe,
+)
 from sw_ai.coverage import evaluate_coverage
-from sw_api import db as t
+from sw_api import db as t, materials
 from sw_api.app import create_app
 from sw_api.materials import keyword_rank
 from sw_contracts import EvidenceManifest, StoryNode
+from sw_media import analysis
 from sw_media.analysis import ffmpeg, slice_intervals
 from sw_worker import media_jobs as worker
 from test_api import project, register
@@ -118,6 +124,11 @@ def test_upload_analysis_search_preview_evidence_and_versions(sandbox, tmp_path)
     manifest = EvidenceManifest.model_validate(snapshot.json())
     node = StoryNode(project_id=pid, node_key="blue", goal="Find a blue frame", requirements=["blue"], minimum_duration_ms=500)
     assert evaluate_coverage(node, manifest, True).coverage == "covered"
+    registry = json.loads(CATALOG.read_text(encoding="utf-8"))
+    diagnostic = semantic_unknown_probe(registry, {"first-step": old}, lambda bindings: export(*bindings).json(), pid)
+    assert diagnostic["coverage"] == "uncertain"
+    assert diagnostic["result"]["reason_codes"] == ["semantic_unknown"]
+    assert len(diagnostic["result"]["candidate_refs"]) == 1 and not diagnostic["result"]["qualified_refs"]
     assert export({**binding, "out_ms": old["out_ms"] + 1}).status_code == 422
     assert export({**binding, "analysis_run_id": str(uuid4())}).status_code == 422
     assert export({**binding, "reviewed": False}).status_code == 422
@@ -164,6 +175,76 @@ def test_failures_and_fenced_worker_recovery(sandbox, tmp_path, monkeypatch):
     row = next(a for a in client.get(root + "/assets", headers=headers).json() if a["asset_id"] == sound["asset_id"])
     assert row["latest"]["error_code"] == "TRANSCRIPTION_NOT_CONFIGURED", row
     assert row["active_analysis_id"] is None
+
+
+def test_oversized_header_and_stream_leave_no_original_or_asset(sandbox, monkeypatch):
+    client, headers, pid, app = sandbox
+    # Keep CI cheap; the real-media verifier exercises the same path at the configured 64 MiB.
+    limit = 1024
+    monkeypatch.setattr(materials, "MAX_BYTES", limit)
+    client.headers.update(headers)
+    root = f"/api/v1/projects/{pid}/materials"
+    result = check_upload_budget(app, client, root, app.state.artifact_dir, limit)
+    assert result["original_files_and_catalog_unchanged"]
+    with t.session(app.state.engine) as db:
+        for table in (t.media_catalog, t.objects, t.jobs):
+            assert db.execute(select(table)).first() is None
+
+
+def test_duration_and_dimension_over_budget_never_publish(sandbox):
+    client, headers, pid, app = sandbox
+    base = f"/api/v1/projects/{pid}/materials"
+    env = app.state.engine, app.state.artifact_dir
+
+    def enqueue(name, data, _):
+        assert upload(client, headers, pid, data, name).status_code == 201
+
+    def latest(name):
+        return next(r for r in client.get(base + "/assets", headers=headers).json() if r["name"] == name)
+
+    records = check_processing_budgets(env, enqueue, latest)["fixtures"]
+    assert set(records) == {"over-duration.mp4", "over-dimension.mp4"}
+    assert client.get(base + "/search", headers=headers).json()["candidates"] == []
+
+
+def test_processing_timeouts_preserve_active_analysis(sandbox, tmp_path, monkeypatch):
+    client, headers, pid, app = sandbox
+    base = f"/api/v1/projects/{pid}/materials"
+    env = app.state.engine, app.state.artifact_dir
+    assert upload(client, headers, pid, video_fixture(tmp_path, with_audio=True), "with-audio.mp4").status_code == 201
+    model = tmp_path / "stub-model"
+    model.mkdir()
+    for name in ("model.bin", "config.json", "tokenizer.json", "vocabulary.txt"):
+        (model / name).write_bytes(b"fixture")
+    original_run = analysis.run
+
+    def no_model_download(command, timeout=20):
+        if command[1:3] == ["-m", "sw_media.local_speech"]:
+            return json.dumps({"segments": [], "version": "fixture", "language": "en", "audio_ms": 1500})
+        return original_run(command, timeout)
+
+    with monkeypatch.context() as patcher:
+        patcher.setattr(analysis, "run", no_model_download)
+        assert worker.process_one(*env, str(model), "en")
+
+    def latest(name):
+        return next(r for r in client.get(base + "/assets", headers=headers).json() if r["name"] == name)
+
+    def reanalyze(asset, key):
+        response = client.post(base + f"/assets/{asset}/analyses", headers={**headers, "Idempotency-Key": key})
+        assert response.status_code == 202
+        return response.json()
+
+    def active_refs():
+        return candidate_refs(client.get(base + "/search", headers=headers).json()["candidates"])
+
+    baseline = latest("with-audio.mp4")
+    refs = active_refs()
+    assert baseline["latest"]["stage"] == "succeeded" and refs
+    failures = check_processing_timeouts(env, str(model), baseline, refs, reanalyze, latest, active_refs)
+    assert failures["media"]["failed_run"]["error_code"] == "MEDIA_TIMEOUT"
+    assert failures["speech"]["failed_run"]["error_code"] == "TRANSCRIPTION_TIMEOUT"
+    assert not worker.process_one(*env)
 
 
 def test_delayed_audio_cannot_precede_its_track(tmp_path):

@@ -24,5 +24,15 @@
     {"id": "ladder", "text": "coming down a ladder", "asset": "one-small-step.m4v", "anchor_ms": 22000},
     {"id": "buzz-view", "text": "beautiful view", "asset": "buzz-descends.m4v", "anchor_ms": 35000},
     {"id": "no-answer", "text": "underwater city", "asset": null, "anchor_ms": null}
-  ]
+  ],
+  "non_timed_diagnostics": {
+    "semantic_unknown": {
+      "id": "giant-leap-private-intent",
+      "query_id": "first-step",
+      "claim": "The speaker privately intended the phrase as a joke.",
+      "expected_semantic_support": "unknown",
+      "expected_coverage": "uncertain",
+      "expected_reason": "semantic_unknown"
+    }
+  }
 }

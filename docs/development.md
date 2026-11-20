@@ -146,7 +146,10 @@ $env:ARTIFACT_DIR = Join-Path (Get-Location) 'artifacts/phase-two'
 .venv/Scripts/python.exe scripts/verify_phase_two.py --download --model $env:SW_MEDIA_ASR_MODEL --output artifacts/phase-two-repro/evidence.json
 ```
 
-脚本使用一次性 SQLite 目录，走同一套 API、迁移和 Worker 逻辑，不依赖已启动的服务。`--download` 只补齐素材登记中缺失的 NASA 文件并对照 SHA-256；可以预放文件后省略。报告记录 Git 版本、工作树状态、FFmpeg/ffprobe 版本和 ASR 快照。脚本会对无音轨夹具启动独立进程，注入过期租约后退出，再启动真实 Worker 校验重领发布与二次重启不重复发布；不需等待自然超时或手工杀进程。在 `worker_restart` 检查实际退出码、尝试次数和片段数。每次给 `--output` 传入新文件名，不覆盖旧记录。脚本测试提交“人工复核”表单的协议，不替代真人判断。
+脚本使用一次性 SQLite 目录，走同一套 API、迁移和 Worker 逻辑，不依赖已启动的服务。`--download` 只补齐素材登记中缺失的 NASA 文件并对照 SHA-256；可以预放文件后省略。报告记录 Git 版本、工作树状态、FFmpeg/ffprobe 版本和 ASR 快照。脚本会对无音轨夹具启动独立进程，注入过期租约后退出，再启动真实 Worker 校验重领发布与二次重启不重复发布；不需等待自然超时或手工杀进程。在 `worker_restart` 检查实际退出码、尝试次数和片段数。每次给 `--output` 传入新文件名，不覆盖旧记录。
+
+- `failure_probes` 单独记录 64 MiB 超限拒收（声明长度和无长度流式请求）、FFmpeg 合成视频超时长/尺寸的拒绝，以及替换为受控子进程触发的媒体和 ASR 超时。后两项检查失败任务不发布片段、不留下新派生文件、上一成功版本仍可检索。流式探针使用约 64 MiB 临时磁盘空间，拒收后自动清理。
+- `non_timed_diagnostics.semantic_unknown` 使用真实候选单独验证「有命中、不等于确认事实」：即使 `search_complete=true`，仍返回 `uncertain / semantic_unknown` 且无合格引用。它不改变四道 A/B 试题，也不是人工回看结果。脚本测试提交“人工复核”表单的协议，不替代真人判断。
 
 在真实 API、Worker、Web 均运行后，从仓库根目录设置浏览器用例输入：
 

@@ -1,6 +1,7 @@
 """Reproduce Phase 2 on licensed NASA archival footage, with a disposable SQLite catalog."""
 
 import argparse
+import asyncio
 import json
 import os
 import platform
@@ -8,20 +9,23 @@ import subprocess
 import sys
 from pathlib import Path
 from time import perf_counter
+from unittest.mock import patch
 from uuid import uuid4
 
 import httpx
 from alembic import command
 from alembic.config import Config
 from fastapi.testclient import TestClient
+from sqlalchemy import select
 
 from sw_ai.coverage import evaluate_coverage
+from sw_api import db
 from sw_api.app import create_app
 from sw_api.materials import keyword_rank
 from sw_contracts import EvidenceManifest, StoryNode, digest
-from sw_media.analysis import MAX_BYTES, ffmpeg, sha_file, tool_versions
+from sw_media import analysis, tools
+from sw_media.analysis import MAX_BYTES, MAX_DIMENSION, MAX_DURATION_MS, ffmpeg, sha_file, tool_versions
 from sw_worker.media_jobs import claim, clock, LEASE_MS, process_one, update_owned
-from sw_api.db import session
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "examples/phase-2/nasa-demo.json"
@@ -103,6 +107,128 @@ def compare(client, base, rows, registry, project_id):
         "human_timing_reason": "An independent participant has not run the paired timed task",
     }
     return records, stats, matching_refs
+
+
+def semantic_unknown_probe(registry, matches, export, project_id):
+    spec = registry["non_timed_diagnostics"]["semantic_unknown"]
+    row = matches[spec["query_id"]]
+    raw = export([{"segment_id": row["id"], "analysis_run_id": row["analysis_run_id"],
+                   "in_ms": row["in_ms"], "out_ms": row["out_ms"], "requirement_keys": [spec["id"]],
+                   "semantic_support": "unknown", "quality_usable": True, "reviewed": True}])
+    manifest = EvidenceManifest.model_validate(raw)
+    assert manifest.evidence[0].semantic_support == spec["expected_semantic_support"]
+    node = StoryNode(project_id=project_id, node_key=spec["id"], goal=spec["claim"],
+                     requirements=[spec["id"]], minimum_duration_ms=4000)
+    report = evaluate_coverage(node, manifest, search_complete=True)
+    result, = report.requirement_results
+    assert report.coverage == result.state == spec["expected_coverage"]
+    assert result.reason_codes == [spec["expected_reason"]]
+    assert result.candidate_refs and not result.qualified_refs and not result.selected_refs
+    return {"requirement": spec["id"], "claim": spec["claim"], "query_id": spec["query_id"],
+            "scope": "scripted unknown review of a real candidate; excluded from A/B and human verification",
+            "candidate": candidate_refs([row])[0], "manifest_hash": digest(raw), "search_complete": True,
+            "coverage": report.coverage, "result": result.model_dump(mode="json")}
+
+
+def check_upload_budget(app, client, base, case, limit=MAX_BYTES):
+    def files():
+        return {p.relative_to(case) for p in (case / "original").rglob("*") if p.is_file()}
+
+    before = files(), content(client.get(base + "/assets"))
+    params = {"name": "upload-budget.mp4", "source": "synthetic byte-limit probe", "rights_confirmed": True}
+    headers = {"Authorization": client.headers["Authorization"], "Content-Type": "application/octet-stream"}
+    url = base + "/assets"
+    declared = client.post(url, params=params, headers={**headers, "Content-Length": str(limit + 1)}, content=b"")
+
+    async def stream_upload():
+        async def body():
+            remaining = limit
+            chunk = b"\0" * min(1024 * 1024, limit)
+            while remaining:
+                part = chunk[:remaining]
+                yield part
+                remaining -= len(part)
+            yield b"!"  # cross the ceiling after the allowed prefix has been written
+
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://testserver") as asgi:
+            request = asgi.build_request("POST", url, params=params, headers=headers, content=body())
+            assert "content-length" not in request.headers
+            return await asgi.send(request)
+
+    responses = {"declared_length": declared, "stream_without_length": asyncio.run(stream_upload())}
+    observed = {name: {"http_status": response.status_code, "code": content(response, 413)["error"]["code"]}
+                for name, response in responses.items()}
+    assert all(item["code"] == "FILE_TOO_LARGE" for item in observed.values())
+    assert (files(), content(client.get(base + "/assets"))) == before, "Oversized upload leaked a file or catalog entry"
+    return {"scope": "synthetic upload; direct ASGI without reverse proxy", "maximum_bytes": limit,
+            **observed, "original_files_and_catalog_unchanged": True}
+
+
+def assert_unpublished(env, row, code):
+    failed = row["latest"]
+    assert failed["stage"] == "failed" and failed["error_code"] == code, row
+    analysis_id = failed["analysis_run_id"]
+    with db.session(env[0]) as session:
+        runs_segments = select(db.segments.c.id).where(db.segments.c.analysis_run_id == analysis_id)
+        assert session.execute(runs_segments).first() is None
+        job_state = select(db.jobs.c.state).where(db.jobs.c.id == failed["job_id"])
+        assert session.execute(job_state).scalar_one() == "failed"
+    assert not any(p.is_file() for p in (env[1] / "derived").glob(f"*/{analysis_id}/**/*"))
+    return failed
+
+
+def check_processing_budgets(env, upload, latest):
+    records = {}
+    for name, color, input_fields in (
+        ("over-duration.mp4", "color=s=64x36:r=1:d=181", {"max_duration_ms": MAX_DURATION_MS}),
+        ("over-dimension.mp4", "color=s=3842x64:r=1:d=1", {"max_dimension_px": MAX_DIMENSION}),
+    ):
+        path = env[1] / name
+        tools.run([tools.binary("ffmpeg"), "-loglevel", "error", "-f", "lavfi", "-i", color,
+                   "-c:v", "libx264", "-threads", "1", "-pix_fmt", "yuv420p", str(path)])
+        info = tools.probe(path)
+        video = next(row for row in info["streams"] if row["codec_type"] == "video")
+        observed = {"duration_ms": info["duration_ms"], "width": video["width"], "height": video["height"]}
+        if "max_duration_ms" in input_fields:
+            assert observed["duration_ms"] > MAX_DURATION_MS
+        else:
+            assert max(observed["width"], observed["height"]) > MAX_DIMENSION
+        upload(name, path.read_bytes(), "generated FFmpeg budget fixture")
+        assert process_one(*env)
+        row = latest(name)
+        assert row["active_analysis_id"] is None
+        records[name] = {**input_fields, **observed, "failed_run": assert_unpublished(env, row, "INVALID_MEDIA")}
+    return {"scope": "generated FFmpeg fixtures; actual probe, no timeout injection", "fixtures": records}
+
+
+def check_processing_timeouts(env, model, asset, baseline_refs, reanalyze, latest, list_refs):
+    records = {}
+    for stage, code, expected_timeout in (("media", "MEDIA_TIMEOUT", 75), ("speech", "TRANSCRIPTION_TIMEOUT", 180)):
+        run_id = reanalyze(asset["asset_id"], f"timeout-{stage}")["analysis_run_id"]
+        hit = []
+
+        def bounded_run(command, timeout=20):
+            target = "-movflags" in command if stage == "media" else command[1:3] == ["-m", "sw_media.local_speech"]
+            if not target:
+                return tools.run(command, timeout)
+            assert timeout == expected_timeout
+            if stage == "speech":
+                assert Path(command[-2]).is_file(), "Timeout must occur after WAV extraction"
+            hit.append(timeout)
+            # Test the real subprocess deadline and exception mapping without waiting 75/180 s.
+            return tools.run([sys.executable, "-c", "import time; time.sleep(10)"], timeout=0.2)
+
+        with patch.object(analysis, "run", bounded_run):
+            assert process_one(*env, model, "en")
+        assert hit == [expected_timeout]
+        row = latest(asset["name"])
+        assert row["latest"]["analysis_run_id"] == run_id
+        failed = assert_unpublished(env, row, code)
+        assert row["active_analysis_id"] == asset["active_analysis_id"] and list_refs() == baseline_refs
+        records[stage] = {"configured_timeout_s": expected_timeout, "injected_timeout_s": 0.2,
+                          "failed_run": failed, "active_analysis_id_unchanged": True,
+                          "no_segments_or_artifact_files_for_failed_run": True}
+    return {"scope": "real subprocess timeout with a substituted sleeper; not a production incident", **records}
 
 
 def reproduce_worker_restart(database_url, case, analysis_id, read_state):
@@ -195,8 +321,8 @@ def run(args):
         assert abandoned is not None
         while process_one(*env, str(args.model.resolve()), "en"):
             pass
-        with session(env[0]) as db:
-            assert not update_owned(db, abandoned, stage="publish")
+        with db.session(env[0]) as state:
+            assert not update_owned(state, abandoned, stage="publish")
         assert latest(files[0].name)["latest"]["attempts"] == 2
         spoken = [latest(p.name) for p in files]
         for row in spoken:
@@ -218,6 +344,7 @@ def run(args):
         node = StoryNode(project_id=project["id"], node_key="archival-quotes", goal="Ground the sample speech facts",
                          requirements=[q["id"] for q in registry["queries"] if q["asset"]], minimum_duration_ms=4000)
         coverage = evaluate_coverage(node, manifest, search_complete=True)
+        unknown = semantic_unknown_probe(registry, matches, export, project["id"])
         selected = matches["first-step"]
         assert client.get(base + f"/segments/{selected['id']}/frame").headers["content-type"] == "image/jpeg"
         preview_path = base + f"/analyses/{selected['analysis_run_id']}/preview"
@@ -245,6 +372,17 @@ def run(args):
         assert export(bindings) == manifest_json
         assert client.get(preview_path, headers={"Range": "bytes=0-255"}).status_code == 206
         assert not process_one(*env)
+        upload_budget = check_upload_budget(app, client, base, case)
+        processing_budgets = check_processing_budgets(env, upload, latest)
+
+        def active_refs():
+            return candidate_refs(content(client.get(base + "/search", params={"asset_id": selected["asset_id"],
+                                                                                "limit": 50}))["candidates"])
+
+        timeouts = check_processing_timeouts(env, str(args.model.resolve()), active, candidate_refs(current),
+                                            reanalyze, latest, active_refs)
+        assert export(bindings) == manifest_json
+        assert not process_one(*env)
         silent_id = silent_baseline["asset_id"]
         replacement = reanalyze(silent_id, "process-restart-probe")["analysis_run_id"]
 
@@ -268,6 +406,9 @@ def run(args):
                "actual_runs": spoken, "upload_request_ms": uploads_ms,
                "silent_fixture": silent_baseline, "broken_fixture": latest("broken.mp4"), "worker_restart": restart,
                "query_records": records, "diagnostic_metrics": {**metrics, **coverage_counts},
+               "non_timed_diagnostics": {"semantic_unknown": unknown},
+               "failure_probes": {"upload_budget": upload_budget, "processing_budgets": processing_budgets,
+                                  "timeouts": timeouts},
                "partition": "development-only, one source event", "coverage_handoff": {
                    "review_provenance": "scripted API review submission using development anchors; not a human annotation",
                    "node": coverage.node_key, "state": coverage.coverage, "manifest_hash": digest(manifest_json),
