@@ -6,7 +6,7 @@
 | 编制日期 | 2026-11-11 |
 | 对应需求 | YINGZHI-AI-V1.1.0-20261110-FULL-R01 / SRS-R01 |
 | 设计范围 | Flutter、Web、API、Worker、AI、媒体、存储与部署 |
-| 文档状态 | 第二版完整设计；第一阶段子集已实现，本机验证与未验证项见阶段报告 |
+| 文档状态 | 第二版完整设计；第一、二阶段已实现子集，实际边界见阶段报告 |
 | 配套文档 | [数据库设计](database-design.md)、[Agent 设计](agent-design.md) |
 
 ## 1. 目标、范围与设计原则
@@ -194,6 +194,8 @@ Pinia 按项目、上传、任务、编辑会话拆分；服务端确认数据�
 任务通知包含 `event_id`、`job_id`、`seq`、`type`、`state`、`stage`、`occurred_at` 与摘要；每个 Job 的 seq 单调递增，project 事件游标使用持久化的 project_seq，与单 Job 的 seq 分开。projects.event_seq 在项目行锁下递增，与 Outbox 同事务提交；重连按 project_seq 补拉，去重并查询最新状态。游标早于已保留窗口时返回 EVENT_CURSOR_EXPIRED，客户端进行全量状态重同步。
 
 ## 6. 素材上传、分析与检索
+
+> 实装边界：第二阶段是授权视频、持久化数据库队列、受限 FFmpeg/本地转写和片段关键词检索。代理复用原片相对时轴；活动版本只在成功发布时切换，候选不自动声称支持故事。具体路径见[可运行 API](../api/README.md)；下文完整分段 Job、OCR、事件与向量是后续设计。
 
 ### 6.1 上传与存储
 

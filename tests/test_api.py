@@ -150,7 +150,7 @@ def test_web_cookie_requires_origin_and_secrets_not_echoed(api):
 def test_replay_is_disabled_by_default_and_forbidden_in_production(tmp_path, monkeypatch):
     monkeypatch.delenv("ENABLE_PHASE_ONE_REPLAY", raising=False)
     app = create_app("sqlite:///" + (tmp_path / "db.sqlite3").as_posix(), tmp_path / "artifacts")
-    assert not any("phase-one" in route.path for route in app.routes)
+    assert not any("phase-one" in path for path in app.openapi()["paths"])
     app.state.engine.dispose()
     monkeypatch.setenv("APP_ENV", "production")
     with pytest.raises(RuntimeError, match="must not"):

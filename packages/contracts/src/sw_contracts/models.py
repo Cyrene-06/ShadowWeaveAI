@@ -329,3 +329,64 @@ class ErrorBody(Contract):
 class ErrorEnvelope(Contract):
     error: ErrorBody
     request_id: UUID
+
+class TimedSpeech(Contract):
+    in_ms: StrictInt = Field(ge=0)
+    out_ms: StrictInt = Field(gt=0)
+    text: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def interval(self):
+        if self.in_ms >= self.out_ms:
+            raise ValueError("speech interval is empty or reversed")
+        return self
+
+
+class MaterialCandidate(Segment):
+    name: str
+    source_and_rights: str = Field(min_length=1, max_length=300)
+    source_sha256: str = Field(pattern=r"^[a-f0-9]{64}$")
+    analysis_content_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
+    frame_ms: StrictInt = Field(ge=0)
+    speech: list[TimedSpeech]
+    human_tags: list[str]
+    signals: dict[str, Any]
+    matched_fields: list[Literal["transcript", "human_tag"]]
+    score: StrictInt = Field(ge=0)
+    semantic_support: Literal["unknown"] = "unknown"
+
+    @model_validator(mode="after")
+    def frame_in_segment(self):
+        if not self.in_ms <= self.frame_ms < self.out_ms:
+            raise ValueError("representative frame is outside segment")
+        if any(not self.in_ms <= line.in_ms < line.out_ms <= self.out_ms for line in self.speech):
+            raise ValueError("speech is outside segment")
+        return self
+
+
+class MaterialSearch(Contract):
+    strategy: Literal["segment_keyword_v1"] = "segment_keyword_v1"
+    candidates: list[MaterialCandidate]
+
+
+class HumanEvidenceBinding(Contract):
+    segment_id: UUID
+    analysis_run_id: UUID
+    in_ms: StrictInt = Field(ge=0)
+    out_ms: StrictInt = Field(gt=0)
+    requirement_keys: list[str] = Field(min_length=1, max_length=20)
+    semantic_support: Literal["supported", "unsupported", "unknown"]
+    quality_usable: StrictBool
+    reviewed: Literal[True]
+
+    @model_validator(mode="after")
+    def valid_binding(self):
+        if self.in_ms >= self.out_ms or any(not key.strip() or len(key) > 80 for key in self.requirement_keys):
+            raise ValueError("invalid interval or requirement keys")
+        if len(set(self.requirement_keys)) != len(self.requirement_keys):
+            raise ValueError("duplicate requirement keys")
+        return self
+
+
+class MaterialEvidenceRequest(Contract):
+    bindings: list[HumanEvidenceBinding] = Field(min_length=1, max_length=30)

@@ -22,6 +22,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Session
 
+from .media_schema import phase_two_schema
+
 metadata = MetaData()
 
 
@@ -162,6 +164,9 @@ replay_datasets = Table(
     Column("project_id", ForeignKey("projects.id"), primary_key=True),
     Column("bundle", JSON, nullable=False),
 )
+
+
+media_catalog, media_runs, media_observations, media_tags = phase_two_schema(metadata)
 
 
 def get_engine(url=None):

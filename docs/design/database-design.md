@@ -38,6 +38,12 @@ PostgreSQL 保存身份与项目权限、上传记录、媒体元数据、分析
 
 对应关系、迁移回退/并发/回滚证据和已知限制见[阶段报告](../reports/phase-1-report.md)。基础表的存在不意味着正式上传、覆盖回写或版本提交事务已启用。
 
+### 1.3 第二阶段实际迁移边界
+
+`0002_media_catalog` 只追加四张表，不改 `0001`。`media_catalog` 记录项目内 SHA-256 唯一索引、最新代次和活动分析；`media_runs` 关联 `jobs / analysis_runs`，存阶段、租约令牌、尝试次数和耗时；`media_observations` 关联片段，存代表帧和时间戳转写、质量信号；`media_tags` 独立存人工标签。其余字段和完整 R02 数据模型仍为设计目标。
+
+API 先锁定项目确定配额和去重，重分析串行化到资产目录行；Worker 只有持有未过期令牌才能发布。同一事务写片段、观察和活动分析指针，失败不影响旧指针。原片和代理存在本地文件系统，不参与数据库事务；崩溃遗留物需离线清理，历史成功版本继续留存。见[运行约定](../../services/worker/README.md)。
+
 ## 2. 命名、类型与共同字段
 
 除非表内另行说明，所有表都有：`id uuid PRIMARY KEY`、`created_at timestamptz NOT NULL DEFAULT now()`。可变表另有 `updated_at timestamptz NOT NULL DEFAULT now()`，由统一服务或触发器更新。字段表中的“可空”以外默认 NOT NULL；没有明确默认值的字段必须显式提供。

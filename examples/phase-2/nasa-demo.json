@@ -1,0 +1,28 @@
+{
+  "version": "p2-nasa-svs-10451-dev-r1",
+  "purpose": "Public archival development probe; one event group, not an independent test split",
+  "source_page": "https://svs.gsfc.nasa.gov/10451/",
+  "usage_guidelines": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+  "reference_transcript": "https://www.nasa.gov/wp-content/uploads/static/history/alsj/a11/a11.step.html",
+  "rights_scope": "Educational/informational project validation under NASA media guidance; credit NASA; no endorsement or use of marks; media not redistributed by this repository",
+  "event_group": "apollo-11-first-eva",
+  "assets": [
+    {
+      "name": "one-small-step.m4v",
+      "url": "https://svs.gsfc.nasa.gov/vis/a010000/a010400/a010451/One_Small_Step_Comparison_to_Restored_to_Original_wipe_to_Restored_Podcast.m4v",
+      "sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+    },
+    {
+      "name": "buzz-descends.m4v",
+      "url": "https://svs.gsfc.nasa.gov/vis/a010000/a010400/a010451/Buzz_Descends_Comparison_to_Restored_to_Original_wipe_to_Restored_Podcast.m4v",
+      "sha256": "23749bb9e3909ba335e48ea725f8a771aeb4f59fc4b4c8e80e31f4f3d13fa584"
+    }
+  ],
+  "annotation_scope": "Source phrase references checked against ALSJ; approximate SVS excerpt positions assigned during development with transcript alignment; not independently or blindly time-coded",
+  "queries": [
+    {"id": "first-step", "text": "giant leap", "asset": "one-small-step.m4v", "anchor_ms": 46000},
+    {"id": "ladder", "text": "coming down a ladder", "asset": "one-small-step.m4v", "anchor_ms": 22000},
+    {"id": "buzz-view", "text": "beautiful view", "asset": "buzz-descends.m4v", "anchor_ms": 35000},
+    {"id": "no-answer", "text": "underwater city", "asset": null, "anchor_ms": null}
+  ]
+}

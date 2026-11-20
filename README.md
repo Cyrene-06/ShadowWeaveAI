@@ -4,7 +4,7 @@
 
 影织 AI 面向校园生活、旅行、家庭与朋友记录、个人 Vlog、小型组织宣传五类场景，计划通过移动端拍摄指导和 Web 创作工作台，串联素材理解、故事规划、补拍、剪辑、审片与版本管理。
 
-> **项目状态：第一阶段可运行内核，待阶段复核。** 已实现 Web / Flutter Web、FastAPI、基础迁移、共享契约和两组可执行规则样例，并通过本机测试与双端联调；Android debug APK 已在 CI 编译通过。真实素材理解、生产版本提交和七角色工作流仍待后续实施；Android 真机采集与模型调用尚无通过证据。详见 [第一阶段报告](docs/reports/phase-1-report.md)。
+> **项目状态：第二阶段真实视频素材证据链已实装并完成本机复跑，待独立验收。** Web 支持授权上传、异步分析、本地时间戳转写、片段检索、原片坐标回看及证据导出。已用两段公开实拍档案跑通基线；不代表五场景效果、生产队列、Android 真机或远端商业模型已验收。见[第二阶段报告](docs/reports/phase-2-report.md)和[第一阶段报告](docs/reports/phase-1-report.md)。
 
 ## 项目希望解决什么问题
 
@@ -48,7 +48,7 @@ flowchart LR
 | 模块 | 计划能力 | 状态 |
 | --- | --- | --- |
 | AI 智能摄影助手 | 实时画面分析、构图与光线检测、运镜建议、拍摄清单 | 待实现 |
-| 智能素材管理中心 | 上传、关键帧与切镜、转写、标签、语义检索、质量与重复检测 | 待实现 |
+| 智能素材管理中心 | 上传、关键帧与切镜、转写、标签、语义检索、质量与重复检测 | 第二阶段：视频、关键词检索和证据导出已实现；语义检索待做 |
 | AI 创意工作台 | 文字与语音意图、主题、时长、风格、情绪及约束确认 | 待实现 |
 | 多 Agent 智能导演中心 | 任务拆解、角色协作、依赖、执行监控、冲突与人工确认 | 待实现 |
 | 智能故事板与补拍规划 | 大纲、分镜、节点关联、覆盖检查、补拍与时间预算 | 待实现 |
@@ -89,14 +89,14 @@ flowchart LR
 ```text
 ShadowWeaveAI/
 ├── apps/
-│   ├── web/                  # Vue Web 创作平台（第一阶段子集，见目录说明）
+│   ├── web/                  # Vue 工作台、规则回放与素材证据链
 │   └── mobile/               # Flutter 摄影与补拍端（第一阶段子集，见目录说明）
 ├── services/
-│   ├── api/                  # FastAPI 业务服务（第一阶段子集，见目录说明）
+│   ├── api/                  # FastAPI 项目、媒体与证据接口
 │   └── worker/               # 任务六态骨架（可靠异步执行待后续实现）
 ├── packages/
 │   ├── ai/                   # Agent、工作流与模型适配器（第一阶段子集，见目录说明）
-│   ├── media/                # 媒体分析、时间轴校验与渲染（第一阶段子集，见目录说明）
+│   ├── media/                # 真实媒体分析、转写与时间轴规则
 │   └── contracts/            # 跨端数据契约与 Schema（第一阶段子集，见目录说明）
 ├── docs/
 │   ├── README.md             # 文档导航、阅读顺序与事实边界
@@ -109,6 +109,7 @@ ShadowWeaveAI/
 │   ├── development.md        # 开发约定与初始化顺序
 │   ├── roadmap.md            # 八阶段计划与验收产物
 │   ├── phase-1-outline.md    # 第一阶段工作包、创新样例与验收
+│   ├── phase-2-outline.md    # 第二阶段真实素材证据链与验收
 │   ├── reports/              # 实际验证、证据摘要和未验证项
 │   └── api/README.md         # 接口设计边界
 ├── infra/                    # PostgreSQL 本地开发容器
@@ -136,9 +137,9 @@ cd ShadowWeaveAI
 2. 从 [文档导航](docs/README.md) 阅读 [创新性分析](docs/innovation-analysis.md) 和 [评测协议](docs/evaluation.md)，明确先验证什么，再阅读 [架构说明](docs/architecture.md)。
 3. 阅读 [系统详细设计](docs/design/detailed-design.md)、[数据库设计](docs/design/database-design.md) 和 [Agent 设计](docs/design/agent-design.md)，按统一契约拆分实现。
 4. 按 [开发指南](docs/development.md) 安装锁定依赖、执行迁移并启动 API/Web/Flutter Web。
-5. 参考 [开发路线](docs/roadmap.md)、[第一阶段实施大纲](docs/phase-1-outline.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
+5. 参考 [开发路线](docs/roadmap.md)、[第一阶段实施大纲](docs/phase-1-outline.md)、[第二阶段实施大纲](docs/phase-2-outline.md) 和 [协作指南](CONTRIBUTING.md) 拆分任务。
 
-完整可执行命令见 [开发指南](docs/development.md)：安装 Python/Web 依赖 → Alembic 迁移 → 启动 API → 启动 Web → 构建并运行 Flutter Web。固定样例与规则测试不需要模型密钥。PostgreSQL 本地容器入口为 `infra/compose.yaml`。
+完整可执行命令见 [开发指南](docs/development.md)：安装 Python/Web 依赖 → Alembic 迁移 → 启动 API → 启动 Web → 构建并运行 Flutter Web。固定样例与规则测试不需要模型密钥。[第二阶段本地复跑](docs/development.md#7-第二阶段素材证据链)另需媒体 Worker 和本地转写模型，无须远端 API 密钥。PostgreSQL 本地容器入口为 `infra/compose.yaml`。
 
 ## 开发计划与当前进度
 
@@ -154,7 +155,8 @@ cd ShadowWeaveAI
 - [x] 准备数据清单、独立标注与运行记录模板及离线一致性校验
 - [x] 提供[模型协议探针入口](docs/model-probe.md)，完成本地 HTTP 适配器测试；真实调用待配置
 - [ ] 完成另一成员独立复现、Android 真机和模型接入探针
-- [ ] 跑通创建项目 → 上传 → 样例分析 → 预览导出的首个闭环
+- [x] 跑通真实视频上传 → 分析 → 片段检索 → 原片回看 → 证据导出
+- [ ] 完成第二阶段人工计时对照、实际证据复核与另一成员独立复跑
 - [ ] 完成七大模块及七角色协作
 - [ ] 完成五类场景验证、故障恢复和交付材料
 

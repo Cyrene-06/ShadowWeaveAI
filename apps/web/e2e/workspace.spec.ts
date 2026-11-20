@@ -11,7 +11,7 @@ test("Web and Flutter read the same real API project and replay the rules", asyn
   const email = `browser-${stamp}@example.test`,
     password = "phase-one-browser-password",
     name = `双端联调 ${stamp}`;
-  await page.goto("http://127.0.0.1:5173");
+  await page.goto(process.env.WORKSPACE_WEB_URL || "http://127.0.0.1:5173");
   await page.getByRole("button", { name: "创建账号", exact: true }).click();
   await page.getByLabel("邮箱").fill(email);
   await page.getByLabel("密码（至少 12 位）").fill(password);
@@ -30,7 +30,7 @@ test("Web and Flutter read the same real API project and replay the rules", asyn
     page.getByText("新证据验证后：fulfilled", { exact: true }),
   ).toBeVisible();
   await page
-    .locator("input[type=file]")
+    .getByLabel("选择媒体")
     .setInputFiles(
       path.resolve("../../artifacts/phase-one/media/generated-source.mp4"),
     );
@@ -45,7 +45,9 @@ test("Web and Flutter read the same real API project and replay the rules", asyn
 
   const mobile = await context.newPage();
   mobile.on("pageerror", (error) => errors.push(error.message));
-  await mobile.goto("http://127.0.0.1:8080");
+  await mobile.goto(
+    process.env.WORKSPACE_FLUTTER_URL || "http://127.0.0.1:8080",
+  );
   const enable = mobile.locator("flt-semantics-placeholder");
   await enable.waitFor({ state: "attached" });
   await enable.evaluate((e: HTMLElement) => e.click());

@@ -1,273 +1,426 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
+import AppIcon from "./AppIcon.vue";
+import ReplayResults from "./ReplayResults.vue";
+import MaterialWorkspace from "./MaterialWorkspace.vue";
+import { scenarios } from "./presentation";
 import { useWorkspace } from "./store";
+
 const state = useWorkspace();
-const email = ref(""),
-  password = ref(""),
-  registration = ref(false),
-  name = ref("校园活动"),
-  scenario = ref("campus"),
-  probeResult = ref<unknown>(null);
-const labels: Record<string, string> = {
-  covered: "已有合格证据",
-  insufficient: "素材不足",
-  uncertain: "尚不确定",
-  missing: "缺少支持素材",
-};
+const email = ref("");
+const password = ref("");
+const registration = ref(false);
+const name = ref("校园活动");
+const scenario = ref("campus");
+const probeResult = ref<unknown>(null);
+const probeName = ref("");
 const project = computed(() =>
   state.projects.find((p) => p.id === state.selected),
 );
+const totals = computed(() => {
+  const checks = Object.values(state.run?.checks ?? {});
+  return { passed: checks.filter(Boolean).length, total: checks.length };
+});
+const nav = [
+  { href: "#coverage", title: "故事覆盖", icon: "layers" },
+  { href: "#capture", title: "补拍验证", icon: "camera" },
+  { href: "#editing", title: "局部修改", icon: "shield" },
+];
+watch(
+  () => state.selected,
+  () => {
+    probeResult.value = null;
+    probeName.value = "";
+  },
+);
+
+async function authenticate() {
+  await state.authenticate(email.value, password.value, registration.value);
+  if (state.token) password.value = "";
+}
+
 async function upload(event: Event) {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (file) probeResult.value = await state.probe(file);
+  const input = event.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+  probeName.value = file.name;
+  probeResult.value = null;
+  const result = await state.probe(file);
+  if (result) probeResult.value = result;
+  else probeName.value = "";
+  input.value = "";
 }
 </script>
+
 <template>
-  <header>
-    <a href="#" class="brand">影织 <span>AI</span></a
-    ><span class="badge">第一阶段 · 契约与可验证内核</span
-    ><button
-      v-if="state.token"
-      class="quiet"
-      @click="state.logout"
-      :disabled="state.busy"
-    >
-      {{ state.user }} · 退出
-    </button>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <span class="brand-mark"><AppIcon name="weave" :size="23" /></span>
+        <div>
+          <strong>影织<span> AI</span></strong
+          ><small>SHADOWWEAVE</small>
+        </div>
+      </div>
+      <span class="stage-tag"><i aria-hidden="true"></i> 第一阶段</span>
+      <div v-if="state.token" class="account">
+        <span class="avatar" aria-hidden="true">{{
+          state.user.charAt(0).toUpperCase()
+        }}</span>
+        <span class="account-name" :title="state.user">{{ state.user }}</span>
+        <button
+          type="button"
+          class="button button-subtle logout"
+          :disabled="state.busy"
+          @click="state.logout"
+        >
+          <AppIcon name="logout" :size="15" />退出
+        </button>
+      </div>
+      <span v-else class="edition mono">STUDIO / 01</span>
+    </div>
   </header>
-  <main>
-    <section class="intro">
-      <p class="eyebrow">SHADOWWEAVE / PHASE 01</p>
-      <h1>故事有据可依，<br />修改有界可控。</h1>
-      <p>检查故事需要什么素材，验证局部修改是否保护已确认内容。</p>
+
+  <main v-if="!state.token" id="main-content" class="login-shell" tabindex="-1">
+    <section class="auth-intro" aria-labelledby="welcome-title">
+      <p class="eyebrow kicker">
+        <span aria-hidden="true"></span> EVIDENCE-LED EDITING
+      </p>
+      <h1 id="welcome-title">故事有据可依，<br /><em>修改有界可控。</em></h1>
+      <p class="auth-copy">
+        用素材证据解释故事覆盖，用编辑规则保护已确认的片段。
+      </p>
+      <div class="studio-visual" aria-hidden="true">
+        <div class="visual-top mono">
+          <span><i></i> 流程示意 / 01</span><AppIcon name="film" :size="16" />
+        </div>
+        <div class="visual-art">
+          <svg
+            viewBox="0 0 570 185"
+            preserveAspectRatio="xMidYMid slice"
+            width="100%"
+            height="100%"
+          >
+            <defs>
+              <linearGradient
+                id="thread"
+                x2="1"
+                y2="1"
+                gradientUnits="objectBoundingBox"
+              >
+                <stop stop-color="#ec9d63" stop-opacity=".1" />
+                <stop offset=".53" stop-color="#ffb065" />
+                <stop offset="1" stop-color="#f4c083" stop-opacity=".15" />
+              </linearGradient>
+              <pattern
+                id="grid"
+                width="30"
+                height="30"
+                patternUnits="userSpaceOnUse"
+              >
+                <path
+                  d="M30 0H0v30"
+                  fill="none"
+                  stroke="#806047"
+                  stroke-opacity=".2"
+                />
+              </pattern>
+            </defs>
+            <rect width="570" height="185" fill="url(#grid)" />
+            <g fill="none" stroke="url(#thread)">
+              <path
+                v-for="i in 12"
+                :key="i"
+                :d="`M-25 ${36 + 10 * i} C90 ${-32 + 15 * i} 179 ${241 - 14 * i} 284 ${91 + 2.5 * i} S448 ${-75 + i * 17} 602 ${73 + i * 7}`"
+                :opacity="0.25 + i * 0.06"
+              />
+            </g>
+            <circle cx="283" cy="106" r="26" fill="#2b211c" stroke="#986743" />
+            <circle
+              cx="283"
+              cy="106"
+              r="35"
+              fill="none"
+              stroke="#986743"
+              stroke-opacity=".35"
+            />
+            <path d="m279 99 11 7-11 7z" fill="#ffc181" />
+          </svg>
+        </div>
+        <div class="visual-track">
+          <i></i><i></i><i></i><i></i><span></span>
+        </div>
+        <div class="visual-bottom mono">
+          <span>01 · COVERAGE</span><span>02 · CAPTURE</span
+          ><span>03 · EDIT</span>
+        </div>
+      </div>
     </section>
-    <p v-if="state.error" role="alert" class="error">{{ state.error }}</p>
-    <p v-if="state.busy" role="status">正在请求 API，请稍候…</p>
-    <section v-if="!state.token" class="panel auth">
-      <h2>{{ registration ? "创建账号" : "进入项目工作台" }}</h2>
-      <p>登录后读取真实项目；规则演示使用明确标注的固定输入。</p>
-      <form @submit.prevent="state.authenticate(email, password, registration)">
+    <section class="panel auth" aria-labelledby="auth-title">
+      <span class="section-icon"><AppIcon name="grid" :size="20" /></span>
+      <p class="eyebrow">WORKSPACE ACCESS</p>
+      <h2 id="auth-title">
+        {{ registration ? "创建账号" : "进入项目工作台" }}
+      </h2>
+      <p class="auth-description">
+        登录后管理项目，运行固定规则样例并核对结果。
+      </p>
+      <p v-if="state.error" class="notice error" role="alert">
+        {{ state.error }}
+      </p>
+      <p v-if="state.busy" class="muted" role="status">正在请求 API，请稍候…</p>
+      <form class="auth-form" @submit.prevent="authenticate">
         <label
           >邮箱<input
             v-model="email"
             type="email"
             required
-            autocomplete="username" /></label
-        ><label
+            autocomplete="username"
+            placeholder="name@example.com"
+        /></label>
+        <label
           >密码（至少 12 位）<input
             v-model="password"
             type="password"
             minlength="12"
             maxlength="128"
             required
-            :autocomplete="
-              registration ? 'new-password' : 'current-password'
-            " /></label
-        ><button :disabled="state.busy">
-          {{ registration ? "注册并进入" : "登录" }}
+            :autocomplete="registration ? 'new-password' : 'current-password'"
+        /></label>
+        <button
+          class="button button-primary auth-submit"
+          :disabled="state.busy"
+        >
+          {{ registration ? "注册并进入" : "登录"
+          }}<AppIcon name="arrow" :size="17" />
         </button>
       </form>
-      <div class="actions">
-        <button class="quiet" @click="registration = !registration">
-          {{ registration ? "已有账号，登录" : "创建账号" }}</button
-        ><button class="quiet" :disabled="state.busy" @click="state.restore">
+      <div class="auth-actions">
+        <button
+          type="button"
+          class="button button-text"
+          :disabled="state.busy"
+          @click="registration = !registration"
+        >
+          {{ registration ? "已有账号，登录" : "创建账号" }}
+        </button>
+        <button
+          type="button"
+          class="button button-subtle"
+          :disabled="state.busy"
+          @click="state.restore"
+        >
           恢复已有会话
         </button>
       </div>
     </section>
-    <template v-else>
-      <section class="panel">
-        <div class="section-head">
-          <h2>项目</h2>
+  </main>
+
+  <div v-else class="workspace-shell">
+    <aside class="sidebar" aria-label="项目与工作区导航">
+      <section class="panel project-panel" aria-labelledby="project-title">
+        <div class="sidebar-head">
+          <h2 id="project-title"><AppIcon name="folder" :size="18" />项目</h2>
           <button
-            class="quiet"
-            @click="state.action(state.loadProjects)"
+            type="button"
+            class="button icon-button"
+            aria-label="刷新列表"
+            title="刷新列表"
             :disabled="state.busy"
+            @click="state.action(state.loadProjects)"
           >
-            刷新列表
+            <AppIcon name="refresh" :size="17" />
           </button>
         </div>
-        <form
-          class="project-form"
-          @submit.prevent="state.createProject(name, scenario)"
-        >
-          <label
-            >项目名称<input v-model="name" required maxlength="120" /></label
-          ><label
-            >场景<select v-model="scenario">
-              <option value="campus">校园活动</option>
-              <option value="travel">旅行</option>
-              <option value="family_friends">家庭朋友</option>
-              <option value="vlog">个人 Vlog</option>
-              <option value="organization">组织宣传</option>
-            </select></label
-          ><button :disabled="state.busy">创建项目</button>
-        </form>
-        <p v-if="!state.projects.length" class="muted">
-          还没有项目。创建项目后可运行第一阶段规则样例。
+        <p v-if="!state.projects.length" class="muted project-empty">
+          还没有项目，先创建一个。
         </p>
-        <div class="project-list">
-          <button
-            v-for="p in state.projects"
-            :key="p.id"
-            class="project"
-            :class="{ selected: state.selected === p.id }"
-            @click="
-              state.select(p.id);
-              probeResult = null;
-            "
+        <ul v-else class="project-list">
+          <li v-for="p in state.projects" :key="p.id">
+            <button
+              type="button"
+              class="project-button"
+              :aria-pressed="state.selected === p.id"
+              :disabled="state.busy"
+              @click="state.selected !== p.id && state.select(p.id)"
+            >
+              <AppIcon name="film" :size="17" /><span
+                ><strong>{{ p.name }}</strong
+                ><small
+                  >{{ scenarios[p.scenario] ?? p.scenario }} · 版本
+                  {{ p.revision }}</small
+                ></span
+              >
+            </button>
+          </li>
+        </ul>
+        <details class="project-new" :open="!state.projects.length">
+          <summary><AppIcon name="plus" :size="16" />新建项目</summary>
+          <form
+            class="project-form"
+            @submit.prevent="state.createProject(name, scenario)"
           >
-            <strong>{{ p.name }}</strong
-            ><small>{{ p.scenario }} · revision {{ p.revision }}</small>
-          </button>
-        </div>
-      </section>
-      <section v-if="project" class="panel">
-        <div class="section-head">
-          <div>
-            <p class="eyebrow">{{ project.name }}</p>
-            <h2>可复核的规则演示</h2>
-          </div>
-          <button :disabled="state.busy" @click="state.replay">
-            运行固定样例
-          </button>
-        </div>
-        <p class="notice">
-          模式：人工标注的合成元数据 /
-          同步规则回放。未调用模型，未生成生产版本。
-        </p>
-        <p v-if="!state.run" class="muted">
-          运行后查看四态覆盖、补拍验证以及修改被允许或拒绝的原因。
-        </p>
-      </section>
-      <template v-if="state.run">
-        <section class="panel">
-          <div class="section-head">
-            <h2>故事覆盖与证据</h2>
-            <span class="badge">{{
-              state.run.passed ? "样例检查通过" : "存在失败用例"
-            }}</span>
-          </div>
-          <div class="cards">
-            <article
-              v-for="report in state.run.coverage"
-              :key="report.node_key"
-              class="card"
+            <label
+              >项目名称<input v-model="name" required maxlength="120"
+            /></label>
+            <label
+              >场景<select v-model="scenario">
+                <option
+                  v-for="(title, key) in scenarios"
+                  :key="key"
+                  :value="key"
+                >
+                  {{ title }}
+                </option>
+              </select></label
             >
-              <small>{{ report.node_key }}</small>
-              <h3>{{ labels[report.coverage] }}</h3>
-              <p>可用时长 {{ report.usable_duration_ms }} ms</p>
-              <p class="muted">{{ report.reason_codes.join(" / ") }}</p>
-              <details>
-                <summary>证据来源</summary>
-                <pre>{{
-                  state.bundle?.manifest.evidence.filter((e: any) =>
-                    report.candidate_refs.includes(e.id),
-                  )
-                }}</pre>
-              </details>
-            </article>
-          </div>
-        </section>
-        <section class="panel">
-          <h2>补拍验证门</h2>
-          <p>{{ state.run.capture.initial.instruction }}</p>
-          <div class="steps">
-            <span>初始：{{ state.run.capture.initial.state }}</span
-            ><span>上传事件后：{{ state.run.capture.after_upload.state }}</span
-            ><span
-              >新证据验证后：{{
-                state.run.capture.after_verification.state
-              }}</span
-            >
-          </div>
-          <p class="muted">
-            这些状态由固定事实输入触发规则计算；上传本身不能满足故事要求。
+            <button class="button button-subtle" :disabled="state.busy">
+              创建项目
+            </button>
+          </form>
+        </details>
+      </section>
+      <nav v-if="project" class="panel sidebar-nav" aria-label="结果导航">
+        <p class="eyebrow">WORKSPACE</p>
+        <template v-if="state.run">
+          <a v-for="item in nav" :key="item.href" :href="item.href"
+            ><AppIcon :name="item.icon" :size="17" />{{ item.title
+            }}<AppIcon name="chevron" :size="13"
+          /></a>
+        </template>
+        <a href="#material-workspace"
+          ><AppIcon name="layers" :size="17" />素材证据链<AppIcon
+            name="chevron"
+            :size="13"
+          />
+        </a>
+        <a href="#media"
+          ><AppIcon name="film" :size="17" />媒体探针<AppIcon
+            name="chevron"
+            :size="13"
+        /></a>
+      </nav>
+    </aside>
+
+    <main id="main-content" class="workspace-main" tabindex="-1">
+      <section class="workspace-hero" aria-labelledby="workspace-title">
+        <div class="hero-content">
+          <p class="eyebrow kicker">
+            <span aria-hidden="true"></span> PROJECT WORKSPACE
           </p>
-        </section>
-        <section class="panel">
-          <h2>局部修改与保护检查</h2>
-          <p>
-            目标：开场。预先批准范围：{{
-              state.run.impact.approved_affected_keys.join("、")
-            }}；依赖预报：{{
-              state.run.impact.predicted_affected_keys.join("、")
-            }}。
-          </p>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>候选样例</th>
-                  <th>结果</th>
-                  <th>拒绝依据 / 差异</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(edit, key) in state.run.edits" :key="key">
-                  <td>{{ key }}</td>
-                  <td>
-                    <span :class="edit.accepted ? 'pass' : 'reject'">{{
-                      edit.accepted ? "允许" : "拒绝"
-                    }}</span>
-                  </td>
-                  <td>
-                    {{
-                      edit.validation?.hard_errors.join("、") ||
-                      edit.error_code ||
-                      "约束检查通过"
-                    }}
-                    <details v-if="edit.validation">
-                      <summary>完整差异</summary>
-                      <pre>{{ edit.validation.diff }}</pre>
-                    </details>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="muted">
-            草案确认校验：{{
-              state.run.confirmation.valid ? "通过" : "失败"
-            }}；生产版本发布：{{
-              state.run.confirmation.version_published ? "是" : "否"
-            }}。
-          </p>
-        </section>
-        <section class="panel">
-          <h2>复核记录</h2>
-          <p>数据版本 {{ state.run.dataset_version }} · 未调用模型</p>
-          <p class="mono">
-            代码 {{ state.run.code.commit }}
+          <h1 id="workspace-title">
+            {{ project ? project.name : "项目工作台" }}
+          </h1>
+          <p class="hero-copy">
             {{
-              state.run.code.dirty
-                ? "（包含未提交变更，运行记录附源文件摘要）"
-                : ""
+              project
+                ? "复核故事素材是否充分、补拍是否完成，以及修改会影响哪些片段。"
+                : "从项目列表选择一个项目，或创建新项目开始。"
             }}
           </p>
-          <details>
-            <summary>检查明细与输入摘要</summary>
-            <pre
-              >{{ state.run.checks }}
-{{ state.run.input_hash }}</pre>
-          </details>
-        </section>
-      </template>
-      <section v-if="project" class="panel">
-        <h2>媒体工具探针</h2>
+          <div v-if="project" class="hero-actions">
+            <button
+              type="button"
+              class="button button-primary"
+              :disabled="state.busy"
+              @click="state.replay"
+            >
+              <AppIcon name="play" :size="17" />运行固定样例
+            </button>
+            <span class="pill mode-pill">同步规则回放</span>
+          </div>
+        </div>
+        <div class="run-state" aria-label="回放进度">
+          <span class="eyebrow">规则断言</span>
+          <strong class="mono"
+            >{{ state.run ? totals.passed : "—"
+            }}<small v-if="state.run"> / {{ totals.total }}</small></strong
+          >
+          <span>{{ state.run ? "项通过" : "等待运行" }}</span>
+          <div class="run-meter" aria-hidden="true">
+            <i
+              :style="{
+                width: totals.total
+                  ? `${(totals.passed / totals.total) * 100}%`
+                  : `0%`,
+              }"
+            ></i>
+          </div>
+        </div>
+      </section>
+      <p v-if="state.error" class="notice error" role="alert">
+        <AppIcon name="info" />{{ state.error }}
+      </p>
+      <p v-if="state.busy" class="notice" role="status">
+        正在请求 API，请稍候…
+      </p>
+      <p v-if="project" class="notice mode-notice">
+        <AppIcon name="info" /><span
+          ><strong>固定输入演示</strong> ·
+          人工标注的合成元数据，未调用模型，未生成生产版本。</span
+        >
+      </p>
+
+      <ReplayResults
+        v-if="state.run"
+        :run="state.run"
+        :evidence="state.bundle?.manifest.evidence ?? []"
+      />
+      <section v-else class="panel empty-state" aria-labelledby="empty-title">
+        <span class="section-icon"
+          ><AppIcon :name="project ? 'play' : 'folder'" :size="24"
+        /></span>
+        <h2 id="empty-title">
+          {{ project ? "尚无规则回放结果" : "尚未选择项目" }}
+        </h2>
         <p>
-          上传不超过 16 MiB 的授权媒体，检查真实解析工具。此操作只返回探针结果。
+          {{
+            project
+              ? "运行固定样例后，这里将显示故事覆盖、补拍状态和局部编辑风险。"
+              : "选择已有项目，或用项目栏创建一个新的工作区。"
+          }}
         </p>
-        <label class="file"
-          >选择媒体<input
+      </section>
+      <MaterialWorkspace
+        v-if="project"
+        :key="project.id"
+        :project-id="project.id"
+        :token="state.token"
+      />
+      <section
+        v-if="project"
+        id="media"
+        class="panel result-panel"
+        aria-labelledby="media-title"
+      >
+        <div class="section-title">
+          <span class="section-icon"><AppIcon name="film" /></span>
+          <div>
+            <p class="eyebrow">MEDIA UTILITIES</p>
+            <h2 id="media-title">媒体工具探针</h2>
+          </div>
+        </div>
+        <p class="section-copy">
+          上传不超过 16 MiB 的授权音视频，只检查真实媒体解析，不会完成补拍任务。
+        </p>
+        <label class="upload-control"
+          ><AppIcon name="upload" />选择媒体<input
             type="file"
             accept="video/*,audio/*"
-            @change="upload"
             :disabled="state.busy"
+            @change="upload"
         /></label>
-        <pre v-if="probeResult">{{ probeResult }}</pre>
+        <details v-if="probeResult" class="disclosure probe-result" open>
+          <summary>
+            解析结果 <span>{{ probeName }}</span>
+          </summary>
+          <pre>{{ probeResult }}</pre>
+        </details>
       </section>
-    </template>
-  </main>
-  <footer>ShadowWeaveAI · 证据覆盖 / 局部修改约束 / 可复核运行记录</footer>
+    </main>
+  </div>
+  <footer class="footer">
+    <span>ShadowWeaveAI</span><span>素材证据 / 补拍验证 / 编辑约束</span>
+  </footer>
 </template>

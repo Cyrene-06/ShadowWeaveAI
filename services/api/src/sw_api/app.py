@@ -535,6 +535,9 @@ def create_app(database_url=None, artifact_dir=None, replay_enabled=None):
                 path.unlink(missing_ok=True)
                 await upload.close()
 
+    from .materials import material_routes
+
+    app.include_router(material_routes(artifact_dir, db_session, user, project_access))
     return app
 
 

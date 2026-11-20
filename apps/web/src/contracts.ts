@@ -90,12 +90,42 @@ export interface Project {
   revision: number;
   head_revision: number;
 }
+export type CoverageState =
+  "covered" | "insufficient" | "uncertain" | "missing";
+export interface RequirementCoverage {
+  requirement_key: string;
+  state: CoverageState;
+  candidate_refs: string[];
+  qualified_refs: string[];
+  selected_refs: string[];
+  reason_codes: string[];
+}
 export interface Coverage {
   node_key: string;
-  coverage: string;
+  coverage: CoverageState;
   usable_duration_ms: number;
+  minimum_duration_ms: number;
   reason_codes: string[];
   candidate_refs: string[];
+  selected_evidence_refs: string[];
+  requirement_results: RequirementCoverage[];
+  selection_complete: boolean;
+  uncertainty_reasons: string[];
+}
+export interface EvidenceSource {
+  id: string;
+  in_ms: number;
+  out_ms: number;
+  method: string;
+  semantic_support: string;
+  quality_usable: boolean;
+}
+export interface ReplayBundle {
+  manifest: { evidence: EvidenceSource[] };
+}
+interface CaptureStep {
+  state: string;
+  instruction: string;
 }
 export interface Replay {
   passed: boolean;
@@ -115,11 +145,26 @@ export interface Replay {
     }
   >;
   capture: {
-    initial: Record<string, any>;
-    after_upload: Record<string, any>;
-    after_verification: Record<string, any>;
+    initial: CaptureStep;
+    after_upload: CaptureStep;
+    after_verification: CaptureStep;
+    uncertainty_report: Coverage;
+    uncertainty_blocks_fulfillment: boolean;
   };
-  impact: Record<string, any>;
+  impact: {
+    requested_target_keys: string[];
+    approved_affected_keys: string[];
+    propagation_paths: Record<string, string[]>;
+    risk_budget: {
+      total_clip_count: number;
+      affected_clip_count: number;
+      affected_ratio: number;
+      locked_conflict_count: number;
+      unapproved_affected_keys: string[];
+      severity: "low" | "medium" | "high" | "blocked";
+      reasons: string[];
+    };
+  };
   code: { commit: string; dirty: boolean };
   confirmation: { valid: boolean; version_published: boolean };
 }

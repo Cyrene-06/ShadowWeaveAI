@@ -78,6 +78,19 @@ def artifacts():
             "request_id": uid("request"),
         },
     }
+    segment = valid["Segment"]
+    valid["MaterialCandidate"] = {
+        **segment, "name": "fixture.mp4", "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "a" * 64, "analysis_content_hash": "b" * 64,
+        "frame_ms": segment["in_ms"], "speech": [], "human_tags": ["campus"],
+        "signals": {}, "matched_fields": ["human_tag"], "score": 1,
+    }
+    valid["MaterialSearch"] = {"candidates": [valid["MaterialCandidate"]]}
+    valid["MaterialEvidenceRequest"] = {"bindings": [{
+        "segment_id": segment["id"], "analysis_run_id": segment["analysis_run_id"],
+        "in_ms": segment["in_ms"], "out_ms": segment["out_ms"], "requirement_keys": ["campus"],
+        "semantic_support": "unknown", "quality_usable": False, "reviewed": True,
+    }]}
     cases = []
 
     def add(name, model, value):
@@ -111,6 +124,10 @@ def artifacts():
         ("Clip", "invalid-target", {"dst_out_ms": 0}),
         ("StoryNode", "required-not-bool", {"required": 1}),
         ("Job", "unknown-state", {"state": "done"}),
+        ("MaterialCandidate", "bad-source-digest", {"source_sha256": "invalid"}),
+        ("MaterialCandidate", "unsupported-source-channel", {"matched_fields": ["embedding"]}),
+        ("MaterialCandidate", "cannot-assert-semantic-support", {"semantic_support": "supported"}),
+        ("MaterialEvidenceRequest", "empty-bindings", {"bindings": []}),
     ]
     for model, name, patch in changes:
         value = copy.deepcopy(valid[model])

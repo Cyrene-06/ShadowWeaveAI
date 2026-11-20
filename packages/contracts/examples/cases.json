@@ -1874,6 +1874,152 @@
       "valid": true
     },
     {
+      "id": "MaterialCandidate/valid",
+      "input": {
+        "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "frame_ms": 0,
+        "human_tags": [
+          "campus"
+        ],
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "matched_fields": [
+          "human_tag"
+        ],
+        "name": "fixture.mp4",
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "score": 1,
+        "signals": {},
+        "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "speech": []
+      },
+      "model": "MaterialCandidate",
+      "normalized": {
+        "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "frame_ms": 0,
+        "human_tags": [
+          "campus"
+        ],
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "matched_fields": [
+          "human_tag"
+        ],
+        "name": "fixture.mp4",
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "score": 1,
+        "semantic_support": "unknown",
+        "signals": {},
+        "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "speech": []
+      },
+      "valid": true
+    },
+    {
+      "id": "MaterialSearch/valid",
+      "input": {
+        "candidates": [
+          {
+            "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "frame_ms": 0,
+            "human_tags": [
+              "campus"
+            ],
+            "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "in_ms": 0,
+            "matched_fields": [
+              "human_tag"
+            ],
+            "name": "fixture.mp4",
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "score": 1,
+            "signals": {},
+            "source_and_rights": "Synthetic test fixture",
+            "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "speech": []
+          }
+        ]
+      },
+      "model": "MaterialSearch",
+      "normalized": {
+        "candidates": [
+          {
+            "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+            "frame_ms": 0,
+            "human_tags": [
+              "campus"
+            ],
+            "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "in_ms": 0,
+            "matched_fields": [
+              "human_tag"
+            ],
+            "name": "fixture.mp4",
+            "out_ms": 12000,
+            "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+            "score": 1,
+            "semantic_support": "unknown",
+            "signals": {},
+            "source_and_rights": "Synthetic test fixture",
+            "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            "speech": []
+          }
+        ],
+        "strategy": "segment_keyword_v1"
+      },
+      "valid": true
+    },
+    {
+      "id": "MaterialEvidenceRequest/valid",
+      "input": {
+        "bindings": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "quality_usable": false,
+            "requirement_keys": [
+              "campus"
+            ],
+            "reviewed": true,
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "semantic_support": "unknown"
+          }
+        ]
+      },
+      "model": "MaterialEvidenceRequest",
+      "normalized": {
+        "bindings": [
+          {
+            "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+            "in_ms": 0,
+            "out_ms": 12000,
+            "quality_usable": false,
+            "requirement_keys": [
+              "campus"
+            ],
+            "reviewed": true,
+            "segment_id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+            "semantic_support": "unknown"
+          }
+        ]
+      },
+      "valid": true
+    },
+    {
       "id": "Project/bad-uuid",
       "input": {
         "id": "not-a-uuid",
@@ -2131,6 +2277,96 @@
         "state": "done"
       },
       "model": "Job",
+      "valid": false
+    },
+    {
+      "id": "MaterialCandidate/bad-source-digest",
+      "input": {
+        "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "frame_ms": 0,
+        "human_tags": [
+          "campus"
+        ],
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "matched_fields": [
+          "human_tag"
+        ],
+        "name": "fixture.mp4",
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "score": 1,
+        "signals": {},
+        "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "invalid",
+        "speech": []
+      },
+      "model": "MaterialCandidate",
+      "valid": false
+    },
+    {
+      "id": "MaterialCandidate/unsupported-source-channel",
+      "input": {
+        "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "frame_ms": 0,
+        "human_tags": [
+          "campus"
+        ],
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "matched_fields": [
+          "embedding"
+        ],
+        "name": "fixture.mp4",
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "score": 1,
+        "signals": {},
+        "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "speech": []
+      },
+      "model": "MaterialCandidate",
+      "valid": false
+    },
+    {
+      "id": "MaterialCandidate/cannot-assert-semantic-support",
+      "input": {
+        "analysis_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "analysis_run_id": "2b3f0268-6b1d-5a87-9d94-19e9979e4505",
+        "asset_id": "d0f3f887-383c-510e-beee-6d656a40d323",
+        "frame_ms": 0,
+        "human_tags": [
+          "campus"
+        ],
+        "id": "d75aceaa-69d6-5c3c-982b-f2c6dcd74f59",
+        "in_ms": 0,
+        "matched_fields": [
+          "human_tag"
+        ],
+        "name": "fixture.mp4",
+        "out_ms": 12000,
+        "project_id": "49198923-2c5e-51c0-a8dc-9e062c73d1e1",
+        "score": 1,
+        "semantic_support": "supported",
+        "signals": {},
+        "source_and_rights": "Synthetic test fixture",
+        "source_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "speech": []
+      },
+      "model": "MaterialCandidate",
+      "valid": false
+    },
+    {
+      "id": "MaterialEvidenceRequest/empty-bindings",
+      "input": {
+        "bindings": []
+      },
+      "model": "MaterialEvidenceRequest",
       "valid": false
     },
     {

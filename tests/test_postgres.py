@@ -154,3 +154,41 @@ def test_failed_seed_rolls_back_all_references(postgres, tmp_path, monkeypatch):
             assert conn.scalar(select(func.count()).select_from(tables.replay_datasets)) == 0
             assert conn.scalar(select(func.count()).select_from(tables.objects)) == 0
         assert client.post(prefix + "/seed", headers=headers).status_code == 200
+
+
+def test_media_duplicate_upload_enqueues_once_and_lease_is_exclusive(postgres, tmp_path, monkeypatch):
+    from sw_worker.media_jobs import claim, fail
+
+    app = api_for(postgres, tmp_path, monkeypatch)
+    engine = postgres[0]
+    with TestClient(app) as client:
+        headers = identity(client)
+        response = client.post(
+            "/api/v1/projects", headers={**headers, "Idempotency-Key": "materials"},
+            json={"name": "Upload race", "scenario": "campus"},
+        )
+        assert response.status_code == 201, response.text
+        pid = response.json()["id"]
+
+        def upload(n):
+            return client.post(
+                f"/api/v1/projects/{pid}/materials/assets",
+                headers={**headers, "Content-Type": "application/octet-stream"},
+                params={"name": f"video-{n}.mp4", "source": "synthetic", "rights_confirmed": True},
+                content=b"synthetic identical upload bytes",
+            )
+
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            responses = list(pool.map(upload, range(4)))
+        assert all(r.status_code == 201 for r in responses), [r.text for r in responses]
+        assert len({r.json()["asset_id"] for r in responses}) == 1
+        assert sum(r.json()["duplicate"] for r in responses) == 3
+
+    with ThreadPoolExecutor(max_workers=4) as pool:
+        claims = [job for job in pool.map(lambda _: claim(engine), range(4)) if job is not None]
+    assert len(claims) == 1
+    assert claims[0]["attempts"] == 1
+    fail(engine, claims[0], "SYNTHETIC_FAILURE", {})
+    with engine.connect() as conn:
+        assert conn.scalar(select(func.count()).select_from(tables.media_runs)) == 1
+        assert conn.scalar(select(tables.media_runs.c.stage)) == "failed"

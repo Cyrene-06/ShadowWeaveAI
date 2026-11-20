@@ -1,13 +1,18 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { parseContract, type Project, type Replay } from "./contracts";
+import {
+  parseContract,
+  type Project,
+  type Replay,
+  type ReplayBundle,
+} from "./contracts";
 
 export const useWorkspace = defineStore("workspace", () => {
   const token = ref(""),
     user = ref(""),
     projects = ref<Project[]>([]),
     selected = ref("");
-  const bundle = ref<Record<string, any> | null>(null),
+  const bundle = ref<ReplayBundle | null>(null),
     run = ref<Replay | null>(null),
     error = ref(""),
     busy = ref(false);

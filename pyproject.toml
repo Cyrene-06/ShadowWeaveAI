@@ -11,6 +11,7 @@ dependencies = ["fastapi", "uvicorn", "sqlalchemy", "psycopg[binary]", "alembic"
 
 [project.optional-dependencies]
 dev = ["pytest", "httpx", "imageio-ffmpeg", "pillow", "ruff"]
+media-asr = ["faster-whisper==1.2.1", "numpy"]
 
 [tool.setuptools.packages.find]
 where = ["services/api/src", "services/worker/src", "packages/contracts/src", "packages/ai/src", "packages/media/src"]
