@@ -131,7 +131,7 @@ def create_app(database_url=None, artifact_dir=None, replay_enabled=None):
         with tables.session(engine) as db:
             yield db
 
-    def user(request: Request, db=Depends(db_session)):
+    def authenticate(request, db):
         header = request.headers.get("Authorization", "")
         try:
             if not header.startswith("Bearer "):
@@ -145,6 +145,9 @@ def create_app(database_url=None, artifact_dir=None, replay_enabled=None):
         if not db.execute(select(tables.users.c.id).where(tables.users.c.id == uid)).first():
             raise RuleError("UNAUTHENTICATED", "User does not exist")
         return uid
+
+    def user(request: Request, db=Depends(db_session)):
+        return authenticate(request, db)
 
     def project_access(db, project_id, uid, write=False):
         project_id = str(project_id)
@@ -537,7 +540,7 @@ def create_app(database_url=None, artifact_dir=None, replay_enabled=None):
 
     from .materials import material_routes
 
-    app.include_router(material_routes(artifact_dir, db_session, user, project_access))
+    app.include_router(material_routes(artifact_dir, engine, db_session, user, authenticate, project_access))
     return app
 
 

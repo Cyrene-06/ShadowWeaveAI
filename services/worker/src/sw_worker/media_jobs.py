@@ -53,19 +53,22 @@ def claim(engine, at_ms=None):
             return None
         token = str(uuid4())
         exhausted = row["attempts"] >= MAX_ATTEMPTS
-        updated = db.execute(update(t.media_runs).where(r.id == row["id"], eligible).values(
+        # Compare the attempt as well as eligibility in case the selected lease was superseded.
+        claimed = db.execute(update(t.media_runs).where(
+            r.id == row["id"], r.attempts == row["attempts"], eligible,
+        ).values(
             stage="failed" if exhausted else "probe", attempts=row["attempts"] + (not exhausted),
             started_ms=row["started_ms"] if row["started_ms"] is not None else now,
             lease_token=None if exhausted else token, lease_until_ms=None if exhausted else now + LEASE_MS,
             error_code="WORKER_INTERRUPTED" if exhausted else None, finished_ms=now if exhausted else None,
-        ))
-        if not updated.rowcount:
+        ).returning(t.media_runs)).mappings().first()
+        if not claimed:
             return None
         if exhausted:
-            set_states(db, row, "failed")
-            return {"exhausted": True, "id": row["id"]}
-        set_states(db, row, "running")
-        return {**row, "lease_token": token, "started_ms": now}
+            set_states(db, claimed, "failed")
+            return {"exhausted": True, "id": claimed["id"]}
+        set_states(db, claimed, "running")
+        return dict(claimed)
 
 
 def set_states(db, job, state):

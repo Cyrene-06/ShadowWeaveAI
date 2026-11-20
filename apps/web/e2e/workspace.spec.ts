@@ -51,10 +51,18 @@ test("Web and Flutter read the same real API project and replay the rules", asyn
   const enable = mobile.locator("flt-semantics-placeholder");
   await enable.waitFor({ state: "attached" });
   await enable.evaluate((e: HTMLElement) => e.click());
-  await mobile.getByRole("textbox", { name: "邮箱" }).click();
-  await mobile.keyboard.insertText(email);
-  await mobile.getByRole("textbox", { name: "密码（至少 12 位）" }).click();
-  await mobile.keyboard.insertText(password);
+  const emailInput = mobile.getByRole("textbox", { name: "邮箱" });
+  const passwordInput = mobile.getByRole("textbox", {
+    name: "密码（至少 12 位）",
+  });
+  await emailInput.click();
+  await expect(emailInput).toBeFocused();
+  await mobile.keyboard.type(email);
+  await expect(emailInput).toHaveValue(email);
+  await passwordInput.click();
+  await expect(passwordInput).toBeFocused();
+  await mobile.keyboard.type(password);
+  await expect(passwordInput).toHaveValue(password);
   await mobile.getByRole("button", { name: "登录", exact: true }).click();
   await expect(
     mobile.getByRole("button", { name: new RegExp(name) }),

@@ -2,6 +2,7 @@
 
 import os
 from concurrent.futures import ThreadPoolExecutor
+from threading import Barrier
 from uuid import uuid4
 
 import pytest
@@ -170,7 +171,10 @@ def test_media_duplicate_upload_enqueues_once_and_lease_is_exclusive(postgres, t
         assert response.status_code == 201, response.text
         pid = response.json()["id"]
 
+        upload_start = Barrier(4, timeout=10)
+
         def upload(n):
+            upload_start.wait()
             return client.post(
                 f"/api/v1/projects/{pid}/materials/assets",
                 headers={**headers, "Content-Type": "application/octet-stream"},
@@ -183,6 +187,7 @@ def test_media_duplicate_upload_enqueues_once_and_lease_is_exclusive(postgres, t
         assert all(r.status_code == 201 for r in responses), [r.text for r in responses]
         assert len({r.json()["asset_id"] for r in responses}) == 1
         assert sum(r.json()["duplicate"] for r in responses) == 3
+        assert len(list((tmp_path / "materials" / "original" / pid).glob("*.mp4"))) == 1
 
     with ThreadPoolExecutor(max_workers=4) as pool:
         claims = [job for job in pool.map(lambda _: claim(engine), range(4)) if job is not None]

@@ -150,9 +150,11 @@ def test_failures_and_fenced_worker_recovery(sandbox, tmp_path, monkeypatch):
         assert db.execute(select(t.jobs.c.state).where(t.jobs.c.id == bad["latest"]["job_id"])).scalar_one() == "failed"
     abandoned = worker.claim(app.state.engine)
     assert abandoned["id"] == sound["latest"]["analysis_run_id"]
+    assert abandoned["attempts"] == 1
     assert worker.claim(app.state.engine) is None
     recovered = worker.claim(app.state.engine, at_ms=worker.clock() + worker.LEASE_MS + 10)
     assert recovered["id"] == abandoned["id"] and recovered["lease_token"] != abandoned["lease_token"]
+    assert recovered["attempts"] == 2 and recovered["started_ms"] == abandoned["started_ms"]
     with t.session(app.state.engine) as db:
         assert not worker.update_owned(db, abandoned, stage="publish")
     worker.fail(app.state.engine, recovered, "WORKER_INTERRUPTED", {})

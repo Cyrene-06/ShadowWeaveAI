@@ -7,6 +7,7 @@ from typing import Literal
 from uuid import UUID, uuid4, uuid5
 
 from fastapi import APIRouter, Depends, Header, Query, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.responses import FileResponse
 from pydantic import Field
 from sqlalchemy import and_, func, insert, select, update
@@ -69,7 +70,7 @@ def keyword_rank(query, transcript, labels):
     return sum(counts.values()), [key for key, count in counts.items() if count]
 
 
-def material_routes(root, db_session, user, access):
+def material_routes(root, engine, db_session, user, authenticate, access):
     router = APIRouter(prefix="/api/v1/projects/{project_id}/materials", tags=["materials"])
 
     def catalog(db, pid, aid):
@@ -96,14 +97,48 @@ def material_routes(root, db_session, user, access):
         return {"asset_id": row["asset_id"], "name": row["name"], "sha256": row["sha256"],
                 "active_analysis_id": row["active_analysis_id"], "latest": run_view(latest), "duplicate": duplicate}
 
+    def upload_access(project_id: UUID, request: Request):
+        # Authorize before reading the body, without holding a connection during the upload.
+        with t.session(engine) as db:
+            uid = authenticate(request, db)
+            access(db, project_id, uid, write=True)
+        return uid
+
+    def register_upload(pid, uid, aid, oid, name, source, key, file, total, checksum):
+        keep = False
+        try:
+            # Own the transaction in this worker thread, including releasing locks on duplicate returns.
+            with t.session(engine) as db:
+                access(db, pid, uid, write=True)
+                c = t.media_catalog.c
+                # Serialize project ingest to make the small-project catalog bound deterministic.
+                db.execute(update(t.projects).where(t.projects.c.id == pid).values(revision=t.projects.c.revision))
+                existing = db.execute(select(t.media_catalog).where(c.project_id == pid, c.sha256 == checksum)).mappings().first()
+                if existing:
+                    return asset_view(db, existing, True)
+                if db.execute(select(func.count()).select_from(t.media_catalog).where(c.project_id == pid)).scalar_one() >= MAX_ASSETS:
+                    raise RuleError("INVALID_ARGUMENT", "This phase-two catalog supports up to 50 videos per project")
+                db.execute(insert(t.objects).values(id=oid, project_id=pid, storage_key=key, sha256=checksum, size_bytes=total))
+                db.execute(insert(t.assets).values(id=aid, project_id=pid, media_type="video", sha256=checksum,
+                           original_object_id=oid, license_info={"source_and_rights": source, "confirmed_by": uid}))
+                db.execute(insert(t.media_catalog).values(asset_id=aid, project_id=pid, sha256=checksum,
+                                                           name=name, latest_generation=1))
+                enqueue(db, pid, aid, 1)
+                response = asset_view(db, catalog(db, pid, aid))
+            # Do not keep a raw object if the database transaction fails.
+            keep = True
+            return response
+        finally:
+            if not keep:
+                file.unlink(missing_ok=True)
+
     @router.post("/assets", status_code=201, response_model=MediaAssetView, openapi_extra={"requestBody": {"required": True, "content": {
         "application/octet-stream": {"schema": {"type": "string", "format": "binary"}},
     }}})
     async def upload(project_id: UUID, request: Request, name: str = Query(min_length=1, max_length=250),
                      source: str = Query(min_length=1, max_length=300),
-                     rights_confirmed: bool = Query(), uid=Depends(user), db=Depends(db_session)):
+                     rights_confirmed: bool = Query(), uid=Depends(upload_access)):
         pid = str(project_id)
-        access(db, project_id, uid, write=True)
         name, source = name.strip(), source.strip()
         if (not rights_confirmed or not source or not name or re.search(r"[\x00-\x1f/\\]", name)
                 or Path(name).suffix.lower() not in ALLOWED_SUFFIXES):
@@ -117,7 +152,7 @@ def material_routes(root, db_session, user, access):
         key = f"original/{pid}/{oid}{Path(name).suffix.lower()}"
         file = object_path(root, key)
         file.parent.mkdir(parents=True, exist_ok=True)
-        total, sha, keep = 0, hashlib.sha256(), False
+        total, sha = 0, hashlib.sha256()
         try:
             with file.open("xb") as dest:
                 async for chunk in request.stream():
@@ -128,29 +163,11 @@ def material_routes(root, db_session, user, access):
                     dest.write(chunk)
             if not total:
                 raise RuleError("INVALID_ARGUMENT", "Empty upload")
-            checksum = sha.hexdigest()
-            c = t.media_catalog.c
-            # Serialize project ingest to make the small-project catalog bound deterministic.
-            db.execute(update(t.projects).where(t.projects.c.id == pid).values(revision=t.projects.c.revision))
-            existing = db.execute(select(t.media_catalog).where(c.project_id == pid, c.sha256 == checksum)).mappings().first()
-            if existing:
-                return asset_view(db, existing, True)
-            if db.execute(select(func.count()).select_from(t.media_catalog).where(c.project_id == pid)).scalar_one() >= MAX_ASSETS:
-                raise RuleError("INVALID_ARGUMENT", "This phase-two catalog supports up to 50 videos per project")
-            db.execute(insert(t.objects).values(id=oid, project_id=pid, storage_key=key, sha256=checksum, size_bytes=total))
-            db.execute(insert(t.assets).values(id=aid, project_id=pid, media_type="video", sha256=checksum,
-                       original_object_id=oid, license_info={"source_and_rights": source, "confirmed_by": uid}))
-            db.execute(insert(t.media_catalog).values(asset_id=aid, project_id=pid, sha256=checksum,
-                                                       name=name, latest_generation=1))
-            enqueue(db, pid, aid, 1)
-            response = asset_view(db, catalog(db, pid, aid))
-            # Do not keep a raw object if the database transaction fails.
-            db.commit()
-            keep = True
-            return response
-        finally:
-            if not keep:
-                file.unlink(missing_ok=True)
+        except BaseException:
+            file.unlink(missing_ok=True)
+            raise
+        # Synchronous row-lock waits must not block the ASGI event loop serving other uploads.
+        return await run_in_threadpool(register_upload, pid, uid, aid, oid, name, source, key, file, total, sha.hexdigest())
 
     @router.get("/assets", response_model=list[MediaAssetView])
     def assets(project_id: UUID, uid=Depends(user), db=Depends(db_session)):

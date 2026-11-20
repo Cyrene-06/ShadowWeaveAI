@@ -24,7 +24,12 @@ def main():
         ("contracts", [py, "scripts/export_contracts.py", "--check"], ROOT),
         ("evaluation_templates", [py, "scripts/prepare_evaluation.py", "--check"], ROOT),
         ("model_probe_readiness", [py, "scripts/model_probe.py"], ROOT),
-        ("python", [py, "-m", "pytest", "-q", "--junitxml=artifacts/phase-one/python-tests.xml"], ROOT),
+        (
+            "python",
+            [py, "-m", "pytest", "-q", "-o", "faulthandler_timeout=60",
+             "--junitxml=artifacts/phase-one/python-tests.xml"],
+            ROOT,
+        ),
         ("replay", [py, "-m", "sw_api.replay"], ROOT),
         ("media", [py, "scripts/media_probe.py"], ROOT),
         ("web_tests", [npm, "test"], ROOT / "apps/web"),
@@ -72,7 +77,15 @@ def main():
                 "stdout": run.stdout,
                 "stderr": run.stderr,
             }
-        except (OSError, subprocess.TimeoutExpired) as exc:
+        except subprocess.TimeoutExpired as exc:
+            result = {
+                "name": name,
+                "command": command,
+                "exit_code": -1,
+                "stdout": (exc.stdout or b"").decode("utf-8", errors="replace"),
+                "stderr": (exc.stderr or b"").decode("utf-8", errors="replace") + "\n" + str(exc),
+            }
+        except OSError as exc:
             result = {"name": name, "command": command, "exit_code": -1, "error": str(exc)}
         result["duration_seconds"] = round(time.monotonic() - start, 3)
         results.append(result)
