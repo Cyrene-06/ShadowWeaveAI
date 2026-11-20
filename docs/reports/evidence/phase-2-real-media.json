@@ -1,0 +1,415 @@
+{
+  "actual_runs": [
+    {
+      "active_analysis_id": "3bdf14eb-0740-490a-a46f-0a54b9c9ada9",
+      "asset_id": "9214d602-667c-4cf7-a2a4-9f0674587d80",
+      "duplicate": false,
+      "latest": {
+        "analysis_run_id": "3bdf14eb-0740-490a-a46f-0a54b9c9ada9",
+        "attempts": 2,
+        "error_code": null,
+        "generation": 1,
+        "job_id": "f5c101b7-2747-4b4d-8a6a-b1a7c9d159d4",
+        "queue_ms": 0,
+        "result": {
+          "content_hash": "665e6cfa7ae82f1362fb25a287337f246ee7abf5ce5bbefc4986943491f5d8b0",
+          "duration_ms": 56089,
+          "preview_sha256": "b553a7e49759b733284818541edbdaf93bc739f7ddf5e1c36b5ba2e42157021f",
+          "segment_count": 7,
+          "speech": {
+            "audio_ms": 56089,
+            "language": "en",
+            "model_files_sha256": {
+              "config.json": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+              "model.bin": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+              "tokenizer.json": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+              "vocabulary.txt": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf"
+            },
+            "provider": "faster-whisper-local",
+            "remote_model_called": false,
+            "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+            "status": "succeeded",
+            "utterance_count": 12,
+            "version": "1.2.1"
+          },
+          "split": "fixed_or_single",
+          "timing_ms": {
+            "media": 1110,
+            "probe": 159,
+            "speech": 1896
+          },
+          "tools": {
+            "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+            "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers"
+          }
+        },
+        "stage": "succeeded",
+        "wall_ms": 3250
+      },
+      "name": "one-small-step.m4v",
+      "sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+    },
+    {
+      "active_analysis_id": "01c66d14-3ec5-459b-8515-12a0a6008e5b",
+      "asset_id": "19790bbb-3902-40d7-bd54-8b5e5fe0ded7",
+      "duplicate": false,
+      "latest": {
+        "analysis_run_id": "01c66d14-3ec5-459b-8515-12a0a6008e5b",
+        "attempts": 1,
+        "error_code": null,
+        "generation": 1,
+        "job_id": "38b07482-7a4f-4501-9a7b-0f7db864ae88",
+        "queue_ms": 3240,
+        "result": {
+          "content_hash": "f534dfc0775ae077fed84a6972deabc79bf230672ae2c2abd1969adb80d2d4c8",
+          "duration_ms": 59560,
+          "preview_sha256": "a0f6a445b49931d562b0c39953cb44fe9dee53cc74f4c18795ba6c0fd37cc255",
+          "segment_count": 7,
+          "speech": {
+            "audio_ms": 59560,
+            "language": "en",
+            "model_files_sha256": {
+              "config.json": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+              "model.bin": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+              "tokenizer.json": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+              "vocabulary.txt": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf"
+            },
+            "provider": "faster-whisper-local",
+            "remote_model_called": false,
+            "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+            "status": "succeeded",
+            "utterance_count": 10,
+            "version": "1.2.1"
+          },
+          "split": "fixed_or_single",
+          "timing_ms": {
+            "media": 1129,
+            "probe": 124,
+            "speech": 1967
+          },
+          "tools": {
+            "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+            "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers"
+          }
+        },
+        "stage": "succeeded",
+        "wall_ms": 6480
+      },
+      "name": "buzz-descends.m4v",
+      "sha256": "23749bb9e3909ba335e48ea725f8a771aeb4f59fc4b4c8e80e31f4f3d13fa584"
+    }
+  ],
+  "asset_inputs": [
+    {
+      "name": "one-small-step.m4v",
+      "sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+    },
+    {
+      "name": "buzz-descends.m4v",
+      "sha256": "23749bb9e3909ba335e48ea725f8a771aeb4f59fc4b4c8e80e31f4f3d13fa584"
+    }
+  ],
+  "broken_fixture": {
+    "active_analysis_id": null,
+    "asset_id": "a5fcfa9e-ba99-49eb-b374-e17328848e5a",
+    "duplicate": false,
+    "latest": {
+      "analysis_run_id": "985a73d3-701c-4cd3-a43f-86162d781c79",
+      "attempts": 1,
+      "error_code": "INVALID_MEDIA",
+      "generation": 1,
+      "job_id": "7d1af1d5-d7e3-4ee6-95a7-5652bfaaf341",
+      "queue_ms": 6768,
+      "result": {
+        "timing_ms": {
+          "last_stage_before_failure": 40
+        }
+      },
+      "stage": "failed",
+      "wall_ms": 6813
+    },
+    "name": "broken.mp4",
+    "sha256": "269a6a4892decd34797826b97a3f777dfaec3c08d53f06e2ae6f93aeb55fb7b7"
+  },
+  "checks": {
+    "cross_project_preview_rejected": true,
+    "duplicate_upload_reuses_asset": true,
+    "expired_lease_recovers_once": true,
+    "historical_manifest_unchanged": true,
+    "source_preview_range": true,
+    "wrong_source_interval_and_version_rejected": true
+  },
+  "coverage_handoff": {
+    "manifest_hash": "2eb2baa4e37504d3caee076cda88cad9512a2f295e57f059eac2b260a97a4948",
+    "node": "archival-quotes",
+    "per_requirement": [
+      {
+        "candidate_refs": [
+          "f9bcb032-8bd7-5733-9b8e-496c4865820b"
+        ],
+        "qualified_refs": [
+          "f9bcb032-8bd7-5733-9b8e-496c4865820b"
+        ],
+        "reason_codes": [
+          "qualified_evidence"
+        ],
+        "requirement_key": "first-step",
+        "selected_refs": [
+          "f9bcb032-8bd7-5733-9b8e-496c4865820b"
+        ],
+        "state": "covered"
+      },
+      {
+        "candidate_refs": [
+          "5841fb1e-719f-5297-993e-1729df4850f6"
+        ],
+        "qualified_refs": [
+          "5841fb1e-719f-5297-993e-1729df4850f6"
+        ],
+        "reason_codes": [
+          "qualified_evidence"
+        ],
+        "requirement_key": "ladder",
+        "selected_refs": [
+          "5841fb1e-719f-5297-993e-1729df4850f6"
+        ],
+        "state": "covered"
+      },
+      {
+        "candidate_refs": [
+          "03dcb448-1e2d-59af-959f-f7d39239d47c"
+        ],
+        "qualified_refs": [
+          "03dcb448-1e2d-59af-959f-f7d39239d47c"
+        ],
+        "reason_codes": [
+          "qualified_evidence"
+        ],
+        "requirement_key": "buzz-view",
+        "selected_refs": [
+          "03dcb448-1e2d-59af-959f-f7d39239d47c"
+        ],
+        "state": "covered"
+      }
+    ],
+    "review_provenance": "scripted API review submission using development anchors; not a human annotation",
+    "state": "covered"
+  },
+  "dataset_version": "p2-nasa-svs-10451-dev-r1",
+  "diagnostic_metrics": {
+    "a_false_returns": 0,
+    "a_human_correct_seek_time_ms": null,
+    "a_material_hits": 3,
+    "answered_queries": 3,
+    "b_false_returns": 0,
+    "b_human_correct_seek_time_ms": null,
+    "b_interval_hits": 3,
+    "b_material_hits": 3,
+    "b_returned_refs": 3,
+    "b_verified_refs": 3,
+    "human_confirmed_reqs": null,
+    "human_timing_reason": "An independent participant has not run the paired timed task",
+    "matched_dev_anchors": 3,
+    "no_answer_queries": 1,
+    "required_facts": 3
+  },
+  "environment": {
+    "os": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.7"
+  },
+  "independent_reproduction": "pending teammate run; not counted as passed",
+  "partition": "development-only, one source event",
+  "query_records": [
+    {
+      "a_assets": [
+        "one-small-step.m4v"
+      ],
+      "answer_asset": "one-small-step.m4v",
+      "b_candidates": [
+        {
+          "analysis_content_hash": "665e6cfa7ae82f1362fb25a287337f246ee7abf5ce5bbefc4986943491f5d8b0",
+          "analysis_run_id": "3bdf14eb-0740-490a-a46f-0a54b9c9ada9",
+          "asset_id": "9214d602-667c-4cf7-a2a4-9f0674587d80",
+          "id": "e7902d62-f3ff-4dc9-8b32-7e00eadc4bd0",
+          "in_ms": 40000,
+          "name": "one-small-step.m4v",
+          "out_ms": 48000,
+          "source_sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+        }
+      ],
+      "b_interval_hit": true,
+      "b_valid_refs": 1,
+      "query_id": "first-step",
+      "source_anchor_ms": 46000
+    },
+    {
+      "a_assets": [
+        "one-small-step.m4v"
+      ],
+      "answer_asset": "one-small-step.m4v",
+      "b_candidates": [
+        {
+          "analysis_content_hash": "665e6cfa7ae82f1362fb25a287337f246ee7abf5ce5bbefc4986943491f5d8b0",
+          "analysis_run_id": "3bdf14eb-0740-490a-a46f-0a54b9c9ada9",
+          "asset_id": "9214d602-667c-4cf7-a2a4-9f0674587d80",
+          "id": "33da573d-c720-4e84-923d-dd0cb13fd2b3",
+          "in_ms": 16000,
+          "name": "one-small-step.m4v",
+          "out_ms": 24000,
+          "source_sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+        }
+      ],
+      "b_interval_hit": true,
+      "b_valid_refs": 1,
+      "query_id": "ladder",
+      "source_anchor_ms": 22000
+    },
+    {
+      "a_assets": [
+        "buzz-descends.m4v"
+      ],
+      "answer_asset": "buzz-descends.m4v",
+      "b_candidates": [
+        {
+          "analysis_content_hash": "f534dfc0775ae077fed84a6972deabc79bf230672ae2c2abd1969adb80d2d4c8",
+          "analysis_run_id": "01c66d14-3ec5-459b-8515-12a0a6008e5b",
+          "asset_id": "19790bbb-3902-40d7-bd54-8b5e5fe0ded7",
+          "id": "209c6b5e-6dd2-4559-a31c-c2be9f969d10",
+          "in_ms": 32000,
+          "name": "buzz-descends.m4v",
+          "out_ms": 40000,
+          "source_sha256": "23749bb9e3909ba335e48ea725f8a771aeb4f59fc4b4c8e80e31f4f3d13fa584"
+        }
+      ],
+      "b_interval_hit": true,
+      "b_valid_refs": 1,
+      "query_id": "buzz-view",
+      "source_anchor_ms": 35000
+    },
+    {
+      "a_assets": [],
+      "answer_asset": null,
+      "b_candidates": [],
+      "b_interval_hit": null,
+      "b_valid_refs": 0,
+      "query_id": "no-answer",
+      "source_anchor_ms": null
+    }
+  ],
+  "reanalysis": {
+    "failed_id": "0d11b9e0-001d-4864-a706-09fe15d64dcd",
+    "failed_run": {
+      "analysis_run_id": "0d11b9e0-001d-4864-a706-09fe15d64dcd",
+      "attempts": 1,
+      "error_code": "TRANSCRIPTION_NOT_CONFIGURED",
+      "generation": 2,
+      "job_id": "386d0480-83a8-4372-b0fa-164551a020ca",
+      "queue_ms": 5,
+      "result": {
+        "timing_ms": {
+          "last_stage_before_failure": 0,
+          "media": 1145,
+          "probe": 120
+        }
+      },
+      "stage": "failed",
+      "wall_ms": 1282
+    },
+    "new_active": {
+      "active_analysis_id": "22f33b3c-c5db-4d56-9ccc-166b27e9bbb9",
+      "asset_id": "9214d602-667c-4cf7-a2a4-9f0674587d80",
+      "duplicate": false,
+      "latest": {
+        "analysis_run_id": "22f33b3c-c5db-4d56-9ccc-166b27e9bbb9",
+        "attempts": 1,
+        "error_code": null,
+        "generation": 3,
+        "job_id": "144d69c2-92d1-4435-9496-4e6ed143ed2b",
+        "queue_ms": 12,
+        "result": {
+          "content_hash": "665e6cfa7ae82f1362fb25a287337f246ee7abf5ce5bbefc4986943491f5d8b0",
+          "duration_ms": 56089,
+          "preview_sha256": "b553a7e49759b733284818541edbdaf93bc739f7ddf5e1c36b5ba2e42157021f",
+          "segment_count": 7,
+          "speech": {
+            "audio_ms": 56089,
+            "language": "en",
+            "model_files_sha256": {
+              "config.json": "14b1b421a90349bc551b881461426b561a874049cb9e4c4864f2ca384f6a7cc5",
+              "model.bin": "1a5afae06a4db91c975c9a9d78be5cc110ee4ea022ad57d55492e4550e936b2a",
+              "tokenizer.json": "929c5252409436dce1b38a75d1abbcb5e132d170d8e324e4e04ed915fa2d22df",
+              "vocabulary.txt": "ff77588746d3a2595d32ab5b69ffd7b95ce2441ac57533cb66fc3eb575a115cf"
+            },
+            "provider": "faster-whisper-local",
+            "remote_model_called": false,
+            "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+            "status": "succeeded",
+            "utterance_count": 12,
+            "version": "1.2.1"
+          },
+          "split": "fixed_or_single",
+          "timing_ms": {
+            "media": 1122,
+            "probe": 124,
+            "speech": 1828
+          },
+          "tools": {
+            "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+            "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers"
+          }
+        },
+        "stage": "succeeded",
+        "wall_ms": 3105
+      },
+      "name": "one-small-step.m4v",
+      "sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+    },
+    "old_active": "3bdf14eb-0740-490a-a46f-0a54b9c9ada9"
+  },
+  "silent_fixture": {
+    "active_analysis_id": "94a26b87-330e-4643-acd1-eee0444e01a9",
+    "asset_id": "169e8639-cf73-4d5c-b873-41db6d08aa2b",
+    "duplicate": false,
+    "latest": {
+      "analysis_run_id": "94a26b87-330e-4643-acd1-eee0444e01a9",
+      "attempts": 1,
+      "error_code": null,
+      "generation": 1,
+      "job_id": "4661abea-4427-40f3-a97f-ab2ff89e7531",
+      "queue_ms": 6459,
+      "result": {
+        "content_hash": "5b89fae5b6160696138a1feba9a2865a62dc6a710b1925d5f498d191276fe9e1",
+        "duration_ms": 6006,
+        "preview_sha256": "1ebc9c96678018a4a5f13cb2b1f21f24e28adb2fa4c4353ab6812532346bc47c",
+        "segment_count": 1,
+        "speech": {
+          "reason": "no_audio_stream",
+          "status": "not_applicable"
+        },
+        "split": "fixed_or_single",
+        "timing_ms": {
+          "media": 172,
+          "probe": 129,
+          "speech": 0
+        },
+        "tools": {
+          "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+          "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers"
+        }
+      },
+      "stage": "succeeded",
+      "wall_ms": 6776
+    },
+    "name": "no-audio.mp4",
+    "sha256": "421376a5565d995bdd298f551ab995a19d8e0979c80dc590c814a02a9cd8068b"
+  },
+  "tested_source_base": "2a66d06743203a483a941c97cb43c4cef6e275a1",
+  "upload_request_ms": {
+    "broken.mp4": 11,
+    "buzz-descends.m4v": 15,
+    "duplicate.mp4": 13,
+    "no-audio.mp4": 12,
+    "one-small-step.m4v": 35
+  },
+  "working_tree_had_changes": false
+}
