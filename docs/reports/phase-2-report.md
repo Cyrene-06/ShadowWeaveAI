@@ -57,7 +57,7 @@ B 返回区间分别为 `one-small-step [40,48)s`（`giant leap`）、`one-small
 | 本地统一检查 | Ruff、生成契约、评测模板、模型配置探针、阶段一规则和真实媒体工具通过；Python **171 通过、0 跳过**，包括在本机 WSL 的真实 PostgreSQL 13 上跑完 5 项专项：迁移、外键、并发幂等、事务回滚和素材并发上传/租约 |
 | Web | 49 个共享契约正反例、类型检查/构建和 Prettier 通过；**4 项浏览器用例通过**（真实语音查询/回看/下载、桌面和窄屏、Web/Flutter Web 同一真实 API 项目回归） |
 | Flutter | `pub get`、分析、51 项测试、Web release 构建通过；Windows 中文路径工具错误通过英文盘符映射绕过。未验证 Android 真机 |
-| GitHub Actions | 首次运行 [`44722749721`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44722749721) 的 core 在真实 PostgreSQL 并发上传处超时，已复现并修复；修复运行 [`44724530750`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44724530750) 覆盖 PostgreSQL 17、Flutter 和 Android 构建；远端最终状态见运行记录。Android APK 构建不等于真机验收 |
+| GitHub Actions | 首次运行 [`44722749721`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44722749721) 的 core 在真实 PostgreSQL 并发上传处超时，已复现并修复；复验 [`44725427056`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44725427056) 在 PostgreSQL 17 上 core 通过（Python **171 通过、0 跳过**），Flutter 通过；[`44724530750`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44724530750) 已验证 Android APK 构建，不等于真机验收 |
 
 - **G1 真实闭环**：通过本机授权实拍、真实 ASR 和 Web 冒烟验证。
 - **G2 引用正确性**：本次候选 3/3 可核对，越权、越界和跨版本拒绝用例通过。
