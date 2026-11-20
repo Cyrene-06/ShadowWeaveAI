@@ -77,7 +77,7 @@ Android 原生工程的独立 CI debug APK 构建及工件上传已通过，实�
 ## 5. 统一检查与浏览器联调
 
 ```powershell
-# 可选；配置后额外执行真实 PostgreSQL 测试，否则这 4 项明确跳过。
+# 可选；配置后额外执行真实 PostgreSQL 测试，否则这 5 项明确跳过。
 $env:TEST_DATABASE_URL='postgresql+psycopg://shadowweave:phase_one_local_only@127.0.0.1:55432/shadowweave'
 .venv/Scripts/python.exe scripts/verify.py
 # Flutter 在 PATH 或 FLUTTER_PATH 可用时，同时检查 Flutter。

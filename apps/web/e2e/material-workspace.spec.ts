@@ -66,7 +66,7 @@ test("real speech search seeks to source and exports reviewed evidence", async (
     inspect.getByText("原片 SHA-256", { exact: true }),
   ).toBeVisible();
   await inspect.getByText("人工复核并导出证据", { exact: true }).click();
-  await inspect.getByLabel("故事要求编号").fill("first_step_statement");
+  await inspect.getByLabel("故事要求编号").fill("first-step");
   await inspect.getByLabel("语义支持").selectOption("supported");
   await inspect.getByLabel("画质与声音足以使用").check();
   await inspect.getByLabel("我已回看原片并核对该要求").check();
@@ -78,7 +78,7 @@ test("real speech search seeks to source and exports reviewed evidence", async (
   expect(contents.evidence).toEqual([
     expect.objectContaining({
       in_ms: Math.round(start * 1000),
-      requirement_keys: ["first_step_statement"],
+      requirement_keys: ["first-step"],
       semantic_support: "supported",
     }),
   ]);

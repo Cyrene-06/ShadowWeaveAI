@@ -50,6 +50,8 @@ B 返回区间分别为 `one-small-step [40,48)s`（`giant leap`）、`one-small
 
 自动交接从该批真实分析数据导出清单，通过 `sw_ai.coverage.evaluate_coverage` 得到 `covered`。脚本模拟了复核表单的判断，**只证明数据可以交接以及规则能够消费，不是人工语义裁决**。下阶段如果要用该样例验证真实“故事覆盖”，须先由审阅人回看并确认绑定；不应把搜索命中自动升级成 `supported`。
 
+另用 [Web 多清单交接入口](phase-2-acceptance.md#2-回看事实并交接) 读取实际浏览器下载的 `first-step` 清单：该要求被判定为 `covered`，未复核的 `ladder` 和 `buzz-view` 均为 `uncertain`，总覆盖仍为 `uncertain`。这次仍由自动化填写表单，只验证交接和缺证据不升级，不计 G4 人工确认。
+
 ## 5. 检查与验收状态
 
 | 检查 | 实录 |
@@ -58,6 +60,8 @@ B 返回区间分别为 `one-small-step [40,48)s`（`giant leap`）、`one-small
 | Web | 49 个共享契约正反例、类型检查/构建和 Prettier 通过；**4 项浏览器用例通过**（真实语音查询/回看/下载、桌面和窄屏、Web/Flutter Web 同一真实 API 项目回归） |
 | Flutter | `pub get`、分析、51 项测试、Web release 构建通过；Windows 中文路径工具错误通过英文盘符映射绕过。未验证 Android 真机 |
 | GitHub Actions | 首次运行 [`44722749721`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44722749721) 的 core 在真实 PostgreSQL 并发上传处超时，已复现并修复；复验 [`44725427056`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44725427056) 在 PostgreSQL 17 上 core 通过（Python **171 通过、0 跳过**），Flutter 通过；[`44724530750`](https://github.com/Cyrene-06/ShadowWeaveAI/actions/runs/44724530750) 已验证 Android APK 构建，不等于真机验收 |
+
+交接工具补充后的本机回归：Python **174 通过、5 跳过**（本次未配置 PostgreSQL；上表保留此前真实数据库结果），Web 契约 **49 通过**、浏览器 **4 通过**，Flutter **51 通过**，Web 与 Flutter Web 构建均通过。
 
 - **G1 真实闭环**：通过本机授权实拍、真实 ASR 和 Web 冒烟验证。
 - **G2 引用正确性**：本次候选 3/3 可核对，越权、越界和跨版本拒绝用例通过。
