@@ -1,0 +1,213 @@
+{
+  "asr": {
+    "language": "en",
+    "provider": "faster-whisper-local",
+    "snapshot": "0d3d19a32d3338f10357c0889762bd8d64bbdeba",
+    "version": "1.2.1"
+  },
+  "asset_inputs": [
+    {
+      "name": "one-small-step.m4v",
+      "sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+    },
+    {
+      "name": "buzz-descends.m4v",
+      "sha256": "23749bb9e3909ba335e48ea725f8a771aeb4f59fc4b4c8e80e31f4f3d13fa584"
+    }
+  ],
+  "dataset_version": "p2-nasa-svs-10451-dev-r1",
+  "diagnostic_metrics": {
+    "a_false_returns": 0,
+    "a_human_correct_seek_time_ms": null,
+    "a_material_hits": 3,
+    "answered_queries": 3,
+    "b_false_returns": 0,
+    "b_human_correct_seek_time_ms": null,
+    "b_interval_hits": 3,
+    "b_material_hits": 3,
+    "b_returned_refs": 3,
+    "b_verified_refs": 3,
+    "human_confirmed_reqs": null,
+    "human_timing_reason": "An independent participant has not run the paired timed task",
+    "matched_dev_anchors": 3,
+    "no_answer_queries": 1,
+    "required_facts": 3
+  },
+  "environment": {
+    "ffmpeg": "ffmpeg version 9.0.2-essentials_build-www.gyan.dev Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version 2023-02-13-git-2296078397-essentials_build-www.gyan.dev Copyright (c) 2007-2023 the FFmpeg developers",
+    "os": "Windows-11-10.0.26200-SP0",
+    "python": "3.12.7"
+  },
+  "environment_scope": "real source replay: SQLite; unified suite includes isolated PostgreSQL 13 (WSL)",
+  "failure_probes": {
+    "processing_budgets": {
+      "fixtures": {
+        "over-dimension.mp4": {
+          "duration_ms": 1000,
+          "failed_run": {
+            "analysis_run_id": "590cfd9f-0858-4358-82b1-a501582d222d",
+            "attempts": 1,
+            "error_code": "INVALID_MEDIA",
+            "generation": 1,
+            "job_id": "bd512c85-7622-4ab6-89bd-71ef1fae7d84",
+            "queue_ms": 3,
+            "result": {
+              "timing_ms": {
+                "last_stage_before_failure": 42
+              }
+            },
+            "stage": "failed",
+            "wall_ms": 51
+          },
+          "height": 64,
+          "max_dimension_px": 3840,
+          "width": 3842
+        },
+        "over-duration.mp4": {
+          "duration_ms": 181000,
+          "failed_run": {
+            "analysis_run_id": "eecceb2d-cf51-4faa-8b5f-5d592d67a329",
+            "attempts": 1,
+            "error_code": "INVALID_MEDIA",
+            "generation": 1,
+            "job_id": "9f18425a-752a-4284-9891-5de79ec960b7",
+            "queue_ms": 4,
+            "result": {
+              "timing_ms": {
+                "last_stage_before_failure": 43
+              }
+            },
+            "stage": "failed",
+            "wall_ms": 51
+          },
+          "height": 36,
+          "max_duration_ms": 180000,
+          "width": 64
+        }
+      },
+      "scope": "generated FFmpeg fixtures; actual probe, no timeout injection"
+    },
+    "timeouts": {
+      "media": {
+        "active_analysis_id_unchanged": true,
+        "configured_timeout_s": 75,
+        "failed_run": {
+          "analysis_run_id": "2f80be06-ebcd-46ac-8d59-c76b2d6893df",
+          "attempts": 1,
+          "error_code": "MEDIA_TIMEOUT",
+          "generation": 4,
+          "job_id": "4327c6e0-c8df-40f0-9ebb-95103184b3d5",
+          "queue_ms": 4,
+          "result": {
+            "timing_ms": {
+              "last_stage_before_failure": 234,
+              "probe": 116
+            }
+          },
+          "stage": "failed",
+          "wall_ms": 363
+        },
+        "injected_timeout_s": 0.2,
+        "no_segments_or_artifact_files_for_failed_run": true
+      },
+      "scope": "real subprocess timeout with a substituted sleeper; not a production incident",
+      "speech": {
+        "active_analysis_id_unchanged": true,
+        "configured_timeout_s": 180,
+        "failed_run": {
+          "analysis_run_id": "307b0418-6468-40d3-a6bf-39438f44cb61",
+          "attempts": 1,
+          "error_code": "TRANSCRIPTION_TIMEOUT",
+          "generation": 5,
+          "job_id": "1a7fa7e6-feda-4936-a03a-e0c9e45adc97",
+          "queue_ms": 5,
+          "result": {
+            "timing_ms": {
+              "last_stage_before_failure": 378,
+              "media": 1237,
+              "probe": 128
+            }
+          },
+          "stage": "failed",
+          "wall_ms": 1760
+        },
+        "injected_timeout_s": 0.2,
+        "no_segments_or_artifact_files_for_failed_run": true
+      }
+    },
+    "upload_budget": {
+      "declared_length": {
+        "code": "FILE_TOO_LARGE",
+        "http_status": 413
+      },
+      "maximum_bytes": 67108864,
+      "original_files_and_catalog_unchanged": true,
+      "scope": "synthetic upload; direct ASGI without reverse proxy",
+      "stream_without_length": {
+        "code": "FILE_TOO_LARGE",
+        "http_status": 413
+      }
+    }
+  },
+  "independent_reproduction": "pending teammate run; not counted as passed",
+  "non_timed_diagnostics": {
+    "semantic_unknown": {
+      "candidate": {
+        "analysis_content_hash": "665e6cfa7ae82f1362fb25a287337f246ee7abf5ce5bbefc4986943491f5d8b0",
+        "analysis_run_id": "4fb32f7b-6e79-40e1-be19-4cb377cf60e1",
+        "asset_id": "b6bafd24-4522-40ac-9bbb-7911f26e41ca",
+        "id": "4fd2c6fa-9aee-4e4e-a4e9-ca51120f478d",
+        "in_ms": 40000,
+        "name": "one-small-step.m4v",
+        "out_ms": 48000,
+        "source_sha256": "55b27fef5d8a7fcab68331f4cbbde0888ef649eae07fd7efc549b4ffd1c7d486"
+      },
+      "claim": "The speaker privately intended the phrase as a joke.",
+      "coverage": "uncertain",
+      "manifest_hash": "a50ebf2b4405ae79fd30adb5cd2fd6f676cd2f48c12a87406da6c09b76adb59a",
+      "query_id": "first-step",
+      "requirement": "giant-leap-private-intent",
+      "result": {
+        "candidate_refs": [
+          "c399d824-6689-5556-bc78-e8cebdd8663a"
+        ],
+        "qualified_refs": [],
+        "reason_codes": [
+          "semantic_unknown"
+        ],
+        "requirement_key": "giant-leap-private-intent",
+        "selected_refs": [],
+        "state": "uncertain"
+      },
+      "scope": "scripted unknown review of a real candidate; excluded from A/B and human verification",
+      "search_complete": true
+    }
+  },
+  "replay_sha256": "fa632cff1b1dfbfddc3cff0d56a7534621f7e2acd87e58a5ffaf53bd3ef71505",
+  "tested_source_base": "e3225415418a230de1e25d3890c49ba27f8adf28",
+  "timing_packet": {
+    "generated_from_this_replay": true,
+    "human_trials": null,
+    "trial_count": 4
+  },
+  "validation_suite": {
+    "flutter_included": false,
+    "pytest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 187
+    },
+    "verify_py_passed": true
+  },
+  "worker_restart": {
+    "analysis_run_id": "f273fc99-a159-4127-9bf4-325014fdc22a",
+    "final_attempts": 2,
+    "injected_child_exit_code": 23,
+    "published_segments": 1,
+    "scope": "isolated no-audio fixture; expired lease fault injection",
+    "second_restart_unchanged": true
+  },
+  "working_tree_had_changes": false
+}
